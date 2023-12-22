@@ -1,0 +1,4 @@
+﻿  code1.cpp
+D:\CODE\CPP_CODE\C++ Primer Plus Code practice\chapter 17\code1\Project1\Project1\code1.cpp(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+D:\CODE\CPP_CODE\C++ Primer Plus Code practice\chapter 17\code1\Project1\Project1\code1.cpp(1231,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+  Project1.vcxproj -> D:\CODE\CPP_CODE\C++ Primer Plus Code practice\chapter 17\code1\Project1\x64\Debug\Project1.exe
