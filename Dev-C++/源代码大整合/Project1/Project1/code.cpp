@@ -1224,8 +1224,11 @@ bool sushu(long num)
 #endif
 //法二： 
 //用埃氏筛选法和求等差数列各项的值的公式 
-#if 0
+//***注***
+//2是最小的素数
+#if 1
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 void shengchengsushu(void);
@@ -1235,6 +1238,15 @@ bool flag[10000];
 int main()
 {
 	shengchengsushu();
+
+	copy(flag,flag+10000,ostream_iterator<bool>(cout));
+	cout << endl;
+
+	for (int index = 0; index < 10000; index++)
+	{
+		if (flag[index])
+			cout << index << " ";
+	}
 
 	for (int gongcha = 2; ; gongcha++)
 	{
@@ -1251,13 +1263,14 @@ int main()
 	return 0;
 }
 
+//生成素数(质数)的时间复杂度最低的方法
 void shengchengsushu(void)
 {
 	//flag数组初始化 
 	for (int i = 0; i < 10000; i++)
 		flag[i] = 1;
 
-	//数组的索引值当成是素数数列的元素，素数数列从2开始 
+	//数组的索引值当成是素数数列的元素，非素数数列从2开始 
 	for (int i = 2; i < 10000; i++)
 	{
 		if (flag[i])

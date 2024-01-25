@@ -1,0 +1,564 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="headfiles\9.6.1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\9.6.4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\10.9.5.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\10.9.9.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\10.10.1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\10.10.2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\10.10.3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\10.10.4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\10.10.5.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\10.10.6.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\10.10.7.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\10.10.8.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\11.8.1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\11.8.7.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\11.9.1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\11.9.2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\11.9.3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\11.9.4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\11.9.5.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\11.9.6.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\11.9.7.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\12.10.1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\12.10.2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\12.10.3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\12.10.4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\12.10.5.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\12.10.6.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\13.10.14.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\13.11.1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\13.11.2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\13.11.3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\13.11.4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\14.6.2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\14.6.3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\14.6.4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\14.6.5.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\14.7.1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\14.7.2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\14.7.3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\14.7.4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\14.7.5.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\15.7.6.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\15.8.1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\15.8.2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\15.8.3.1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\15.8.3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\15.8.4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\16.9.1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\16.9.10.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\16.10.6.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\16.10.10.1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\16.10.10.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\17.8.6.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\18.12.2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd9.1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd9.13.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd10.1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd10.4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd10.7.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd10.10.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd11.1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd11.4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd11.7.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd11.10.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd11.13.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd11.16.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd11.19.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd12.1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd12.4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd12.8.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd12.10.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd13.1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd13.4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd13.7.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd13.11.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd13.14.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd14.1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd14.4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd14.7.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd14.10.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd14.13.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd14.15.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd14.17.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd14.21.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd15.1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd15.4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd15.5.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd15.10.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd15.12.1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd15.12.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd15.14.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd15.17.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd16.5.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd16.8.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd16.9.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd18.2.1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd18.2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd18.3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiles\cxqd18.6.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="sourcefiles\9.6.1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\9.6.4.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\10.9.7.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\10.10.1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\10.10.2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\10.10.3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\10.10.4.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\10.10.5.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\10.10.6.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\10.10.7.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\10.10.8.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\11.8.1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\11.8.7.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\11.9.1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\11.9.2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\11.9.3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\11.9.4.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\11.9.5.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\11.9.6.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\11.9.7.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\12.10.1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\12.10.2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\12.10.3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\12.10.4.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\12.10.5.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\12.10.6.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\13.11.1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\13.11.2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\13.11.3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\13.11.4.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\14.6.2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\14.6.3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\14.7.1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\14.7.2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\14.7.3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\14.7.4.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\14.7.5.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\15.7.6.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\15.8.1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\15.8.4.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\16.9.10.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\16.10.6.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\16.10.10.1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\16.10.10.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\17.8.6.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\18.12.2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\code(chapter 2~18).cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd9.1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd9.5.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd9.6.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd9.12.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd10.2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd10.5.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd10.8.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd10.11.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd11.2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd11.5.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd11.8.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd11.11.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd11.14.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd11.17.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd11.20.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd12.2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd12.5.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd12.11.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd13.2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd13.5.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd13.8.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd13.12.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd13.15.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd14.2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd14.5.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd14.8.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd14.11.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd15.2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd15.4.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd15.15.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd16.8.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd16.9.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd18.2.1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd18.2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcefiles\cxqd18.3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

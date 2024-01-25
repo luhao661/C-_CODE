@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{78747272-d26b-45b7-bc16-142f8ae167bf}</ProjectGuid>
+    <RootNamespace>CPPPP</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)/bin/$(Platform)/$(Configuration)/</OutDir>
+    <IntDir>$(SolutionDir)/tmp/$(Platform)/$(Configuration)/$(ProjectName)/</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)/bin/$(Platform)/$(Configuration)/</OutDir>
+    <IntDir>$(SolutionDir)/tmp/$(Platform)/$(Configuration)/$(ProjectName)/</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)/bin/$(Platform)/$(Configuration)/</OutDir>
+    <IntDir>$(SolutionDir)/tmp/$(Platform)/$(Configuration)/$(ProjectName)/</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)/bin/$(Platform)/$(Configuration)/</OutDir>
+    <IntDir>$(SolutionDir)/tmp/$(Platform)/$(Configuration)/$(ProjectName)/</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\CODE\CPP_CODE\Source_code_integration\CPP_PP\headfiles</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\CODE\CPP_CODE\Source_code_integration\CPP_PP\headfiles</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\CODE\CPP_CODE\Source_code_integration\CPP_PP\headfiles</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\CODE\CPP_CODE\Source_code_integration\CPP_PP\headfiles</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="headfiles\10.10.1.h" />
+    <ClInclude Include="headfiles\10.10.2.h" />
+    <ClInclude Include="headfiles\10.10.3.h" />
+    <ClInclude Include="headfiles\10.10.4.h" />
+    <ClInclude Include="headfiles\10.10.5.h" />
+    <ClInclude Include="headfiles\10.10.6.h" />
+    <ClInclude Include="headfiles\10.10.7.h" />
+    <ClInclude Include="headfiles\10.10.8.h" />
+    <ClInclude Include="headfiles\10.9.5.h" />
+    <ClInclude Include="headfiles\10.9.9.h" />
+    <ClInclude Include="headfiles\11.8.1.h" />
+    <ClInclude Include="headfiles\11.8.7.h" />
+    <ClInclude Include="headfiles\11.9.1.h" />
+    <ClInclude Include="headfiles\11.9.2.h" />
+    <ClInclude Include="headfiles\11.9.3.h" />
+    <ClInclude Include="headfiles\11.9.4.h" />
+    <ClInclude Include="headfiles\11.9.5.h" />
+    <ClInclude Include="headfiles\11.9.6.h" />
+    <ClInclude Include="headfiles\11.9.7.h" />
+    <ClInclude Include="headfiles\12.10.1.h" />
+    <ClInclude Include="headfiles\12.10.2.h" />
+    <ClInclude Include="headfiles\12.10.3.h" />
+    <ClInclude Include="headfiles\12.10.4.h" />
+    <ClInclude Include="headfiles\12.10.5.h" />
+    <ClInclude Include="headfiles\12.10.6.h" />
+    <ClInclude Include="headfiles\13.10.14.h" />
+    <ClInclude Include="headfiles\13.11.1.h" />
+    <ClInclude Include="headfiles\13.11.2.h" />
+    <ClInclude Include="headfiles\13.11.3.h" />
+    <ClInclude Include="headfiles\13.11.4.h" />
+    <ClInclude Include="headfiles\14.6.2.h" />
+    <ClInclude Include="headfiles\14.6.3.h" />
+    <ClInclude Include="headfiles\14.6.4.h" />
+    <ClInclude Include="headfiles\14.6.5.h" />
+    <ClInclude Include="headfiles\14.7.1.h" />
+    <ClInclude Include="headfiles\14.7.2.h" />
+    <ClInclude Include="headfiles\14.7.3.h" />
+    <ClInclude Include="headfiles\14.7.4.h" />
+    <ClInclude Include="headfiles\14.7.5.h" />
+    <ClInclude Include="headfiles\15.7.6.h" />
+    <ClInclude Include="headfiles\15.8.1.h" />
+    <ClInclude Include="headfiles\15.8.2.h" />
+    <ClInclude Include="headfiles\15.8.3.1.h" />
+    <ClInclude Include="headfiles\15.8.3.h" />
+    <ClInclude Include="headfiles\15.8.4.h" />
+    <ClInclude Include="headfiles\16.10.10.1.h" />
+    <ClInclude Include="headfiles\16.10.10.h" />
+    <ClInclude Include="headfiles\16.10.6.h" />
+    <ClInclude Include="headfiles\16.9.1.h" />
+    <ClInclude Include="headfiles\16.9.10.h" />
+    <ClInclude Include="headfiles\17.8.6.h" />
+    <ClInclude Include="headfiles\18.12.2.h" />
+    <ClInclude Include="headfiles\9.6.1.h" />
+    <ClInclude Include="headfiles\9.6.4.h" />
+    <ClInclude Include="headfiles\cxqd10.1.h" />
+    <ClInclude Include="headfiles\cxqd10.10.h" />
+    <ClInclude Include="headfiles\cxqd10.4.h" />
+    <ClInclude Include="headfiles\cxqd10.7.h" />
+    <ClInclude Include="headfiles\cxqd11.1.h" />
+    <ClInclude Include="headfiles\cxqd11.10.h" />
+    <ClInclude Include="headfiles\cxqd11.13.h" />
+    <ClInclude Include="headfiles\cxqd11.16.h" />
+    <ClInclude Include="headfiles\cxqd11.19.h" />
+    <ClInclude Include="headfiles\cxqd11.4.h" />
+    <ClInclude Include="headfiles\cxqd11.7.h" />
+    <ClInclude Include="headfiles\cxqd12.1.h" />
+    <ClInclude Include="headfiles\cxqd12.10.h" />
+    <ClInclude Include="headfiles\cxqd12.4.h" />
+    <ClInclude Include="headfiles\cxqd12.8.h" />
+    <ClInclude Include="headfiles\cxqd13.1.h" />
+    <ClInclude Include="headfiles\cxqd13.11.h" />
+    <ClInclude Include="headfiles\cxqd13.14.h" />
+    <ClInclude Include="headfiles\cxqd13.4.h" />
+    <ClInclude Include="headfiles\cxqd13.7.h" />
+    <ClInclude Include="headfiles\cxqd14.1.h" />
+    <ClInclude Include="headfiles\cxqd14.10.h" />
+    <ClInclude Include="headfiles\cxqd14.13.h" />
+    <ClInclude Include="headfiles\cxqd14.15.h" />
+    <ClInclude Include="headfiles\cxqd14.17.h" />
+    <ClInclude Include="headfiles\cxqd14.21.h" />
+    <ClInclude Include="headfiles\cxqd14.4.h" />
+    <ClInclude Include="headfiles\cxqd14.7.h" />
+    <ClInclude Include="headfiles\cxqd15.1.h" />
+    <ClInclude Include="headfiles\cxqd15.10.h" />
+    <ClInclude Include="headfiles\cxqd15.12.1.h" />
+    <ClInclude Include="headfiles\cxqd15.12.h" />
+    <ClInclude Include="headfiles\cxqd15.14.h" />
+    <ClInclude Include="headfiles\cxqd15.17.h" />
+    <ClInclude Include="headfiles\cxqd15.4.h" />
+    <ClInclude Include="headfiles\cxqd15.5.h" />
+    <ClInclude Include="headfiles\cxqd16.5.h" />
+    <ClInclude Include="headfiles\cxqd16.8.h" />
+    <ClInclude Include="headfiles\cxqd16.9.h" />
+    <ClInclude Include="headfiles\cxqd18.2.1.h" />
+    <ClInclude Include="headfiles\cxqd18.2.h" />
+    <ClInclude Include="headfiles\cxqd18.3.h" />
+    <ClInclude Include="headfiles\cxqd18.6.h" />
+    <ClInclude Include="headfiles\cxqd9.1.h" />
+    <ClInclude Include="headfiles\cxqd9.13.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="sourcefiles\10.10.1.cpp" />
+    <ClCompile Include="sourcefiles\10.10.2.cpp" />
+    <ClCompile Include="sourcefiles\10.10.3.cpp" />
+    <ClCompile Include="sourcefiles\10.10.4.cpp" />
+    <ClCompile Include="sourcefiles\10.10.5.cpp" />
+    <ClCompile Include="sourcefiles\10.10.6.cpp" />
+    <ClCompile Include="sourcefiles\10.10.7.cpp" />
+    <ClCompile Include="sourcefiles\10.10.8.cpp" />
+    <ClCompile Include="sourcefiles\10.9.7.cpp" />
+    <ClCompile Include="sourcefiles\11.8.1.cpp" />
+    <ClCompile Include="sourcefiles\11.8.7.cpp" />
+    <ClCompile Include="sourcefiles\11.9.1.cpp" />
+    <ClCompile Include="sourcefiles\11.9.2.cpp" />
+    <ClCompile Include="sourcefiles\11.9.3.cpp" />
+    <ClCompile Include="sourcefiles\11.9.4.cpp" />
+    <ClCompile Include="sourcefiles\11.9.5.cpp" />
+    <ClCompile Include="sourcefiles\11.9.6.cpp" />
+    <ClCompile Include="sourcefiles\11.9.7.cpp" />
+    <ClCompile Include="sourcefiles\12.10.1.cpp" />
+    <ClCompile Include="sourcefiles\12.10.2.cpp" />
+    <ClCompile Include="sourcefiles\12.10.3.cpp" />
+    <ClCompile Include="sourcefiles\12.10.4.cpp" />
+    <ClCompile Include="sourcefiles\12.10.5.cpp" />
+    <ClCompile Include="sourcefiles\12.10.6.cpp" />
+    <ClCompile Include="sourcefiles\13.11.1.cpp" />
+    <ClCompile Include="sourcefiles\13.11.2.cpp" />
+    <ClCompile Include="sourcefiles\13.11.3.cpp" />
+    <ClCompile Include="sourcefiles\13.11.4.cpp" />
+    <ClCompile Include="sourcefiles\14.6.2.cpp" />
+    <ClCompile Include="sourcefiles\14.6.3.cpp" />
+    <ClCompile Include="sourcefiles\14.7.1.cpp" />
+    <ClCompile Include="sourcefiles\14.7.2.cpp" />
+    <ClCompile Include="sourcefiles\14.7.3.cpp" />
+    <ClCompile Include="sourcefiles\14.7.4.cpp" />
+    <ClCompile Include="sourcefiles\14.7.5.cpp" />
+    <ClCompile Include="sourcefiles\15.7.6.cpp" />
+    <ClCompile Include="sourcefiles\15.8.1.cpp" />
+    <ClCompile Include="sourcefiles\15.8.4.cpp" />
+    <ClCompile Include="sourcefiles\16.10.10.1.cpp" />
+    <ClCompile Include="sourcefiles\16.10.10.cpp" />
+    <ClCompile Include="sourcefiles\16.10.6.cpp" />
+    <ClCompile Include="sourcefiles\16.9.10.cpp" />
+    <ClCompile Include="sourcefiles\17.8.6.cpp" />
+    <ClCompile Include="sourcefiles\18.12.2.cpp" />
+    <ClCompile Include="sourcefiles\9.6.1.cpp" />
+    <ClCompile Include="sourcefiles\9.6.4.cpp" />
+    <ClCompile Include="sourcefiles\code(chapter 2~18).cpp" />
+    <ClCompile Include="sourcefiles\cxqd10.11.cpp" />
+    <ClCompile Include="sourcefiles\cxqd10.2.cpp" />
+    <ClCompile Include="sourcefiles\cxqd10.5.cpp" />
+    <ClCompile Include="sourcefiles\cxqd10.8.cpp" />
+    <ClCompile Include="sourcefiles\cxqd11.11.cpp" />
+    <ClCompile Include="sourcefiles\cxqd11.14.cpp" />
+    <ClCompile Include="sourcefiles\cxqd11.17.cpp" />
+    <ClCompile Include="sourcefiles\cxqd11.2.cpp" />
+    <ClCompile Include="sourcefiles\cxqd11.20.cpp" />
+    <ClCompile Include="sourcefiles\cxqd11.5.cpp" />
+    <ClCompile Include="sourcefiles\cxqd11.8.cpp" />
+    <ClCompile Include="sourcefiles\cxqd12.11.cpp" />
+    <ClCompile Include="sourcefiles\cxqd12.2.cpp" />
+    <ClCompile Include="sourcefiles\cxqd12.5.cpp" />
+    <ClCompile Include="sourcefiles\cxqd13.12.cpp" />
+    <ClCompile Include="sourcefiles\cxqd13.15.cpp" />
+    <ClCompile Include="sourcefiles\cxqd13.2.cpp" />
+    <ClCompile Include="sourcefiles\cxqd13.5.cpp" />
+    <ClCompile Include="sourcefiles\cxqd13.8.cpp" />
+    <ClCompile Include="sourcefiles\cxqd14.11.cpp" />
+    <ClCompile Include="sourcefiles\cxqd14.2.cpp" />
+    <ClCompile Include="sourcefiles\cxqd14.5.cpp" />
+    <ClCompile Include="sourcefiles\cxqd14.8.cpp" />
+    <ClCompile Include="sourcefiles\cxqd15.15.cpp" />
+    <ClCompile Include="sourcefiles\cxqd15.2.cpp" />
+    <ClCompile Include="sourcefiles\cxqd15.4.cpp" />
+    <ClCompile Include="sourcefiles\cxqd16.8.cpp" />
+    <ClCompile Include="sourcefiles\cxqd16.9.cpp" />
+    <ClCompile Include="sourcefiles\cxqd18.2.1.cpp" />
+    <ClCompile Include="sourcefiles\cxqd18.2.cpp" />
+    <ClCompile Include="sourcefiles\cxqd18.3.cpp" />
+    <ClCompile Include="sourcefiles\cxqd9.1.cpp" />
+    <ClCompile Include="sourcefiles\cxqd9.12.cpp" />
+    <ClCompile Include="sourcefiles\cxqd9.5.cpp" />
+    <ClCompile Include="sourcefiles\cxqd9.6.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
