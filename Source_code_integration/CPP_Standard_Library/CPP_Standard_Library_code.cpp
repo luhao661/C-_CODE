@@ -2883,7 +2883,7 @@ int main()
 
 
 //remove_if()碰上函数对象作为谓词 (Predicate)会出现的问题
-#if 0
+#if 1
 #include <iostream>
 #include <list>
 #include <algorithm>
@@ -2955,6 +2955,16 @@ int main()
     //解决方法：使用remove_copy_if()
     pos = remove_copy_if(coll.begin(), coll.end(),  // range
         coll.begin(), Nth(3));                  // remove criterion
+    coll.erase(pos, coll.end());
+
+    PRINT_ELEMENTS(coll, "3rd removed: ");
+
+    //使用lambda更直观：
+    int cnt = 0;
+    pos = remove_if(coll.begin(), coll.end(), [&cnt](int)
+        {
+            return ++cnt == 3;
+        });
     coll.erase(pos, coll.end());
 
     PRINT_ELEMENTS(coll, "3rd removed: ");
@@ -3199,5 +3209,41 @@ int main()
         [](const Person& p) {
             p.print2("Person: ");
         });
+}
+#endif
+
+
+//function<>
+#if 1
+#include <iostream>
+#include <algorithm>
+#include <list>
+#include <functional>
+using namespace std;
+
+bool check(int elem);
+
+int main()
+{
+    list<int> link_list{1,2,3,4,5,6};
+
+    //auto pos=find_if(link_list.begin(),link_list.end(),check);
+    auto pos=find_if(link_list.begin(),link_list.end(),
+        function<bool (int)>(check));
+    //可以不使用function<>
+    //当需要存储不同类型的可调用对象、
+    // 将它们作为参数传递给函数或通过传递可调用对象为
+    // 用户提供自定义行为的灵活性时， std::function 的使用变得更加相关
+
+    cout << *pos << endl;
+
+    return 0;
+}
+bool check(int elem)
+{
+    if (elem == 3)
+        return true;
+    else
+        return false;
 }
 #endif
