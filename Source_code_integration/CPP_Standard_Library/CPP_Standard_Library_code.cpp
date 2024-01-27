@@ -2883,7 +2883,7 @@ int main()
 
 
 //remove_if()碰上函数对象作为谓词 (Predicate)会出现的问题
-#if 1
+#if 0
 #include <iostream>
 #include <list>
 #include <algorithm>
@@ -3052,7 +3052,7 @@ int main()
 
 
 //bind()调用全局函数
-//使用search()函数检验一个字符串是否是另一个字符串的子串
+//使用search()函数检验一个字符串是否是另一个字符串的子串，即查找第一个子区间
 //效率没有//面试题17：包含所有字符的最短字符串   高
 #if 0
 #include <iostream>
@@ -3214,7 +3214,7 @@ int main()
 
 
 //function<>
-#if 1
+#if 0
 #include <iostream>
 #include <algorithm>
 #include <list>
@@ -3245,5 +3245,171 @@ bool check(int elem)
         return true;
     else
         return false;
+}
+#endif
+
+
+//search_n()
+//在范围 [first, last) 中搜索 count 个等同元素的序列，
+//每个都等于给定的值 value 或者 满足二元谓词
+#if 0
+#include <iostream>
+#include <deque>
+#include <algorithm>
+using namespace std;
+
+template <typename T>
+inline void PRINT_ELEMENTS(const T& coll, const std::string& optstr = "")
+{
+    std::cout << optstr;
+
+    for (const auto& elem : coll)
+    {
+        std::cout << elem << ' ';
+    }
+
+    std::cout << std::endl;
+}
+
+int main()
+{
+    deque<int> coll;
+
+    coll = { 1, 2, 7, 7, 6, 3, 9, 5, 7, 7, 7, 3, 6 };
+    PRINT_ELEMENTS(coll);
+
+    // find three consecutive elements with value 7
+    deque<int>::iterator pos;
+    pos = search_n(coll.begin(), coll.end(),    // range
+        3,                           // count
+        7);                          // value
+
+    // print result
+    if (pos != coll.end()) 
+    {
+        cout << "three consecutive elements with value 7 "
+            << "start with Num." << distance(coll.begin(), pos) + 1
+            << ". element" << endl;
+    }
+    else 
+    {
+        cout << "no four consecutive elements with value 7 found"
+            << endl;
+    }
+
+    // find four consecutive odd elements
+    pos = search_n(coll.begin(), coll.end(),    // range
+        4,                           // count
+        0,                           // value
+        [](int elem, int value) // criterion   ***注***
+        {     
+            return elem % 2 == 1;
+        });
+    //***注***
+    // 必须写成二元谓词
+    //不能写成
+    /*
+    pos = search_n(coll.begin(), coll.end(),    // range
+        4,                           // count
+        0,                           // value
+        [](int elem) // criterion
+        {
+            return elem % 2 == 1;
+        });
+        */
+    
+    //因为有如下写法：
+    //找出四个值大于3的连续元素
+#if 0
+    pos = search_n(coll.begin(), coll.end(), // range
+        4, // count
+        3, // yalue
+        greater<int>()); // criterion   二元谓词
+#endif
+
+    // print result
+    if (pos != coll.end())
+    {
+        cout << "first four consecutive odd elements are: ";
+        for (int i = 0; i < 4; ++i, ++pos)
+        {
+            cout << *pos << ' ';
+        }
+    }
+    else 
+    {
+        cout << "no four consecutive elements with value > 3 found";
+    }
+    cout << endl;
+}
+#endif
+
+
+//search()以更复杂的准则查找某个子序列
+#if 1
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+template <typename T>
+inline void INSERT_ELEMENTS(T& coll, int first, int last)
+{
+    for (int i = first; i <= last; ++i) {
+        coll.insert(coll.end(), i);
+    }
+}
+
+template <typename T>
+inline void PRINT_ELEMENTS(const T& coll,
+    const std::string& optcstr = "")
+{
+    std::cout << optcstr;
+    for (auto elem : coll) {
+        std::cout << elem << ' ';
+    }
+    std::cout << std::endl;
+}
+
+// checks whether an element is even or odd
+bool checkEven(int elem, bool even)
+{
+    if (even) {
+        return elem % 2 == 0;
+    }
+    else {
+        return elem % 2 == 1;
+    }
+}
+
+int main()
+{
+    vector<int> coll;
+
+    INSERT_ELEMENTS(coll, 1, 9);
+    PRINT_ELEMENTS(coll, "coll: ");
+
+    // arguments for checkEven()
+    // - check for: "even odd even"
+    bool checkEvenArgs[3] = { true, false, true };
+
+    // search first subrange in coll
+    vector<int>::iterator pos;
+    pos = search(coll.begin(), coll.end(),       // range
+        checkEvenArgs, checkEvenArgs + 3, // subrange values
+        checkEven);                     // subrange criterion
+
+    // loop while subrange found
+    while (pos != coll.end()) {
+        // print position of first element
+        cout << "subrange found starting with element "
+            << distance(coll.begin(), pos) + 1
+            << endl;
+
+        // search next subrange in coll
+        pos = search(++pos, coll.end(),              // range
+            checkEvenArgs, checkEvenArgs + 3, // subr. values
+            checkEven);                     // subr. criterion
+    }
 }
 #endif
