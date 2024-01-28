@@ -3052,8 +3052,10 @@ int main()
 
 
 //bind()调用全局函数
-//使用search()函数检验一个字符串是否是另一个字符串的子串，即查找第一个子区间
-//效率没有//面试题17：包含所有字符的最短字符串   高
+//使用search()函数检验一个字符串是否是另一个字符串的子串，
+//即查找第一个子区间
+//***注***
+//search() 强调的是查找第一个匹配，而 find_end() 强调的是查找最后一个匹配
 #if 0
 #include <iostream>
 #include <algorithm>
@@ -3120,6 +3122,62 @@ int main()
         cout << "\"" << sub << "\" is part of \"" << s << "\""
             << endl;
     }
+
+    //find_first_of   ”似乎“也可以？
+    pos = find_first_of(s.begin(), s.end(),           // string to search in
+        sub.begin(), sub.end(),       // substring to search
+        [](char c1, char c2) {      // compar. criterion
+            return myToupper(c1) == myToupper(c2);
+        });
+
+    if (pos != s.end()) {
+        cout << "\"" << sub << "\" is part of \"" << s << "\""
+            << endl;
+    }
+}
+#endif
+
+
+//search()和find_first_of()的区别
+#if 0
+#include <iostream>
+#include <string>
+
+int main() {
+    std::string str = "Hello world";
+    std::string sub_str = "world";
+
+    // 使用 find_first_of() 
+    //寻找等于 str 中字符之一的首个字符。
+    size_t pos = str.find_first_of(sub_str);
+    if (pos != std::string::npos) {
+        std::cout << "Substring found at position: " << pos << std::endl;
+    }
+    else {
+        std::cout << "Substring not found" << std::endl;
+    }
+
+    //***注***
+    //没有find_last_of()函数，仅string有该方法
+    //想要实现寻找最后一个等于 str 中字符之一的首个字符的元素位置
+    //对于非string对象，可以用
+    /*
+    find_first_of(s.rbegin(), s.rend(),           // string to search in
+        sub.begin(), sub.end(),       // substring to search
+    */
+    //（反向迭代器）
+
+    // 使用 search() 
+    //  在字符串中查找完全匹配指定子串的第一个位置
+    pos = str.find(sub_str);
+    if (pos != std::string::npos) {
+        std::cout << "Substring found at position: " << pos << std::endl;
+    }
+    else {
+        std::cout << "Substring not found" << std::endl;
+    }
+
+    return 0;
 }
 #endif
 
@@ -3346,7 +3404,7 @@ int main()
 
 
 //search()以更复杂的准则查找某个子序列
-#if 1
+#if 0
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -3411,5 +3469,191 @@ int main()
             checkEvenArgs, checkEvenArgs + 3, // subr. values
             checkEven);                     // subr. criterion
     }
+}
+#endif
+
+
+//find_end() 查找最后一个子区间   （search()查的是第一个子区间）
+#if 0
+#include <iostream>
+#include <deque>
+#include <list>
+#include <algorithm>
+
+template <typename T>
+inline void INSERT_ELEMENTS(T& coll, int first, int last)
+{
+    for (int i = first; i <= last; ++i) {
+        coll.insert(coll.end(), i);
+    }
+}
+
+template <typename T>
+inline void PRINT_ELEMENTS(const T& coll,
+    const std::string& optcstr = "")
+{
+    std::cout << optcstr;
+    for (auto elem : coll) {
+        std::cout << elem << ' ';
+    }
+    std::cout << std::endl;
+}
+
+using namespace std;
+
+int main()
+{
+    deque<int> coll;
+    list<int> subcoll;
+
+    INSERT_ELEMENTS(coll, 1, 7);
+    INSERT_ELEMENTS(coll, 1, 7);
+
+    INSERT_ELEMENTS(subcoll, 3, 6);
+
+    PRINT_ELEMENTS(coll, "coll:    ");
+    PRINT_ELEMENTS(subcoll, "subcoll: ");
+
+    // search last occurrence of subcoll in coll
+    deque<int>::iterator pos;
+    pos = find_end(coll.begin(), coll.end(),         // range
+        subcoll.begin(), subcoll.end());  // subrange
+
+    // loop while subcoll found as subrange of coll
+    deque<int>::iterator end(coll.end());
+    while (pos != end) {
+        // print position of first element
+        cout << "subcoll found starting with element "
+            << distance(coll.begin(), pos) + 1
+            << endl;
+
+        //找倒数第二个符合的子字符串位置
+        // search next occurrence of subcoll
+        end = pos;
+        pos = find_end(coll.begin(), end,               // range
+            subcoll.begin(), subcoll.end()); // subrange
+    }
+}
+#endif
+
+
+//is_permutation() 顺序无所谓情况下，两区间的元素是否相等
+#if 0
+#include <iostream>
+#include <vector>
+#include <list>
+#include <deque>
+#include <algorithm>
+
+template <typename T>
+inline void INSERT_ELEMENTS(T& coll, int first, int last)
+{
+    for (int i = first; i <= last; ++i) {
+        coll.insert(coll.end(), i);
+    }
+}
+
+template <typename T>
+inline void PRINT_ELEMENTS(const T& coll,
+    const std::string& optcstr = "")
+{
+    std::cout << optcstr;
+    for (auto elem : coll) {
+        std::cout << elem << ' ';
+    }
+    std::cout << std::endl;
+}
+
+using namespace std;
+
+bool bothEvenOrOdd(int elem1, int elem2)
+{
+    return elem1 % 2 == elem2 % 2;
+}
+
+int main()
+{
+    vector<int> coll1;
+    list<int> coll2;
+    deque<int> coll3;
+
+    coll1 = { 1, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    coll2 = { 1, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+    coll3 = { 11, 12, 13, 19, 18, 17, 16, 15, 14, 11 };
+
+    PRINT_ELEMENTS(coll1, "coll1: ");
+    PRINT_ELEMENTS(coll2, "coll2: ");
+    PRINT_ELEMENTS(coll3, "coll3: ");
+
+    // check whether both collections have equal elements in any order
+    if (is_permutation(coll1.cbegin(), coll1.cend(), // first range
+        coll2.cbegin())) {            // second range
+        cout << "coll1 and coll2 have equal elements" << endl;
+    }
+    else {
+        cout << "coll1 and coll2 don't have equal elements" << endl;
+    }
+
+    // check for corresponding number of even and odd elements
+    if (is_permutation(coll1.cbegin(), coll1.cend(), // first range
+        coll3.cbegin(),               // second range
+        bothEvenOrOdd)) {             // comparison criterion
+        cout << "numbers of even and odd elements match" << endl;
+    }
+    else {
+        cout << "numbers of even and odd elements don't match" << endl;
+    }
+}
+#endif
+
+
+//all_of()、any_of()、none_of() 属于检验类的算法
+#if 1
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+template <typename T>
+inline void INSERT_ELEMENTS(T& coll, int first, int last)
+{
+    for (int i = first; i <= last; ++i) {
+        coll.insert(coll.end(), i);
+    }
+}
+
+template <typename T>
+inline void PRINT_ELEMENTS(const T& coll,
+    const std::string& optcstr = "")
+{
+    std::cout << optcstr;
+    for (auto elem : coll) {
+        std::cout << elem << ' ';
+    }
+    std::cout << std::endl;
+}
+
+using namespace std;
+
+int main()
+{
+    vector<int> coll;
+    vector<int>::iterator pos;
+
+    INSERT_ELEMENTS(coll, 1, 9);
+    PRINT_ELEMENTS(coll, "coll: ");
+
+    // define an object for the predicate (using a lambda)
+    auto isEven = [](int elem)
+        {
+        return elem % 2 == 0;
+        };
+
+    // print whether all, any, or none of the elements are/is even
+    cout << boolalpha << "all even?:  "
+        << all_of(coll.cbegin(), coll.cend(), isEven) << endl;
+    cout << "any even?:  "
+        << any_of(coll.cbegin(), coll.cend(), isEven) << endl;
+    cout << "none even?: "
+        << none_of(coll.cbegin(), coll.cend(), isEven) << endl;
 }
 #endif
