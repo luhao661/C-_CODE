@@ -2597,7 +2597,7 @@ int main()
     }
 
     //***注***
-    // 若输入字符a将导致程序结束。是的，由于格式错误，stream不再处于 good 状态，
+    // 若输入字符a将导致程序结束。由于格式错误，stream不再处于 good 状态，
     // 于是 istream迭代器 intReader 就和 end - of - stream 迭代器 intReaderEOF 相同，
     // 使得循环条件为 false, 进而结束循环。
 }
@@ -3608,7 +3608,7 @@ int main()
 
 
 //all_of()、any_of()、none_of() 属于检验类的算法
-#if 1
+#if 0
 #include <iostream>
 #include <vector>
 #include <algorithm>
