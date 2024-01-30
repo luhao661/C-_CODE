@@ -591,7 +591,7 @@ int main()
 #endif
 
 
-//accumulate()进阶用法
+//accumulate() 求积累值     进阶用法
 //快捷打印：
 // 1-2-3-4-5-6-7-8-9-10 和 10-9-8-7-6-5-4-3-2-1
 #if 0
@@ -3655,5 +3655,412 @@ int main()
         << any_of(coll.cbegin(), coll.cend(), isEven) << endl;
     cout << "none even?: "
         << none_of(coll.cbegin(), coll.cend(), isEven) << endl;
+}
+#endif
+
+
+//使用copy()作为标准输入设备和标准输出设备之间的数据筛检程序。
+//程序读取 string, 并以一行一个的方式打印它们：
+#if 0
+#include <iostream>
+#include <algorithm>
+#include <iterator>
+#include <string>
+using namespace std;
+
+int main()
+{
+    copy(istream_iterator<string>(cin),         // beginning of source
+        istream_iterator<string>(),            // end of source
+        ostream_iterator<string>(cout, "\n"));  // destination
+}
+#endif
+
+
+//unique_ptr的复制构造函数、赋值运算符重载函数的实参需要使用move()
+// move() 来体现移动语义的细节
+#if 0
+#include <iostream>
+#include <vector>
+#include <list>
+
+template <typename T>
+inline void INSERT_ELEMENTS(T& coll, int first, int last)
+{
+    for (int i = first; i <= last; ++i) {
+        coll.insert(coll.end(), i);
+    }
+}
+
+template <typename T>
+inline void PRINT_ELEMENTS(const T& coll,
+    const std::string& optcstr = "")
+{
+    std::cout << optcstr;
+    for (auto elem : coll) {
+        std::cout << elem << ' ';
+    }
+    std::cout << std::endl;
+}
+
+using namespace std;
+
+int main()
+{
+    vector<string> coll1 = { "Hello", "this", "is", "an", "example" };
+    list<string> coll2;
+
+    // copy elements of coll1 into coll2
+    // - use back inserter to insert instead of overwrite
+    // - use copy() because the elements in coll1 are used again
+    copy(coll1.cbegin(), coll1.cend(),         // source range
+        back_inserter(coll2));                // destination range
+
+    // print elements of coll2
+    // - copy elements to cout using an ostream iterator
+    // - use move() because these elements in coll2 are not used again
+    //使用move()，因为coll2中的这些元素不会再次使用
+    move(coll2.cbegin(), coll2.cend(),         // source range
+        ostream_iterator<string>(cout, " "));  // destination range
+    cout << endl;
+    //***注***
+    //coll2的元素在它们初次被输出后，状态就变得【不确定】，
+    // 因为这里用的是move()。
+    //然而并不意味着coll2容器不能再出现在以后的代码中，
+    //coll2的大小仍然是5, 所以我们可以再次调用move()覆盖(overwrite)这些元素。
+
+    //验证输出：
+    copy(coll2.cbegin(), coll2.cend(),        
+        ostream_iterator<string>(cout, " "));
+    cout << endl;
+    //输出内容正常，结果表明：
+    //move() 并不总是会移动元素。
+    // 它只是告诉编译器，【如果可能的话，可以使用移动语义来处理。】
+    // 但在这种情况下，ostream_iterator 对元素进行输出，
+    // 并没有真正的移动元素。
+    //因此，虽然使用了 move()，但元素仍然保留在 coll2 中，
+    // 所以第二个 copy() 调用输出了 coll2 中的元素。
+
+    // copy elements of coll1 into coll2 in reverse order
+    // - now overwriting (coll2.size() still fits)  先要保证移入的容器的容量足够
+    // - use move() because the elements in coll1 are not used again
+    move(coll1.crbegin(), coll1.crend(),       // source range
+        coll2.begin());                       // destination range
+
+    // print elements of coll2 again
+    // - use move() because the elements in coll2 are not used again
+    move(coll2.cbegin(), coll2.cend(),         // source range
+        ostream_iterator<string>(cout, " "));  // destination range
+    cout << endl;
+}
+#endif
+
+
+//互换某两个区间的元素 swap_ranges
+//(如果要将相同类型的两个容器内的所有元素都互换，应使用swap()成员函数)
+#if 0
+#include <iostream>
+#include <vector>
+#include <deque>
+#include <algorithm>
+#include <iomanip>
+using namespace std;
+
+template <typename T>
+inline void INSERT_ELEMENTS(T& coll, int first, int last)
+{
+    for (int i = first; i <= last; ++i) {
+        coll.insert(coll.end(), i);
+    }
+}
+
+template <typename T>
+inline void PRINT_ELEMENTS(const T& coll,
+    const std::string& optcstr = "")
+{
+    std::cout << optcstr<<endl;
+    for (auto elem : coll) 
+    {
+        std::cout <<setw(5)<<right<< elem;
+    }
+    std::cout << std::endl;
+}
+
+int main()
+{
+    vector<int> coll1;
+    deque<int> coll2;
+
+    INSERT_ELEMENTS(coll1, 1, 9);
+    INSERT_ELEMENTS(coll2, 11, 23);
+
+    PRINT_ELEMENTS(coll1, "coll1: ");
+    PRINT_ELEMENTS(coll2, "coll2: ");
+
+    // swap elements of coll1 with corresponding elements of coll2
+    deque<int>::iterator pos;
+    pos = swap_ranges(coll1.begin(), coll1.end(),  // first range
+        coll2.begin());              // second range
+
+    //***注***
+    //将coll1的元素和coll2的对应元素交换。 
+    // 元素个数为distance(coll1.begin(), coll1.end())
+    // coll2 之内的其余元素不变动。 
+    // swap_ranges()算法返回第一个未被改动的元素。
+
+    PRINT_ELEMENTS(coll1, "\ncoll1: ");
+    PRINT_ELEMENTS(coll2, "coll2: ");
+    if (pos != coll2.end()) {
+        cout << "first element not modified: "
+            << *pos << endl;
+    }
+
+    // mirror first three with last three elements in coll2
+    swap_ranges(coll2.begin(), coll2.begin() + 3,    // first range
+        coll2.rbegin());                   // second range
+
+    PRINT_ELEMENTS(coll2, "\ncoll2: ");
+}
+#endif
+
+
+//fill()和generate()的区别
+//std::fill(myVector.begin(), myVector.end(), 5);
+
+//使用 lambda 函数作为生成器函数，依次填充向量的每个元素
+//int value = 0;
+//std::generate(myVector.begin(), myVector.end(), [&value]() { return value++; });
+
+//fill() 用于将范围内的元素设置为给定值，
+//而 generate() 则用于使用生成器函数来填充范围内的元素
+
+
+//旋转元素rotate()
+#if 0
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <iomanip>
+using namespace std;
+
+template <typename T>
+inline void INSERT_ELEMENTS(T& coll, int first, int last)
+{
+    for (int i = first; i <= last; ++i) {
+        coll.insert(coll.end(), i);
+    }
+}
+
+template <typename T>
+inline void PRINT_ELEMENTS(const T& coll,
+    const std::string& optcstr = "")
+{
+    std::cout << optcstr << endl;
+    for (auto elem : coll)
+    {
+        std::cout << setw(5) << right << elem;
+    }
+    std::cout << std::endl;
+}
+
+using namespace std;
+
+int main()
+{
+    vector<int> coll;
+
+    INSERT_ELEMENTS(coll, 1, 9);
+    PRINT_ELEMENTS(coll, "coll:      ");
+
+    // rotate one element to the left
+    rotate(coll.begin(),      // beginning of range
+        coll.begin() + 1,  // new first element
+        coll.end());       // end of range
+    PRINT_ELEMENTS(coll, "one left:  ");
+
+    // rotate two elements to the right
+    rotate(coll.begin(),      // beginning of range
+        coll.end() - 2,    // new first element
+        coll.end());       // end of range
+    PRINT_ELEMENTS(coll, "two right: ");
+
+    // rotate so that element with value 4 is the beginning
+    rotate(coll.begin(),                     // beginning of range
+        find(coll.begin(), coll.end(), 4),  // new first element
+        coll.end());                      // end of range
+    PRINT_ELEMENTS(coll, "4 first:   ");
+}
+#endif
+
+
+//对元素重新洗牌 random_shuffle()
+#if 0
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <random>
+#include <iomanip>
+using namespace std;
+
+template <typename T>
+inline void INSERT_ELEMENTS(T& coll, int first, int last)
+{
+    for (int i = first; i <= last; ++i) {
+        coll.insert(coll.end(), i);
+    }
+}
+
+template <typename T>
+inline void PRINT_ELEMENTS(const T& coll,
+    const std::string& optcstr = "")
+{
+    std::cout << optcstr << endl;
+    for (auto elem : coll)
+    {
+        std::cout << setw(5) << right << elem;
+    }
+    std::cout << std::endl;
+}
+
+int main()
+{
+    vector<int> coll;
+
+    INSERT_ELEMENTS(coll, 1, 9);
+    PRINT_ELEMENTS(coll, "coll:     ");
+
+    // shuffle all elements randomly
+    random_shuffle(coll.begin(), coll.end());
+
+    PRINT_ELEMENTS(coll, "shuffled: ");
+
+    // sort them again
+    sort(coll.begin(), coll.end());
+    PRINT_ELEMENTS(coll, "sorted:   ");
+
+    // shuffle elements with default engine
+    default_random_engine dre;
+    shuffle(coll.begin(), coll.end(),  // range
+        dre);                      // random-number generator
+
+    PRINT_ELEMENTS(coll, "shuffled: ");
+}
+#endif
+
+
+//将元素向前搬 partition()、stable_partition()
+#if 0
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <iomanip>
+using namespace std;
+
+template <typename T>
+inline void INSERT_ELEMENTS(T& coll, int first, int last)
+{
+    for (int i = first; i <= last; ++i)
+    {
+        coll.insert(coll.end(), i);
+    }
+}
+
+template <typename T>
+inline void PRINT_ELEMENTS(const T& coll,
+    const std::string& optcstr = "")
+{
+    std::cout << optcstr << endl;
+    for (auto elem : coll)
+    {
+        std::cout << setw(5) << right << elem;
+    }
+    std::cout << std::endl;
+}
+
+int main()
+{
+    vector<int> coll1;
+    vector<int> coll2;
+
+    INSERT_ELEMENTS(coll1, 1, 9);
+    INSERT_ELEMENTS(coll2, 1, 9);
+    PRINT_ELEMENTS(coll1, "coll1: ");
+    PRINT_ELEMENTS(coll2, "coll2: ");
+    cout << endl;
+
+    // move all even elements to the front
+    vector<int>::iterator pos1, pos2;
+    pos1 = partition(coll1.begin(), coll1.end(),         // range
+        [](int elem) {                        // criterion
+            return elem % 2 == 0;
+        });
+    pos2 = stable_partition(coll2.begin(), coll2.end(),  // range
+        [](int elem) {                // criterion
+            return elem % 2 == 0;
+        });
+
+    //partition()和stable_partition()都将元素分为两组
+    //返回值指向第二组元素首元素的迭代器。
+
+    //stable_partition()保持了奇数元素和偶数元素的相对次序，
+    // 这一点和partition()不同。
+
+    // print collections and first odd element
+    PRINT_ELEMENTS(coll1, "coll1: ");
+    cout << "first odd element: " << *pos1 << endl;
+    PRINT_ELEMENTS(coll2, "coll2: ");
+    cout << "first odd element: " << *pos2 << endl;
+}
+#endif
+
+
+//划分两个子区间 partition_copy()
+#if 1
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <iomanip>
+using namespace std;
+
+template <typename T>
+inline void INSERT_ELEMENTS(T& coll, int first, int last)
+{
+    for (int i = first; i <= last; ++i)
+    {
+        coll.insert(coll.end(), i);
+    }
+}
+
+template <typename T>
+inline void PRINT_ELEMENTS(const T& coll,
+    const std::string& optcstr = "")
+{
+    std::cout << optcstr << endl;
+    for (auto elem : coll)
+    {
+        std::cout << setw(5) << right << elem;
+    }
+    std::cout << std::endl;
+}
+
+int main()
+{
+    vector<int> coll = { 1, 6, 33, 7, 22, 4, 11, 33, 2, 7, 0, 42, 5 };
+    PRINT_ELEMENTS(coll, "coll: ");
+
+    // destination collections:
+    vector<int> evenColl;
+    vector<int> oddColl;
+
+    // copy all elements partitioned accordingly into even and odd elements
+    partition_copy(coll.cbegin(), coll.cend(), // source range
+        back_inserter(evenColl),   // destination for even elements
+        back_inserter(oddColl),    // destination for odd elements
+        [](int elem) {              // predicate: check for even elements
+            return elem % 2 == 0;
+        });
+
+    PRINT_ELEMENTS(evenColl, "evenColl: ");
+    PRINT_ELEMENTS(oddColl, "oddColl:  ");
 }
 #endif
