@@ -4015,7 +4015,7 @@ int main()
 
 
 //划分两个子区间 partition_copy()
-#if 1
+#if 0
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -4062,5 +4062,223 @@ int main()
 
     PRINT_ELEMENTS(evenColl, "evenColl: ");
     PRINT_ELEMENTS(oddColl, "oddColl:  ");
+}
+#endif
+
+
+//sort()和stable_sort()的区别
+#if 0
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <iomanip>
+using namespace std;
+
+template <typename T>
+inline void INSERT_ELEMENTS(T& coll, int first, int last)
+{
+    for (int i = first; i <= last; ++i)
+    {
+        coll.insert(coll.end(), i);
+    }
+}
+
+template <typename T>
+inline void PRINT_ELEMENTS(const T& coll,
+    const std::string& optcstr = "")
+{
+    std::cout << optcstr << endl;
+    for (auto elem : coll)
+    {
+        std::cout << setw(5) << right << elem;
+    }
+    std::cout << std::endl;
+}
+
+using namespace std;
+
+bool lessLength(const string& s1, const string& s2)
+{
+    return s1.length() < s2.length();
+}
+
+int main()
+{
+    // fill two collections with the same elements
+    vector<string> coll1 = { "1xxx", "2x", "3x", "4x", "5xx", "6xxxx",
+                             "7xx", "8xxx", "9xx", "10xxx", "11", "12",
+                             "13", "14xx", "15", "16", "17" };
+    vector<string> coll2(coll1);
+
+    PRINT_ELEMENTS(coll1, "on entry:\n ");
+
+    // sort (according to the length of the strings)
+    sort(coll1.begin(), coll1.end(),           // range
+        lessLength);                          // criterion
+
+    stable_sort(coll2.begin(), coll2.end(),    // range
+        lessLength);                   // criterion
+
+    //stable_sort()在排序后保持了元素的相对位置
+
+    PRINT_ELEMENTS(coll1, "\nwith sort():\n ");
+    PRINT_ELEMENTS(coll2, "\nwith stable_sort():\n ");
+}
+#endif
+
+
+//部分排序partial_sort()、partial_sort_copy()
+#if 0
+#include <iostream>
+#include <vector>
+#include <deque>
+#include <algorithm>
+#include <iomanip>
+using namespace std;
+
+template <typename T>
+inline void INSERT_ELEMENTS(T& coll, int first, int last)
+{
+    for (int i = first; i <= last; ++i)
+    {
+        coll.insert(coll.end(), i);
+    }
+}
+
+template <typename T>
+inline void PRINT_ELEMENTS(const T& coll,
+    const std::string& optcstr = "")
+{
+    std::cout << optcstr << endl;
+    for (auto elem : coll)
+    {
+        std::cout << right << elem;
+    }
+    std::cout << std::endl;
+}
+
+using namespace std;
+
+int main()
+{
+    deque<int> coll;
+
+    INSERT_ELEMENTS(coll, 3, 7);
+    INSERT_ELEMENTS(coll, 2, 6);
+    INSERT_ELEMENTS(coll, 1, 5);
+    PRINT_ELEMENTS(coll);
+
+    // sort until the first five elements are sorted
+    partial_sort(coll.begin(),      // beginning of the range
+        coll.begin() + 5,    // end of sorted range
+        coll.end());       // end of full range
+    PRINT_ELEMENTS(coll);
+
+    //***注***
+    //partial_sort(coll.begin(), coll.begin() + 5, coll.end())
+    //不等于
+    //sort(coll.begin(), coll.begin() + 5)
+    //而应理解为：
+    //全部排好序的序列取其前5个元素，其余元素排序按一定方式排列，不一定有序
+
+    // sort inversely until the first five elements are sorted
+    partial_sort(coll.begin(),      // beginning of the range
+        coll.begin() + 5,    // end of sorted range
+        coll.end(),        // end of full range
+        greater<int>());   // sorting criterion
+    PRINT_ELEMENTS(coll);
+
+    // sort all elements
+    partial_sort(coll.begin(),      // beginning of the range
+        coll.end(),        // end of sorted range
+        coll.end());       // end of full range
+    PRINT_ELEMENTS(coll);
+}
+#endif
+
+
+//只需要n个最大或最小元素，但不要求它们必须处于排序状态(sorted), 
+//使用nth_element()
+#if 1
+#include <iostream>
+#include <deque>
+#include <algorithm>
+#include <iomanip>
+using namespace std;
+
+template <typename T>
+inline void INSERT_ELEMENTS(T& coll, int first, int last)
+{
+    for (int i = first; i <= last; ++i)
+    {
+        coll.insert(coll.end(), i);
+    }
+}
+
+template <typename T>
+inline void PRINT_ELEMENTS(const T& coll,
+    const std::string& optcstr = "")
+{
+    std::cout << optcstr << endl;
+    for (auto elem : coll)
+    {
+        std::cout << right << elem;
+    }
+    std::cout << std::endl;
+}
+
+int main()
+{
+    deque<int> coll;
+
+    INSERT_ELEMENTS(coll, 3, 7);
+    INSERT_ELEMENTS(coll, 2, 6);
+    INSERT_ELEMENTS(coll, 1, 5);
+    PRINT_ELEMENTS(coll);
+
+    // extract the four lowest elements
+    nth_element(coll.begin(),     // beginning of range
+        coll.begin() + 3,   // element that should be sorted correctly
+        coll.end());      // end of range
+
+    //***理解***
+    //第二个实参nth 所指向的元素被更改为假如 [first, last) 已排序
+    //则该位置会出现的元素。
+    //这个新的 nth 元素前的所有元素小于或等于新的 nth 元素后的所有元素。
+
+    // 使第4个位置上的元素就位，也就是说所有在位置4之前的元素
+    // 都小于等于它，所有在位置n之后的元素都大于等于它。
+    // 这样，就得到了“根据n位置上的元素”分割开来的两个子序列，
+    // 第一子序列的元素统统小于第二子序列的元素。
+
+    // print them
+    cout << "the four lowest elements are:  ";
+    copy(coll.cbegin(), coll.cbegin() + 4,
+        ostream_iterator<int>(cout, " "));
+    cout << endl;
+
+    // extract the four highest elements
+    nth_element(coll.begin(),     // beginning of range
+        coll.end() - 4,     // element that should be sorted correctly
+        coll.end());      // end of range
+
+    // print them
+    cout << "the four highest elements are: ";
+    copy(coll.cend() - 4, coll.cend(),
+        ostream_iterator<int>(cout, " "));
+    cout << endl;
+
+    // extract the four highest elements (second version)
+    nth_element(coll.begin(),     // beginning of range
+        coll.begin() + 3,   // element that should be sorted correctly
+        coll.end(),       // end of range
+        greater<int>());  // sorting criterion
+
+    // print them
+    cout << "the four highest elements are: ";
+    copy(coll.cbegin(), coll.cbegin() + 4,
+        ostream_iterator<int>(cout, " "));
+    cout << endl;
 }
 #endif
