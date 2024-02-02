@@ -4014,7 +4014,7 @@ int main()
 #endif
 
 
-//划分两个子区间 partition_copy()
+//根据谓词函数，划分两个子区间 partition_copy()
 #if 0
 #include <iostream>
 #include <vector>
@@ -4180,7 +4180,8 @@ int main()
     //不等于
     //sort(coll.begin(), coll.begin() + 5)
     //而应理解为：
-    //全部排好序的序列取其前5个元素，其余元素排序按一定方式排列，不一定有序
+    //全部排好序的序列取其前5个元素，其余元素排序按一定方式排列，
+    // 不一定有序
 
     // sort inversely until the first five elements are sorted
     partial_sort(coll.begin(),      // beginning of the range
@@ -4200,7 +4201,7 @@ int main()
 
 //只需要n个最大或最小元素，但不要求它们必须处于排序状态(sorted), 
 //使用nth_element()
-#if 1
+#if 0
 #include <iostream>
 #include <deque>
 #include <algorithm>
@@ -4280,5 +4281,221 @@ int main()
     copy(coll.cbegin(), coll.cbegin() + 4,
         ostream_iterator<int>(cout, " "));
     cout << endl;
+}
+#endif
+
+
+//使用heap相关算法
+#if 0
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <iomanip>
+using namespace std;
+
+template <typename T>
+inline void INSERT_ELEMENTS(T& coll, int first, int last)
+{
+    for (int i = first; i <= last; ++i)
+    {
+        coll.insert(coll.end(), i);
+    }
+}
+
+template <typename T>
+inline void PRINT_ELEMENTS(const T& coll,
+    const std::string& optcstr = "")
+{
+    std::cout << optcstr << endl;
+    for (auto elem : coll)
+    {
+        std::cout << right << elem<<' ';
+    }
+    std::cout << std::endl;
+}
+
+using namespace std;
+
+int main()
+{
+    vector<int> coll;
+
+    INSERT_ELEMENTS(coll, 3, 7);
+    INSERT_ELEMENTS(coll, 5, 9);
+    INSERT_ELEMENTS(coll, 1, 4);
+
+    PRINT_ELEMENTS(coll, "on entry:           ");
+
+    // convert collection into a heap
+    make_heap(coll.begin(), coll.end());
+
+    PRINT_ELEMENTS(coll, "after make_heap():  ");
+
+    // pop next element out of the heap
+    pop_heap(coll.begin(), coll.end());
+    coll.pop_back();
+
+    PRINT_ELEMENTS(coll, "after pop_heap():   ");
+
+    // push new element into the heap
+    coll.push_back(17);
+    push_heap(coll.begin(), coll.end());
+
+    PRINT_ELEMENTS(coll, "after push_heap():  ");
+
+    // convert heap into a sorted collection
+    // - NOTE: after the call it is no longer a heap
+    sort_heap(coll.begin(), coll.end());
+
+    PRINT_ELEMENTS(coll, "after sort_heap():  ");
+}
+#endif
+
+
+//已排序区间的搜索算法
+//检查某个元素是否存在：binary_search()
+//***注***
+//binary_search()的实现中要调用std::lower_bound()
+//而std::lower_bound()的实现是使用二分搜索算法来查找给定值
+//在已排序序列中的插入位置。
+//因此可以将binary_search()作为普通二分搜索算法的代替
+#if 0
+#include "algostuff.hpp"
+using namespace std;
+
+int main()
+{
+    list<int> coll;
+
+    INSERT_ELEMENTS(coll, 1, 9);
+    PRINT_ELEMENTS(coll);
+
+    //***注***
+    //使用binary_search()前区间必须已经排序！
+
+    // check existence of element with value 5
+    if (binary_search(coll.cbegin(), coll.cend(), 5))
+    {
+        cout << "5 is present" << endl;
+    }
+    else
+    {
+        cout << "5 is not present" << endl;
+    }
+
+    // check existence of element with value 42
+    if (binary_search(coll.cbegin(), coll.cend(), 42)) 
+    {
+        cout << "42 is present" << endl;
+    }
+    else 
+    {
+        cout << "42 is not present" << endl;
+    }
+}
+#endif
+
+
+//检查数个元素是否存在（区间2是否为区间1的子集）：includes()
+//若已排序范围 [first2, last2) 是已排序范围 [first1, last1) 的子序列则返回 true
+#if 0
+#include "algostuff.hpp"
+using namespace std;
+
+int main()
+{
+    list<int> coll;
+    vector<int> search;
+
+    INSERT_ELEMENTS(coll, 1, 9);
+    PRINT_ELEMENTS(coll, "coll:   ");
+
+    search.push_back(3);
+    search.push_back(4);
+    search.push_back(7);
+    PRINT_ELEMENTS(search, "search: ");
+
+    // check whether all elements in search are also in coll
+    if (includes(coll.cbegin(), coll.cend(),  //区间1
+        search.cbegin(), search.cend()))      //区间2
+    {
+        cout << "all elements of search are also in coll"
+            << endl;
+    }
+    else
+    {
+        cout << "not all elements of search are also in coll"
+            << endl;
+    }
+}
+#endif
+
+
+//查找第一个或最后一个可能的位置：lower_bound()、upper_bound()
+//可以配合insert()方法使用，实现在指定位置插入元素而不破坏已排序的状态
+#if 0
+#include "algostuff.hpp"
+using namespace std;
+
+int main()
+{
+    list<int> coll;
+
+    INSERT_ELEMENTS(coll, 1, 9);
+    INSERT_ELEMENTS(coll, 1, 9);
+
+    coll.sort();
+
+    PRINT_ELEMENTS(coll);
+
+    // print first and last position 5 could get inserted
+    auto pos1 = lower_bound(coll.cbegin(), coll.cend(),
+        5);
+    auto pos2 = upper_bound(coll.cbegin(), coll.cend(),
+        5);
+
+    cout << "5 could get position "
+        << distance(coll.cbegin(), pos1) + 1
+        << " up to "
+        << distance(coll.cbegin(), pos2) + 1
+        << " without breaking the sorting" << endl;
+
+    // insert 3 at the first possible position without breaking the sorting
+    coll.insert(lower_bound(coll.begin(), coll.end(),
+        3),
+        3);
+
+    // insert 7 at the last possible position without breaking the sorting
+    coll.insert(upper_bound(coll.begin(), coll.end(),
+        7),
+        7);
+
+    PRINT_ELEMENTS(coll);
+}
+#endif
+//一次性查出第一个或最后一个可能的位置：equal_range()
+#if 1
+#include "algostuff.hpp"
+using namespace std;
+
+int main()
+{
+    list<int> coll;
+
+    INSERT_ELEMENTS(coll, 1, 9);
+    INSERT_ELEMENTS(coll, 1, 9);
+    coll.sort();
+    PRINT_ELEMENTS(coll);
+
+    // print first and last position 5 could get inserted
+    pair<list<int>::const_iterator, list<int>::const_iterator> range;
+    range = equal_range(coll.cbegin(), coll.cend(),
+        5);
+
+    cout << "5 could get position "
+        << distance(coll.cbegin(), range.first) + 1
+        << " up to "
+        << distance(coll.cbegin(), range.second) + 1
+        << " without breaking the sorting" << endl;
 }
 #endif
