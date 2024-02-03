@@ -3167,7 +3167,7 @@ int main() {
     */
     //（反向迭代器）
 
-    // 使用 search() 
+    // 使用 find()方法相当于使用search() 
     //  在字符串中查找完全匹配指定子串的第一个位置
     pos = str.find(sub_str);
     if (pos != std::string::npos) {
@@ -4396,8 +4396,11 @@ int main()
 #endif
 
 
+//已排序的区间
 //检查数个元素是否存在（区间2是否为区间1的子集）：includes()
 //若已排序范围 [first2, last2) 是已排序范围 [first1, last1) 的子序列则返回 true
+//***注***
+//要与search()区分
 #if 0
 #include "algostuff.hpp"
 using namespace std;
@@ -4427,10 +4430,26 @@ int main()
         cout << "not all elements of search are also in coll"
             << endl;
     }
+
+    auto pos = std::search(coll.cbegin(), coll.cend(), search.cbegin(), search.cend());
+
+    if (pos != coll.end())
+        cout << "all elements of search are also in coll"
+        << endl;
+    else
+        cout << "not all elements of search are also in coll"
+        << endl;
 }
 #endif
+//***小结***
+//已排序区间，区间2中所有元素形成的序列是否在区间1中都有
+// (子序列不必相接(连续))：includes()
+//区间2中所有元素形成的序列是否在区间1中有
+// (子序列需要相接(连续))：search()
+//区间2中某个元素是否在区间1中有：find_first_of()
 
 
+//已排序的区间
 //查找第一个或最后一个可能的位置：lower_bound()、upper_bound()
 //可以配合insert()方法使用，实现在指定位置插入元素而不破坏已排序的状态
 #if 0
@@ -4474,7 +4493,7 @@ int main()
 }
 #endif
 //一次性查出第一个或最后一个可能的位置：equal_range()
-#if 1
+#if 0
 #include "algostuff.hpp"
 using namespace std;
 
@@ -4498,4 +4517,267 @@ int main()
         << distance(coll.cbegin(), range.second) + 1
         << " without breaking the sorting" << endl;
 }
+#endif
+
+
+//已排序的容器
+//合并算法：merge()、set_union()、set_intersection()、
+// set_difference()、set_symmetric_difference()
+#if 0
+#include "algostuff.hpp"
+using namespace std;
+
+int main()
+{
+    vector<int> c1 = { 1, 2, 2, 4, 6, 7, 7, 9 };
+    deque<int>  c2 = { 2, 2, 2, 3, 6, 6, 8, 9 };
+
+    // print source ranges
+    cout << "c1:                         ";
+    copy(c1.cbegin(), c1.cend(),
+        ostream_iterator<int>(cout, " "));
+    cout << endl;
+    cout << "c2:                         ";
+    copy(c2.cbegin(), c2.cend(),
+        ostream_iterator<int>(cout, " "));
+    cout << '\n' << endl;
+
+    // sum the ranges by using merge()
+    cout << "merge():                    ";
+    merge(c1.cbegin(), c1.cend(),
+        c2.cbegin(), c2.cend(),
+        ostream_iterator<int>(cout, " "));
+    cout << endl;
+
+    //求并集
+    // unite the ranges by using set_union()
+    cout << "set_union():                ";
+    set_union(c1.cbegin(), c1.cend(),
+        c2.cbegin(), c2.cend(),
+        ostream_iterator<int>(cout, " "));
+    cout << endl;
+
+    //求交集
+    // intersect the ranges by using set_intersection()
+    cout << "set_intersection():         ";
+    set_intersection(c1.cbegin(), c1.cend(),
+        c2.cbegin(), c2.cend(),
+        ostream_iterator<int>(cout, " "));
+    cout << endl;
+
+    //求差集
+    // determine elements of first range without elements of second range
+    // by using set_difference()
+    cout << "set_difference():           ";
+    set_difference(c1.cbegin(), c1.cend(),
+        c2.cbegin(), c2.cend(),
+        ostream_iterator<int>(cout, " "));
+    cout << endl;
+    //求出在第一个列表中而不在第二个列表中存在的元素
+
+    //求区间S1,S2的对称差集
+    // determine difference the ranges with set_symmetric_difference()
+    cout << "set_symmetric_difference(): ";
+    set_symmetric_difference(c1.cbegin(), c1.cend(),
+        c2.cbegin(), c2.cend(),
+        ostream_iterator<int>(cout, " "));
+    cout << endl;
+    //输出：
+    // 1 2 3 4 6 7 7 8
+
+    //对称差集指的是只属于S1或S2,但不同时属于S1和S2的
+
+    //***注***
+    //输出中 2 出现的原因可能是集合 c1 中有两个值为 2 的元素，
+    // 而集合 c2 中只有一个值为 2 的元素
+    //这样的话 2 也会被视为属于对称差集
+    //同理对称差集中也有6这个数字
+}
+#endif
+
+
+//对已排序的区间，就地一分为二进行合并：inplace_merge()
+#if 0
+#include "algostuff.hpp"
+using namespace std;
+
+int main()
+{
+    list<int> coll;
+
+    // insert two sorted sequences
+    INSERT_ELEMENTS(coll, 1, 7);
+    INSERT_ELEMENTS(coll, 1, 8);
+    PRINT_ELEMENTS(coll);
+
+    // find beginning of second part (element after 7)
+    list<int>::iterator pos;
+    pos = find(coll.begin(), coll.end(),    // range
+        7);                          // value
+
+    ++pos;
+
+    // merge into one sorted range
+    inplace_merge(coll.begin(), pos, coll.end());
+    //已排序源区间 [beg1,end1beg2) 和[end1beg2,end2)的元素合并，
+    // 使区间    [begl,end2)    成为两者之总和(且形成已排序状态)。
+
+    PRINT_ELEMENTS(coll);
+}
+#endif
+
+
+//一个用户自定义的Stack类
+#if 0
+#ifndef STACK_HPP
+#define STACK_HPP
+
+#include <deque>
+#include <exception>
+
+template <typename T>
+class Stack
+{
+protected:
+    std::deque<T> c;        // container for the elements
+
+public:
+    //***注***
+    // //创建嵌套类
+    // exception class for pop() and top() with empty stack
+    class ReadEmptyStack : public std::exception
+    {
+    public:
+        //***注***
+        //最后写 throw() 表示该函数不会抛出任何异常
+        virtual const char* what() const throw() 
+        {
+            return "read empty stack";
+        }
+    };
+
+    // number of elements
+    typename std::deque<T>::size_type size() const
+    {
+        return c.size();
+    }
+
+    // is stack empty?
+    bool empty() const 
+    {
+        return c.empty();
+    }
+
+    // push element into the stack
+    void push(const T& elem) 
+    {
+        c.push_back(elem);
+    }
+
+    // pop element out of the stack and return its value
+    T pop() 
+    {
+        if (c.empty()) 
+        {
+            throw ReadEmptyStack();
+        }
+
+        T elem(c.back());
+
+        c.pop_back();
+
+        return elem;
+    }
+
+    // return value of next element
+    T& top()
+    {
+        if (c.empty()) 
+        {
+            throw ReadEmptyStack();
+        }
+        return c.back();
+    }
+};
+
+#endif /* STACK_HPP */
+#endif
+
+
+//一个用户自定义的Queue类
+#if 0
+#ifndef QUEUE_HPP
+#define QUEUE_HPP
+
+#include <deque>
+#include <exception>
+
+template <typename T>
+class Queue 
+{
+protected:
+    std::deque<T> c;        // container for the elements
+
+public:
+    // exception class for pop() and front() with empty queue
+    class ReadEmptyQueue : public std::exception
+    {
+    public:
+        virtual const char* what() const throw() 
+        {
+            return "read empty queue";
+        }
+    };
+
+    // number of elements
+    typename std::deque<T>::size_type size() const
+    {
+        return c.size();
+    }
+
+    // is queue empty?
+    bool empty() const 
+    {
+        return c.empty();
+    }
+
+    // insert element into the queue
+    void push(const T& elem) 
+    {
+        c.push_back(elem);
+    }
+
+    // remove next element from the queue and return its value
+    T pop() 
+    {
+        if (c.empty())
+        {
+            throw ReadEmptyQueue();
+        }
+
+        T elem(c.front());
+
+        c.pop_front();
+
+        return elem;
+    }
+
+    // return value of next element
+    T& front() 
+    {
+        if (c.empty())
+        {
+            throw ReadEmptyQueue();
+        }
+
+        return c.front();
+    }
+};
+#endif /* QUEUE_HPP */
+#endif
+
+
+//
+#if 1
+
 #endif
