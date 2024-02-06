@@ -3381,7 +3381,7 @@ int main()
 #if 0
     pos = search_n(coll.begin(), coll.end(), // range
         4, // count
-        3, // yalue
+        3, // value
         greater<int>()); // criterion   二元谓词
 #endif
 
@@ -3458,7 +3458,8 @@ int main()
         checkEven);                     // subrange criterion
 
     // loop while subrange found
-    while (pos != coll.end()) {
+    while (pos != coll.end()) 
+    {
         // print position of first element
         cout << "subrange found starting with element "
             << distance(coll.begin(), pos) + 1
@@ -3473,7 +3474,7 @@ int main()
 #endif
 
 
-//find_end() 查找最后一个子区间   （search()查的是第一个子区间）
+//查找最后一个子区间（search()查的是第一个子区间）：find_end() 
 #if 0
 #include <iostream>
 #include <deque>
@@ -3537,7 +3538,7 @@ int main()
 #endif
 
 
-//is_permutation() 顺序无所谓情况下，两区间的元素是否相等
+//顺序无所谓情况下，两区间的元素是否相等：is_permutation() 
 #if 0
 #include <iostream>
 #include <vector>
@@ -3607,7 +3608,7 @@ int main()
 #endif
 
 
-//all_of()、any_of()、none_of() 属于检验类的算法
+//检验类的算法：all_of()、any_of()、none_of()
 #if 0
 #include <iostream>
 #include <vector>
@@ -3660,7 +3661,7 @@ int main()
 
 
 //使用copy()作为标准输入设备和标准输出设备之间的数据筛检程序。
-//程序读取 string, 并以一行一个的方式打印它们：
+//程序读取 string, 并以一行一个的方式打印它们
 #if 0
 #include <iostream>
 #include <algorithm>
@@ -4777,7 +4778,231 @@ public:
 #endif
 
 
-//
-#if 1
+//将bitset当作一组标志
+#if 0
+#include <bitset>
+#include <iostream>
+using namespace std;
 
+int main()
+{
+    // enumeration type for the bits
+    // - each bit represents a color
+    enum Color {
+        red, yellow, green, blue, white, black, //...,
+        numColors
+    };
+
+    // create bitset for all bits/colors
+    bitset<numColors> usedColors;//创建bitset类对象，默认每一位都为0
+
+    // set bits for two colors
+    usedColors.set(red);
+    usedColors.set(blue);
+    //***理解***
+    //bitset类中的方法声明：bitset& set( std::size_t pos, bool value = true );
+    // 形参pos相当于index
+    //usedColors.set(red);表示bitset类对象的第1个元素值设为1
+
+    // print some bitset data
+    cout << "bitfield of used colors:   " << usedColors << endl;
+    cout << "number   of used colors:   " << usedColors.count() << endl;
+    cout << "bitfield of unused colors: " << ~usedColors << endl;//翻转所有位
+
+    //to_string()方法：
+    std::cout << usedColors.to_string() << '\n'
+        << usedColors.to_string('*') << '\n'
+        << usedColors.to_string('O', 'X') << '\n';
+
+    //***注***
+    //bitset的bitset<N>::all, std::bitset<N>::any, std::bitset<N>::none 这些方法
+    //时间复杂度都是O(N)
+    // if any color is used
+    if (usedColors.any()) {
+        // loop over all colors
+        for (int c = 0; c < numColors; ++c) {
+            // if the actual color is used
+            if (usedColors[(Color)c]) {
+                //...
+            }
+        }
+    }
+}
+#endif
+
+
+//bitset的特色功能：用bitset表述二进制
+#if 0
+#include <bitset>
+#include <iostream>
+#include <string>
+#include <limits>
+using namespace std;
+
+int main()
+{
+    // print some numbers in binary representation
+    cout << "267 as binary short:     "
+        << bitset<numeric_limits<unsigned short>::digits>(267)
+        << endl;
+
+    cout << "267 as binary long:      "
+        << bitset<numeric_limits<unsigned long>::digits>(267)
+        << endl;
+
+    cout << "10,000,000 with 24 bits: "
+        << bitset<24>(1e7) << endl;
+
+    //用数值类型初始化bitset类对象
+    //*** (bitset类对象存储的是数值类型的二进制表示)***
+    //使用to_string()方法将bitset类对象输出为string类对象
+    // write binary representation into string
+    string s = bitset<42>(12345678).to_string();
+    cout << "12,345,678 with 42 bits: " << s << endl;
+
+    //用C-string类型初始化bitset类对象
+    //*** (bitset类对象存储的是C-string类型指示的二进制内容) ***
+    //使用to_ullong()方法将bitset类对象输出为unsigned long long整数类型
+    // transform binary representation into integral number
+    cout << "\"1000101011\" as number:  "
+        << bitset<100>("1000101011").to_ullong() << endl;
+}
+#endif
+
+
+//string类的能力和用法
+//提炼临时文件名
+#if 0
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main(int argc, char* argv[])
+{
+    string filename, basename, extname, tmpname;
+    const string suffix("tmp");
+
+    // for each command-line argument (which is an ordinary C-string)
+    for (int i = 1; i < argc; ++i)
+    {
+        // process argument as filename
+        filename = argv[i];
+
+        // search period in filename
+        string::size_type idx = filename.find('.');
+        //***注***
+        //此处必须使用string::size_type类型
+        //不能以 int或 unsigned 作为返回值类型；否则返回值与string::npos之间的
+        //比较可能无法正确执行。这是因为npos被设计为size_type类型的 -1
+        //不幸的是size_type(由string的分配器定义出)必须是个无正负号整数类型
+        //于是-1 被转换为无正负号整数类型，npos 也就成了该类型的最大无正负号值。
+        //然而实际值取决于类型size_type的真实定义。
+        // 不幸的是对于不同的操作系统，这些最大值类型和值可能都不相同。
+        // 事实上(unsigned long) - 1和(unsigned short) - 1 不同。
+
+        //因此，对于：
+        //idx == std::string::npos
+        //如果 idx的值为 - 1, 由于 idx和字符串 string::npos类型不同，
+        // 比较结果可能会是 false
+
+        if (idx == string::npos) 
+        {
+            // filename does not contain any period
+            tmpname = filename + '.' + suffix;
+        }
+        else 
+        {
+            // split filename into base name and extension
+            // - base name contains all characters before the period
+            // - extension contains all characters after the period
+            basename = filename.substr(0, idx);
+            extname = filename.substr(idx + 1);
+
+            //***理解***
+            //find()方法返回要搜索的字符在string类对象中的index值
+
+            //filename.substr(0, idx);
+            //返回 [0, 0+idx) 
+            //filename.substr(idx + 1);
+            //返回 [pos, size())
+
+            if (extname.empty()) 
+            {
+                // contains period but no extension: append tmp
+                tmpname = filename;
+                tmpname += suffix;
+            }
+            else if (extname == suffix) 
+            {
+                // replace extension tmp with xxx
+                tmpname = filename;
+                tmpname.replace(idx + 1, extname.size(), "xxx");
+            }
+            else
+            {
+                // replace any extension with tmp
+                tmpname = filename;
+                tmpname.replace(idx + 1, string::npos, suffix);
+                //***注***
+                //string::npos必须要写类名string
+            }
+        }
+
+        // print filename and temporary name
+        cout << filename << " => " << tmpname << endl;
+    }
+}
+#endif
+
+
+//提炼单词并反向打印（可同时查看//面试题58：翻转字符串）
+#if 0
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main(int argc, char** argv)
+{
+    //所有间隔字符被定义于一个特殊的 string 常量内：
+    const string delims(" \t,.;");
+    string line;
+
+    // for every line read successfully
+    while (getline(cin, line)) 
+    {
+        string::size_type begIdx, endIdx;
+
+        // search beginning of the first word
+        begIdx = line.find_first_not_of(delims);
+
+        // while beginning of a word found
+        while (begIdx != string::npos) 
+        {
+            //***注***
+            //从index为begIdx开始，寻找等于delims中任一字符的字符所在的位置
+            // 此范围能包含空字符。
+            // search end of the actual word
+            endIdx = line.find_first_of(delims, begIdx);
+
+            if (endIdx == string::npos) 
+            {
+                // end of word is end of line
+                endIdx = line.length();
+            }
+
+            // print characters in reverse order
+            for (int i = endIdx - 1; i >= static_cast<int>(begIdx); --i) 
+            {
+                cout << line[i];
+            }
+
+            cout << ' ';
+
+            // search beginning of the next word
+            begIdx = line.find_first_not_of(delims, endIdx);
+        }
+
+        cout << endl;
+    }
+}
 #endif
