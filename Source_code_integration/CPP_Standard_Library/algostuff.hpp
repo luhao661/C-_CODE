@@ -10,7 +10,7 @@
  */
 #ifndef ALGOSTUFF_HPP
 #define ALGOSTUFF_HPP
-
+ 
 #include <array>
 #include <vector>
 #include <deque>
