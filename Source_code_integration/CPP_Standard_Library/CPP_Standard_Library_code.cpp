@@ -1,7 +1,7 @@
-//¡¶C++±ê×¼¿â¡·
+//ã€ŠC++æ ‡å‡†åº“ã€‹
 
 
-//¶ÔC-Style array Ê¹ÓÃ»ùÓÚ·¶Î§µÄforÑ­»·
+//å¯¹C-Style array ä½¿ç”¨åŸºäºèŒƒå›´çš„forå¾ªç¯
 #if 0
 #include <iostream>
 
@@ -19,7 +19,7 @@ int main()
 #endif
 
 
-//shared_ptrµÄuse_count()
+//shared_ptrçš„use_count()
 #if 0
 #include <iostream>
 
@@ -36,7 +36,7 @@ int main()
 #endif
 
 
-//shared_ptrºÍunique_ptrÓÃ·¨Çø±ğ
+//shared_ptrå’Œunique_ptrç”¨æ³•åŒºåˆ« 
 #if 0
 #include <iostream>
 
@@ -44,34 +44,34 @@ int main()
 {
     // shared_ptr
     // get and attach shared memory for 100 ints:
-    //Ğ´·¨Ò»£º
+    //å†™æ³•ä¸€ï¼š
     std::shared_ptr<int> sp(new int[100], [](int* p)
         { delete[]p; }
     );
-    //Ğ´·¨¶ş£º
+    //å†™æ³•äºŒï¼š
     std::shared_ptr<int> sp1(new int[100], std::default_delete<int[]>());
 
     // unique_ptr
-    //Ğ´·¨Ò»£º
+    //å†™æ³•ä¸€ï¼š
     std::unique_ptr<int[]> up(new int[100]);
-    //Ğ´·¨¶ş£º
+    //å†™æ³•äºŒï¼š
     std::unique_ptr<int, void (*)(int*)> up1(new int[100], [](int* p) {
         delete[]p;
         });
-    //´íÎóĞ´·¨£º
+    //é”™è¯¯å†™æ³•ï¼š
     /*std::unique_ptr<int[], void(*)(int*)> up1(new int[100], []() {
         });*/
 
     for (int i = 0; i < 100; ++i) {
         sp.get()[i] = i * 42;
-        //´íÎóĞ´·¨£º
+        //é”™è¯¯å†™æ³•ï¼š
         //*(smp + i) = i * 42;
     }
 
     for (int i = 0; i < 100; ++i) {
-        //Ğ´·¨Ò»£º
+        //å†™æ³•ä¸€ï¼š
         up.get()[i] = i * 42;
-        //Ğ´·¨¶ş£º
+        //å†™æ³•äºŒï¼š
         up[i] = i * 42;
     }
 
@@ -87,7 +87,7 @@ int main()
 #endif
 
 
-//Ô­×Ó²Ù×÷
+//åŸå­æ“ä½œ
 #if 0
 #include <atomic>
 #include <iostream>
@@ -95,7 +95,7 @@ int main()
 int main() {
     std::atomic<int> atomicInt;
 
-    // Ê¹ÓÃ store ½«ÖµÔ­×ÓµØ´æ´¢µ½ atomicInt ¶ÔÏóÖĞ
+    // ä½¿ç”¨ store å°†å€¼åŸå­åœ°å­˜å‚¨åˆ° atomicInt å¯¹è±¡ä¸­
     atomicInt.store(10);
 
     std::cout << "Value in atomicInt: " << atomicInt.load() << std::endl;
@@ -105,11 +105,11 @@ int main() {
 #endif
 
 
-//Èç¹ûÄã½«Í¬Ò»¸ö¶¯Ì¬·ÖÅäµÄÄÚ´æµØÖ·´«µİ¸ø¶à¸ö shared_ptr ÊµÀıÀ´¹ÜÀí£¬
-//»áµ¼ÖÂ³ÌĞò³öÏÖÎ´¶¨ÒåµÄĞĞÎª£¬
-//ÕâÊÇÒòÎª¶à¸ö shared_ptr ÊµÀı»á¸÷×Ô³¢ÊÔÊÍ·ÅÍ¬Ò»¸öÄÚ´æµØÖ·£¬
-//¿ÉÄÜµ¼ÖÂÖØ¸´ÊÍ·ÅÄÚ´æ£¬´Ó¶øÒı·¢ÎÊÌâ
-//Ò»¸ö¶¯Ì¬·ÖÅäµÄÄÚ´æ¿Õ¼äÖ»ÄÜÓÉ¡¾Ò»×é¡¿shared_ptr¹ÜÀí
+//å¦‚æœä½ å°†åŒä¸€ä¸ªåŠ¨æ€åˆ†é…çš„å†…å­˜åœ°å€ä¼ é€’ç»™å¤šä¸ª shared_ptr å®ä¾‹æ¥ç®¡ç†ï¼Œ
+//ä¼šå¯¼è‡´ç¨‹åºå‡ºç°æœªå®šä¹‰çš„è¡Œä¸ºï¼Œ
+//è¿™æ˜¯å› ä¸ºå¤šä¸ª shared_ptr å®ä¾‹ä¼šå„è‡ªå°è¯•é‡Šæ”¾åŒä¸€ä¸ªå†…å­˜åœ°å€ï¼Œ
+//å¯èƒ½å¯¼è‡´é‡å¤é‡Šæ”¾å†…å­˜ï¼Œä»è€Œå¼•å‘é—®é¢˜
+//ä¸€ä¸ªåŠ¨æ€åˆ†é…çš„å†…å­˜ç©ºé—´åªèƒ½ç”±ã€ä¸€ç»„ã€‘shared_ptrç®¡ç†
 #if 0
 #include <iostream>
 
@@ -117,12 +117,12 @@ using namespace std;
 
 int main()
 {
-    //ÕıÈ·Ğ´·¨
+    //æ­£ç¡®å†™æ³•
     //shared_ptr<int>sp1(new int);
     //shared_ptr<int>sp2(sp1);
 
-    //´íÎóĞ´·¨£º
-    //Ò»¸ö¶¯Ì¬·ÖÅäµÄÄÚ´æ¿Õ¼äÓÉ¡¾Á½×é¡¿shared_ptr¹ÜÀí
+    //é”™è¯¯å†™æ³•ï¼š
+    //ä¸€ä¸ªåŠ¨æ€åˆ†é…çš„å†…å­˜ç©ºé—´ç”±ã€ä¸¤ç»„ã€‘shared_ptrç®¡ç†
     int* p = new int;
     shared_ptr<int>sp1(p);
     shared_ptr<int>sp2(p);
@@ -135,7 +135,7 @@ int main()
 #endif
 
 
-//¼ÆËã³ÌĞòµÄÖ´ĞĞÊ±¼ä
+//è®¡ç®—ç¨‹åºçš„æ‰§è¡Œæ—¶é—´
 #if 0
 #include <iostream>
 #include <chrono>
@@ -150,7 +150,7 @@ int main()
     Sleep(5000);
 
     auto diff = chrono::system_clock::now() - system_start;
-    //                                                               Î¢Ãë
+    //                                                               å¾®ç§’
     auto sec = chrono::duration_cast<chrono::microseconds>(diff);
 
     cout << sec.count() << endl;
@@ -160,7 +160,7 @@ int main()
 #endif
 
 
-//Ê¹ÓÃarray´úÌæ´«Í³Êı×é
+//ä½¿ç”¨arrayä»£æ›¿ä¼ ç»Ÿæ•°ç»„
 #if 0
 #include <iostream>
 #include <array>
@@ -184,8 +184,8 @@ void Print(const array<int, 5>& myarray)
 #endif
 
 
-//´Ó±ê×¼ÊäÈë¶ÁÈ¡string£¬ÅÅĞòÈ»ºó´òÓ¡(È¥µôÖØ¸´µÄ×Ö·û´®)
-//×Ô¼ºĞ´µÄ·½·¨£º
+//ä»æ ‡å‡†è¾“å…¥è¯»å–stringï¼Œæ’åºç„¶åæ‰“å°(å»æ‰é‡å¤çš„å­—ç¬¦ä¸²)
+//è‡ªå·±å†™çš„æ–¹æ³•ï¼š
 #if 0
 #include <iostream>
 #include <string>
@@ -204,7 +204,7 @@ int main()
         str[index++].append(tmp);
     }
 
-    //qsort(str,index,);//Ã¿¸öÔªËØ´óĞ¡²»Ò»£¬²»ÄÜÓÃqsort()
+    //qsort(str,index,);//æ¯ä¸ªå…ƒç´ å¤§å°ä¸ä¸€ï¼Œä¸èƒ½ç”¨qsort()
    /* sort(str,str+index);
 
     for (const auto& x : str)
@@ -223,7 +223,7 @@ int main()
     return 0;
 }
 #endif
-//·¨Ò»£º
+//æ³•ä¸€ï¼š
 #if 0
 #include <iterator>
 #include <algorithm>
@@ -236,7 +236,7 @@ int main()
 {
     vector<string> coll;
 
-    //Ê¹ÓÃ´®Á÷µü´úÆ÷
+    //ä½¿ç”¨ä¸²æµè¿­ä»£å™¨
     // read all words from the standard input
     // - source: all strings until end-of-file (or error)
     // - destination: coll (inserting)
@@ -245,17 +245,17 @@ int main()
         back_inserter(coll));             // destination
 
     //istream_iterator<string>(cin)
-    //»á²úÉúÒ»¸ö¿É´Ó¡°±ê×¼ÊäÈë´®Á÷(standard input stream) cin¡±¶ÁÈ¡Êı¾İµÄ stream iterator¡£
-    //ÆäÖĞµÄ template Êµ²Î string±íÊ¾Õâ¸ö stream iterator×¨Ë¾¶ÁÈ¡¸ÃÖÖÀàĞÍµÄÔªËØ(string Àà
-    // ĞÍ½«ÔÚµÚ13ÕÂ½éÉÜ)¡£ÕâĞ©ÔªËØÍ¨¹ıÒ»°ãµÄ operator >>±»¶ÁÈ¡½øÀ´¡£Òò´ËÃ¿µ±Ëã·¨ÆóÍ¼
-    //´¦ÀíÏÂÒ»ÔªËØÊ±£¬istream iterator ¾Í»á½«ÕâÖÖÆóÍ¼×ª»¯ÎªÒÔÏÂĞĞ¶¯£º
+    //ä¼šäº§ç”Ÿä¸€ä¸ªå¯ä»â€œæ ‡å‡†è¾“å…¥ä¸²æµ(standard input stream) cinâ€è¯»å–æ•°æ®çš„ stream iteratorã€‚
+    //å…¶ä¸­çš„ template å®å‚ stringè¡¨ç¤ºè¿™ä¸ª stream iteratorä¸“å¸è¯»å–è¯¥ç§ç±»å‹çš„å…ƒç´ (string ç±»
+    // å‹å°†åœ¨ç¬¬13ç« ä»‹ç»)ã€‚è¿™äº›å…ƒç´ é€šè¿‡ä¸€èˆ¬çš„ operator >>è¢«è¯»å–è¿›æ¥ã€‚å› æ­¤æ¯å½“ç®—æ³•ä¼å›¾
+    //å¤„ç†ä¸‹ä¸€å…ƒç´ æ—¶ï¼Œistream iterator å°±ä¼šå°†è¿™ç§ä¼å›¾è½¬åŒ–ä¸ºä»¥ä¸‹è¡ŒåŠ¨ï¼š
     //cin >> string
-    //Õë¶Ô string ¶øÖ´ĞĞµÄ input²Ù×÷·ûÍ¨³£¶ÁÈ¡ÒÔ¿Õ°×·Ö¸ôµÄÎÄ×Ö(¼û 13.2.10 ½ÚµÚ 677Ò³),
-    //Òò´ËÉÏÊöËã·¨µÄĞĞÎª½«ÊÇ¡°Öğ×Ö¶ÁÈ¡¡±(word by word)¡£
+    //é’ˆå¯¹ string è€Œæ‰§è¡Œçš„ inputæ“ä½œç¬¦é€šå¸¸è¯»å–ä»¥ç©ºç™½åˆ†éš”çš„æ–‡å­—(è§ 13.2.10 èŠ‚ç¬¬ 677é¡µ),
+    //å› æ­¤ä¸Šè¿°ç®—æ³•çš„è¡Œä¸ºå°†æ˜¯â€œé€å­—è¯»å–â€(word by word)ã€‚
 
     //istream_iterator<string>()
-    //»áµ÷ÓÃistream iteratorµÄ default ¹¹Ôìº¯Êı£¬²úÉúÒ»¸ö´ú±í¡°´®Á÷½áÊø·û¡±(end - of - stream)
-    //µÄµü´úÆ÷£¬Õâ¸ö¶«Î÷´ú±íµÄÒâÒåÊÇ£ºÄã²»ÄÜÔÙ´ÓÖĞ¶ÁÈ¡ÈÎºÎ¶«Î÷¡£
+    //ä¼šè°ƒç”¨istream iteratorçš„ default æ„é€ å‡½æ•°ï¼Œäº§ç”Ÿä¸€ä¸ªä»£è¡¨â€œä¸²æµç»“æŸç¬¦â€(end - of - stream)
+    //çš„è¿­ä»£å™¨ï¼Œè¿™ä¸ªä¸œè¥¿ä»£è¡¨çš„æ„ä¹‰æ˜¯ï¼šä½ ä¸èƒ½å†ä»ä¸­è¯»å–ä»»ä½•ä¸œè¥¿ã€‚
 
     // sort elements
     sort(coll.begin(), coll.end());
@@ -267,7 +267,7 @@ int main()
         ostream_iterator<string>(cout, "\n")); // destination
 }
 #endif
-//·¨¶ş£º
+//æ³•äºŒï¼š
 #if 0
 #include <iostream>
 #include <string>
@@ -288,7 +288,7 @@ int main()
         ostream_iterator<string>(cout, "\n"));
 }
 #endif
-//·¨Èı£º
+//æ³•ä¸‰ï¼š
 #if 0
 #include <iostream>
 #include <string>
@@ -312,16 +312,16 @@ int main()
         ostream_iterator<string>(cout, "\n"));
 }
 #endif
-//±È½Ï
-// 1. Ê¹ÓÃ copy() ºÍ ostream_iteratorÓë 2. Ê¹ÓÃ»ùÓÚ·¶Î§µÄforÑ­»·
-//Á½ÖÖÊä³ö·½·¨
-//1.·Ç³£¼ò½à£¬Ò»ĞĞ´úÂë¼´¿ÉÍê³ÉÈÎÎñ¡£¿ÉÒÔÖ§³ÖÆÕÍ¨Êı×éÈçcopy(flag,flag+10000,ostream_iterator<bool>(cout));
-// µ«ÊÇ£¬ËüÓĞĞ©¾ÖÏŞĞÔ£¬ÀıÈçÎŞ·¨½øĞĞ¸ü¸´ÔÓµÄ´¦Àí»ò×ª»»Êä³ö¡£
-//2.¸ü¼ÓÁé»îºÍÖ±¹Û¡£ËüÊ¹´úÂë¸üÒ×¶Á£¬ÓÈÆäÊÇÔÚĞèÒª¶ÔÊä³ö½øĞĞ¸ü¶à¿ØÖÆ»ò×ª»»Ê±¡£
-// Äã¿ÉÒÔÔÚÑ­»·ÄÚ²¿Ìí¼ÓÂß¼­£¬¶ÔÊä³ö½øĞĞ¸ñÊ½»¯»òÌí¼ÓÆäËû²Ù×÷¡£
+//æ¯”è¾ƒ
+// 1. ä½¿ç”¨ copy() å’Œ ostream_iteratorä¸ 2. ä½¿ç”¨åŸºäºèŒƒå›´çš„forå¾ªç¯
+//ä¸¤ç§è¾“å‡ºæ–¹æ³•
+//1.éå¸¸ç®€æ´ï¼Œä¸€è¡Œä»£ç å³å¯å®Œæˆä»»åŠ¡ã€‚å¯ä»¥æ”¯æŒæ™®é€šæ•°ç»„å¦‚copy(flag,flag+10000,ostream_iterator<bool>(cout));
+// ä½†æ˜¯ï¼Œå®ƒæœ‰äº›å±€é™æ€§ï¼Œä¾‹å¦‚æ— æ³•è¿›è¡Œæ›´å¤æ‚çš„å¤„ç†æˆ–è½¬æ¢è¾“å‡ºã€‚
+//2.æ›´åŠ çµæ´»å’Œç›´è§‚ã€‚å®ƒä½¿ä»£ç æ›´æ˜“è¯»ï¼Œå°¤å…¶æ˜¯åœ¨éœ€è¦å¯¹è¾“å‡ºè¿›è¡Œæ›´å¤šæ§åˆ¶æˆ–è½¬æ¢æ—¶ã€‚
+// ä½ å¯ä»¥åœ¨å¾ªç¯å†…éƒ¨æ·»åŠ é€»è¾‘ï¼Œå¯¹è¾“å‡ºè¿›è¡Œæ ¼å¼åŒ–æˆ–æ·»åŠ å…¶ä»–æ“ä½œã€‚
 
 
-//É¾³ıÈİÆ÷ÖĞµÄÔªËØ£¨Òª±£Ö¤¡°Õ¶²İ³ı¸ù¡±£©
+//åˆ é™¤å®¹å™¨ä¸­çš„å…ƒç´ ï¼ˆè¦ä¿è¯â€œæ–©è‰é™¤æ ¹â€ï¼‰
 #if 0
 #include <algorithm>
 #include <iterator>
@@ -359,7 +359,7 @@ int main()
 
     copy(coll.begin(), coll.end(), ostream_iterator<int>(cout, " "));
     cout << endl;
-    //¡°Õ¶²İ³ı¸ù¡±
+    //â€œæ–©è‰é™¤æ ¹â€
     // remove "removed" elements 
     coll.erase(end, coll.end());
 
@@ -369,26 +369,26 @@ int main()
 
     cout << endl;
 }
-//ÓÃµ¥Ò»Óï¾äÀ´É¾³ıÔªËØ
+//ç”¨å•ä¸€è¯­å¥æ¥åˆ é™¤å…ƒç´ 
 //coll.erase(remove(coll.begin(),coll.end(),3),coll.end());
 
-//***×¢***
-//¶ÔÓÚ·Ç¹ØÁªÊ½ÈİÆ÷¿ÉÒÔÊ¹ÓÃremove·½·¨É¾³ıÖ¸¶¨µÄÔªËØ
-//remove·½·¨¡¾²»¸Ä±ä¼¯ºÏÖĞÔªËØµÄ¸öÊı¡¿
-//Âß¼­ÉÏÊÇÒª±»É¾³ıµÄÔªËØ±»ÆäºóµÄÔªËØ¸²¸Ç£¬¶øÄ©Î²ÄÇĞ©Î´±»¸²¸ÇµÄÔªËØÔ­·â²»¶¯
-//µ«Âß¼­ÉÏÒÑ¾­²»ÊôÓÚÕâ¸ö¼¯ºÏÁË
-//ÓÃremove()º¯Êı´îÅäerase()·½·¨¿ÉÒÔÕ¶²İ³ı¸ù
+//***æ³¨***
+//å¯¹äºéå…³è”å¼å®¹å™¨å¯ä»¥ä½¿ç”¨removeæ–¹æ³•åˆ é™¤æŒ‡å®šçš„å…ƒç´ 
+//removeæ–¹æ³•ã€ä¸æ”¹å˜é›†åˆä¸­å…ƒç´ çš„ä¸ªæ•°ã€‘
+//é€»è¾‘ä¸Šæ˜¯è¦è¢«åˆ é™¤çš„å…ƒç´ è¢«å…¶åçš„å…ƒç´ è¦†ç›–ï¼Œè€Œæœ«å°¾é‚£äº›æœªè¢«è¦†ç›–çš„å…ƒç´ åŸå°ä¸åŠ¨
+//ä½†é€»è¾‘ä¸Šå·²ç»ä¸å±äºè¿™ä¸ªé›†åˆäº†
+//ç”¨remove()å‡½æ•°æ­é…erase()æ–¹æ³•å¯ä»¥æ–©è‰é™¤æ ¹
 
-//¶ÔÓÚ¹ØÁªÊ½ÈİÆ÷¿ÉÒÔÖ±½ÓÊ¹ÓÃerase·½·¨É¾³ıÔªËØ
+//å¯¹äºå…³è”å¼å®¹å™¨å¯ä»¥ç›´æ¥ä½¿ç”¨eraseæ–¹æ³•åˆ é™¤å…ƒç´ 
 
-//×îºó
-//¶ÔÓÚlistÈİÆ÷£¬ÆäÀàÖĞÓĞ×¨ÃÅµÄÓÅ»¯Ğ§ÂÊµÄremove()¡¢remove_if()·½·¨£¬
-//Òò´Ë¶ÔÓÚËã·¨vs³ÉÔ±º¯Êı
-//ÓÅÏÈÑ¡ÓÃ³ÉÔ±º¯Êı¼´·½·¨
+//æœ€å
+//å¯¹äºlistå®¹å™¨ï¼Œå…¶ç±»ä¸­æœ‰ä¸“é—¨çš„ä¼˜åŒ–æ•ˆç‡çš„remove()ã€remove_if()æ–¹æ³•ï¼Œ
+//å› æ­¤å¯¹äºç®—æ³•vsæˆå‘˜å‡½æ•°
+//ä¼˜å…ˆé€‰ç”¨æˆå‘˜å‡½æ•°å³æ–¹æ³•
 #endif
 
 
-//ÊµÏÖÔÚÖ´ĞĞÊ±È·¶¨º¯Êı
+//å®ç°åœ¨æ‰§è¡Œæ—¶ç¡®å®šå‡½æ•°
 #if 0
 #include <list>
 #include <algorithm>
@@ -461,7 +461,7 @@ int main()
 #endif
 
 
-//º¯ÊıÊÊÅäÆ÷bind
+//å‡½æ•°é€‚é…å™¨bind
 #if 0
 #include <set>
 #include <deque>
@@ -484,7 +484,7 @@ inline void PRINT_ELEMENTS(const T& coll, const std::string& optstr = "")
 }
 
 using namespace std;
-using namespace std::placeholders;//¿ÉÒÔÊ¹ÓÃÕ¼Î»·ûÈç_1
+using namespace std::placeholders;//å¯ä»¥ä½¿ç”¨å ä½ç¬¦å¦‚_1
 
 int main()
 {
@@ -544,7 +544,7 @@ int main()
 #endif
 
 
-//¶ÔÓÚarray£¬²»ÒªÒÔµü´úÆ÷±íÏÖ¡°µÚÒ»ÔªËØµÄµØÖ·¡±
+//å¯¹äºarrayï¼Œä¸è¦ä»¥è¿­ä»£å™¨è¡¨ç°â€œç¬¬ä¸€å…ƒç´ çš„åœ°å€â€
 #if 0
 #include <iostream>
 #include <array>
@@ -567,7 +567,7 @@ int main()
 #endif
 
 
-//Ê¹ÓÃtuple
+//ä½¿ç”¨tuple
 #if 0
 #include <iostream>
 #include <tuple>
@@ -582,7 +582,7 @@ int main()
     tuple1 = make_tuple(4, 5, 6);
     cout << get<1>(tuple1) << endl;
 
-    //arrayÌá¹©ÁËtuple½Ó¿Ú
+    //arrayæä¾›äº†tupleæ¥å£
     array<int, 5>a1{ 1,2,3 };
     cout << get<1>(a1) << endl;
 
@@ -591,9 +591,9 @@ int main()
 #endif
 
 
-//accumulate() Çó»ıÀÛÖµ     ½ø½×ÓÃ·¨
-//¿ì½İ´òÓ¡£º
-// 1-2-3-4-5-6-7-8-9-10 ºÍ 10-9-8-7-6-5-4-3-2-1
+//accumulate() æ±‚ç§¯ç´¯å€¼     è¿›é˜¶ç”¨æ³•
+//å¿«æ·æ‰“å°ï¼š
+// 1-2-3-4-5-6-7-8-9-10 å’Œ 10-9-8-7-6-5-4-3-2-1
 #if 0
 #include <iostream>
 #include <vector>
@@ -612,34 +612,34 @@ int main()
         return std::move(a) + '-' + std::to_string(b);
         };
 
-    //´íÎóĞ´·¨£º
+    //é”™è¯¯å†™æ³•ï¼š
     /*
     auto dash_fold = [](int a, int b) {
         return std::to_string(a) + '-' + std::to_string(b);
         };
     */
-    //Ô­Òò£º
-    //accumulate()ÊµÏÖ·½·¨£º
+    //åŸå› ï¼š
+    //accumulate()å®ç°æ–¹æ³•ï¼š
     /*
 template<class InputIt, class T, class BinaryOperation>
-constexpr // C++20 Æğ
+constexpr // C++20 èµ·
 T accumulate(InputIt first, InputIt last, T init,
              BinaryOperation op)
 {
     for (; first != last; ++first) {
-        init = op(std::move(init), *first); // C++20 ÆğÓĞ std::move //µ±º¯Êı·µ»ØÒ»¸ö unique_ptr ¾Í²»ĞèÒªmove()
+        init = op(std::move(init), *first); // C++20 èµ·æœ‰ std::move //å½“å‡½æ•°è¿”å›ä¸€ä¸ª unique_ptr å°±ä¸éœ€è¦move()
     }
     return init;
 }
     */
 
     std::string s = std::accumulate(std::next(v.begin(), 1), v.end(),
-        std::to_string(v[0]), // ÓÃÊ×ÔªËØ¿ªÊ¼
+        std::to_string(v[0]), // ç”¨é¦–å…ƒç´ å¼€å§‹
         dash_fold);
 
-    // Ê¹ÓÃÄæÏòµü´úÆ÷ÓÒÕÛµş
+    // ä½¿ç”¨é€†å‘è¿­ä»£å™¨å³æŠ˜å 
     std::string rs = std::accumulate(std::next(v.rbegin()), v.rend(),
-        std::to_string(v.back()), // ÓÃÊ×ÔªËØ¿ªÊ¼
+        std::to_string(v.back()), // ç”¨é¦–å…ƒç´ å¼€å§‹
         dash_fold);
 
     std::cout << "sum: " << sum << '\n'
@@ -648,7 +648,7 @@ T accumulate(InputIt first, InputIt last, T init,
         << "dash-separated string (right-folded): " << rs << '\n';
 }
 #endif
-//Ò²¿ÉÒÔÓÃtransform()À´ÅäºÏaccumulate()ÊµÏÖÏàÍ¬¹¦ÄÜ
+//ä¹Ÿå¯ä»¥ç”¨transform()æ¥é…åˆaccumulate()å®ç°ç›¸åŒåŠŸèƒ½
 #if 0
 #include <iostream>
 #include <vector>
@@ -663,16 +663,16 @@ int main()
 
     std::string firstElement = std::to_string(v[0]);
 
-    // Ê¹ÓÃ std::transform ½«ÕûÊı×ª»»Îª×Ö·û´®
-    //***×¢***
-    //ÒòÎªaccumulate()µÄÔ­ÀíÉÏ
-    //ÊÇ»áÓÃµ½ÈİÆ÷vµÄµÚÒ»¸öÔªËØ£¬²¢ÔÚÆäºó¡¾ÀÛ»ı¡¿
-    //ËùÒÔ²»·ÁÖ»´¦ÀíÈİÆ÷vÖĞµÚ¶ş¸öÔªËØµ½Ä©Î²ÔªËØ
+    // ä½¿ç”¨ std::transform å°†æ•´æ•°è½¬æ¢ä¸ºå­—ç¬¦ä¸²
+    //***æ³¨***
+    //å› ä¸ºaccumulate()çš„åŸç†ä¸Š
+    //æ˜¯ä¼šç”¨åˆ°å®¹å™¨vçš„ç¬¬ä¸€ä¸ªå…ƒç´ ï¼Œå¹¶åœ¨å…¶åã€ç´¯ç§¯ã€‘
+    //æ‰€ä»¥ä¸å¦¨åªå¤„ç†å®¹å™¨vä¸­ç¬¬äºŒä¸ªå…ƒç´ åˆ°æœ«å°¾å…ƒç´ 
     std::vector<std::string> stringValues(v.size() - 1);
     std::transform(std::next(v.begin(), 1), v.end(), stringValues.begin(),
         [](int value) { return std::to_string(value); });
 
-    // Ê¹ÓÃ std::accumulate ½«×Ö·û´®Á¬½ÓÆğÀ´
+    // ä½¿ç”¨ std::accumulate å°†å­—ç¬¦ä¸²è¿æ¥èµ·æ¥
     std::string s = std::accumulate(stringValues.begin(), stringValues.end(),
         firstElement,
         [](std::string a, std::string b)
@@ -680,7 +680,7 @@ int main()
             return std::move(a) + '-' + std::move(b);
         });
 
-    // Ê¹ÓÃÄæÏòµü´úÆ÷ÓÒÕÛµş
+    // ä½¿ç”¨é€†å‘è¿­ä»£å™¨å³æŠ˜å 
     std::vector<std::string> reversedStringValues(v.size() - 1);
     std::transform(std::next(v.rbegin()), v.rend(),
         reversedStringValues.begin(),
@@ -699,8 +699,8 @@ int main()
 #endif
 
 
-//swap()ºó£¬vectorµÄËùÓĞÒıÓÃ¡¢Ö¸Õë¡¢µü´úÆ÷¶¼Ê§Ğ§ÁË
-//ÒòÎªÕâĞ©¶«Î÷¶¼Ö¸ÏòÔ­±¾Î»ÖÃ
+//swap()åï¼Œvectorçš„æ‰€æœ‰å¼•ç”¨ã€æŒ‡é’ˆã€è¿­ä»£å™¨éƒ½å¤±æ•ˆäº†
+//å› ä¸ºè¿™äº›ä¸œè¥¿éƒ½æŒ‡å‘åŸæœ¬ä½ç½®
 #if 0
 #include <iostream>
 #include <vector>
@@ -719,7 +719,7 @@ int main()
 
     v1.swap(v2);
 
-    //½»»»ºóµü´úÆ÷ÓëÒıÓÃ±£³ÖÓëÆäÔ­À´µÄÔªËØ¹ØÁª
+    //äº¤æ¢åè¿­ä»£å™¨ä¸å¼•ç”¨ä¿æŒä¸å…¶åŸæ¥çš„å…ƒç´ å…³è”
     cout << *it1 << " " << *it2 << endl;
 
     return 0;
@@ -727,7 +727,7 @@ int main()
 #endif
 
 
-//dequeÓÃ·¨
+//dequeç”¨æ³•
 #if 0
 #include <iostream>
 #include <deque>
@@ -753,7 +753,7 @@ int main()
     // remove first and last element
     coll.pop_front();
     coll.pop_back();
-    //×îÖÕÓàÏÂ3¸öÔªËØ
+    //æœ€ç»ˆä½™ä¸‹3ä¸ªå…ƒç´ 
 
     // insert "another" into every element but the first
     for (unsigned i = 1; i < coll.size(); ++i) {
@@ -762,9 +762,9 @@ int main()
 
     // change size to four elements
     coll.resize(4, "resized string");
-    //µÚÒ»¸ö²ÎÊıÖ¸¶¨ĞÂµÄ´óĞ¡
-    //µÚ¶ş¸ö²ÎÊıÖ¸¶¨ÓÃÓÚÌî³äµ÷Õû´óĞ¡²Ù×÷¿ÉÄÜ»á´´½¨µÄÈÎºÎĞÂÔªËØµÄÖµ£¬
-    //¼´×Ö·û´®¡°resized string¡±¡£Èç¹ûÔªËØ³¬¹ı 4 ¸ö£¬¶àÓàµÄÔªËØ½«±»É¾³ıÒÔÊ¹´óĞ¡Îª 4¡£
+    //ç¬¬ä¸€ä¸ªå‚æ•°æŒ‡å®šæ–°çš„å¤§å°
+    //ç¬¬äºŒä¸ªå‚æ•°æŒ‡å®šç”¨äºå¡«å……è°ƒæ•´å¤§å°æ“ä½œå¯èƒ½ä¼šåˆ›å»ºçš„ä»»ä½•æ–°å…ƒç´ çš„å€¼ï¼Œ
+    //å³å­—ç¬¦ä¸²â€œresized stringâ€ã€‚å¦‚æœå…ƒç´ è¶…è¿‡ 4 ä¸ªï¼Œå¤šä½™çš„å…ƒç´ å°†è¢«åˆ é™¤ä»¥ä½¿å¤§å°ä¸º 4ã€‚
 
     // print elements separated by newlines
     copy(coll.cbegin(), coll.cend(),
@@ -773,7 +773,7 @@ int main()
 #endif
 
 
-//listÓÃ·¨
+//listç”¨æ³•
 #if 0
 #include <list>
 #include <iostream>
@@ -829,7 +829,7 @@ int main()
 #endif
 
 
-//forward_listÓÃ·¨
+//forward_listç”¨æ³•
 #if 0
 #include <forward_list>
 #include <iostream>
@@ -887,7 +887,7 @@ int main()
 #endif
 
 
-//lower_bound()¡¢upper_bound()¡¢equal_range()
+//lower_bound()ã€upper_bound()ã€equal_range()
 #if 0
 #include <iostream>
 #include <set>
@@ -903,16 +903,16 @@ int main()
     c.insert(5);
     c.insert(6);
 
-    //lower_bound(3) ·µ»ØÒ»¸öµü´úÆ÷£¬Ö¸ÏòµÚÒ»¸ö >= 3 µÄÔªËØ¡£
-    //ÔÚ¼¯ºÏÖĞ£¬µÚÒ»¸ö>= 3 µÄÔªËØÊÇ 4¡£
+    //lower_bound(3) è¿”å›ä¸€ä¸ªè¿­ä»£å™¨ï¼ŒæŒ‡å‘ç¬¬ä¸€ä¸ª >= 3 çš„å…ƒç´ ã€‚
+    //åœ¨é›†åˆä¸­ï¼Œç¬¬ä¸€ä¸ª>= 3 çš„å…ƒç´ æ˜¯ 4ã€‚
     cout << "lower_bound(3): " << *c.lower_bound(3) << endl;
-    //upper_bound(3) ·µ»ØµÚÒ»¸ö > 3 µÄÔªËØµÄµü´úÆ÷¡£
-    // ÔÚ¼¯ºÏÖĞ£¬µÚÒ»¸ö > 3 µÄÔªËØÒ²ÊÇ 4¡£
+    //upper_bound(3) è¿”å›ç¬¬ä¸€ä¸ª > 3 çš„å…ƒç´ çš„è¿­ä»£å™¨ã€‚
+    // åœ¨é›†åˆä¸­ï¼Œç¬¬ä¸€ä¸ª > 3 çš„å…ƒç´ ä¹Ÿæ˜¯ 4ã€‚
     cout << "upper_bound(3): " << *c.upper_bound(3) << endl;
-    //***Àí½â***
-    //equal_range(3) ·µ»ØÒ»¶Ôµü´úÆ÷£¬±íÊ¾ÖµÎª 3 µÄÔªËØ·¶Î§¡£
-    //ÔÚ±¾ÀıÖĞ£¬ÓÉÓÚ²»´æÔÚÖµÎª 3 µÄÔªËØ£¬
-    //Òò´ËÁ½¸öµü´úÆ÷¶¼Ö¸ÏòµÚÒ»¸ö²»Ğ¡ÓÚ 3 µÄÔªËØ£¬¼´ 4¡£
+    //***ç†è§£***
+    //equal_range(3) è¿”å›ä¸€å¯¹è¿­ä»£å™¨ï¼Œè¡¨ç¤ºå€¼ä¸º 3 çš„å…ƒç´ èŒƒå›´ã€‚
+    //åœ¨æœ¬ä¾‹ä¸­ï¼Œç”±äºä¸å­˜åœ¨å€¼ä¸º 3 çš„å…ƒç´ ï¼Œ
+    //å› æ­¤ä¸¤ä¸ªè¿­ä»£å™¨éƒ½æŒ‡å‘ç¬¬ä¸€ä¸ªä¸å°äº 3 çš„å…ƒç´ ï¼Œå³ 4ã€‚
     cout << "equal_range(3): " << *c.equal_range(3).first << " "
         << *c.equal_range(3).second << endl;
     cout << endl;
@@ -925,7 +925,7 @@ int main()
 #endif
 
 
-//¶ÔÓÚ¹ØÁªÈİÆ÷£¬ÊµÏÖÔËĞĞÆÚÖ¸¶¨ÅÅĞò×¼Ôò
+//å¯¹äºå…³è”å®¹å™¨ï¼Œå®ç°è¿è¡ŒæœŸæŒ‡å®šæ’åºå‡†åˆ™
 #if 0
 #include <iostream>
 #include <set>
@@ -989,7 +989,7 @@ int main()
     coll2 = { 4, 7, 5, 1, 6, 2, 5 };
 #endif
 
-    //»òÕßĞ´Îª£º
+    //æˆ–è€…å†™ä¸ºï¼š
 #if 1
     set<int, RuntimeCmp> coll2({ 4, 7, 5, 1, 6, 2, 5 }, reverse_order);
 #endif
@@ -1002,11 +1002,11 @@ int main()
     PRINT_ELEMENTS(coll1, "coll1: ");
 
     // just to make sure...
-    //¶ÔÓÚsetÀ´Ëµ£¬ÓÉÓÚ std::set ±»Éè¼ÆÎª¾ßÓĞÎ¨Ò»µÄ¼ü£¬¼üÍ¬Ê±Ò²ÊÇÖµ¡£
-    // Òò´Ë£¬¶ÔÓÚ std::set £¬Äú¿ÉÒÔÔÚ´ó¶àÊıÇé¿öÏÂ»¥»»Ê¹ÓÃ key_comp »ò value_comp £¬
-    // ¶ø²»»á³öÏÖÃ÷ÏÔ²îÒì
-    //key_comp ·½·¨£º·µ»ØÒ»¸ö±È½Ïº¯Êı£¬¸Ãº¯Êı½ö±È½Ï¼¯ºÏÖĞÔªËØµÄ¼ü
-    //value_comp ·½·¨£º·µ»ØÒ»¸ö±È½ÏÖµµÄ±È½Ïº¯Êı
+    //å¯¹äºsetæ¥è¯´ï¼Œç”±äº std::set è¢«è®¾è®¡ä¸ºå…·æœ‰å”¯ä¸€çš„é”®ï¼Œé”®åŒæ—¶ä¹Ÿæ˜¯å€¼ã€‚
+    // å› æ­¤ï¼Œå¯¹äº std::set ï¼Œæ‚¨å¯ä»¥åœ¨å¤§å¤šæ•°æƒ…å†µä¸‹äº’æ¢ä½¿ç”¨ key_comp æˆ– value_comp ï¼Œ
+    // è€Œä¸ä¼šå‡ºç°æ˜æ˜¾å·®å¼‚
+    //key_comp æ–¹æ³•ï¼šè¿”å›ä¸€ä¸ªæ¯”è¾ƒå‡½æ•°ï¼Œè¯¥å‡½æ•°ä»…æ¯”è¾ƒé›†åˆä¸­å…ƒç´ çš„é”®
+    //value_comp æ–¹æ³•ï¼šè¿”å›ä¸€ä¸ªæ¯”è¾ƒå€¼çš„æ¯”è¾ƒå‡½æ•°
     if (coll1.value_comp() == coll2.value_comp())
     {
         cout << "coll1 and coll2 have the same sorting criterion"
@@ -1021,8 +1021,8 @@ int main()
 #endif
 
 
-//Ê¹ÓÃËã·¨ºÍlambdaÀ´²Ù×÷mapÔªËØ
-//lambdaµÄĞÎ²ÎµÄĞÂÊ½Ğ´·¨
+//ä½¿ç”¨ç®—æ³•å’Œlambdaæ¥æ“ä½œmapå…ƒç´ 
+//lambdaçš„å½¢å‚çš„æ–°å¼å†™æ³•
 #if 0
 #include <iostream>
 #include <map>
@@ -1033,21 +1033,21 @@ int main()
 {
     map<string, float> strmap{ {"abc",1.1188},{"def",2.1} };
 
-    //Ğ´·¨Ò»£º
+    //å†™æ³•ä¸€ï¼š
     for_each(strmap.begin(), strmap.end(),
         [](const pair<const string, float>& pa)
         {
             cout << pa.first << " " << pa.second << endl;
         });
 
-    //Ğ´·¨¶ş£º
+    //å†™æ³•äºŒï¼š
     for_each(strmap.begin(), strmap.end(),
         [](const map<string, float>::value_type& pa)
         {
             cout << pa.first << " " << pa.second << endl;
         });
 
-    //Ğ´·¨Èı£º
+    //å†™æ³•ä¸‰ï¼š
     for_each(strmap.begin(), strmap.end(),
         [](const decltype(strmap)::value_type& pa)
         {
@@ -1059,7 +1059,7 @@ int main()
 #endif
 
 
-//ÁùÖÖ·½·¨Ïòmap»òmultimapÄÚ°²²åÄÚÈİ
+//å…­ç§æ–¹æ³•å‘mapæˆ–multimapå†…å®‰æ’å†…å®¹
 #if 0
 #include <iostream>
 #include <map>
@@ -1075,16 +1075,16 @@ int main()
     strmap.insert(decltype(strmap)::value_type("c", 3.3));
     strmap.insert(pair<const string, float>("d", 4.4));
     strmap.insert(make_pair("e", 5));
-    strmap["f"] = 6;//***×¢***
-    //ÕâÖÖÔªËØ°²²å·½Ê½±È¹ß³£µÄ map°²²å·½Ê½Âı£¬7.8.2½ÚµÚ340Ò³
-    //Ôø¾­Ì¸¹ı£¬Ô­ÒòÊÇĞÂÔªËØ±ØĞëÏÈÊ¹ÓÃdefault ¹¹Ôìº¯Êı½« value ³õÊ¼»¯£¬
-    //¶ø¸Ã³õÖµÂíÉÏÓÖ±»ÕæÕıµÄ value ¸²¸Ç¡£
+    strmap["f"] = 6;//***æ³¨***
+    //è¿™ç§å…ƒç´ å®‰æ’æ–¹å¼æ¯”æƒ¯å¸¸çš„ mapå®‰æ’æ–¹å¼æ…¢ï¼Œ7.8.2èŠ‚ç¬¬340é¡µ
+    //æ›¾ç»è°ˆè¿‡ï¼ŒåŸå› æ˜¯æ–°å…ƒç´ å¿…é¡»å…ˆä½¿ç”¨default æ„é€ å‡½æ•°å°† value åˆå§‹åŒ–ï¼Œ
+    //è€Œè¯¥åˆå€¼é©¬ä¸Šåˆè¢«çœŸæ­£çš„ value è¦†ç›–ã€‚
 
     strmap["g"];
-    //¡°operator[]µÄË÷ÒıÀàĞÍ²»±ØÊÇÕûÊı¡±²¢²»ÊÇËüºÍÑ°³£ array Î¨Ò»²»Í¬Ö®´¦¡£Èç¹ûÄã
-    //Ñ¡ÔñÄ³ key ×÷ÎªË÷Òı£¬ÈİÆ÷ÄÚÈ´Ã»ÓĞÏàÓ¦ÔªËØ£¬ÄÇÃ´map»á×Ô¶¯°²²åÒ»¸öĞÂÔªËØ£¬Æävalue
-    //½«±»ÆäÀàĞÍµÄ default ¹¹Ôìº¯Êı³õÊ¼»¯¡£Òò´Ë£¬Äã²»¿ÉÒÔÖ¸¶¨Ò»¸ö¡°²»¾ß default ¹¹Ôìº¯Êı¡±
-    //µÄvalue ÀàĞÍ¡£×¢Òâ£¬»ù´¡ÀàĞÍ¶¼ÓĞÒ»¸ö default ¹¹Ôìº¯Êı£¬ÉèÁ¢³õÖµ0(¼û 3.2.1 ½ÚµÚ 37Ò³)¡£
+    //â€œoperator[]çš„ç´¢å¼•ç±»å‹ä¸å¿…æ˜¯æ•´æ•°â€å¹¶ä¸æ˜¯å®ƒå’Œå¯»å¸¸ array å”¯ä¸€ä¸åŒä¹‹å¤„ã€‚å¦‚æœä½ 
+    //é€‰æ‹©æŸ key ä½œä¸ºç´¢å¼•ï¼Œå®¹å™¨å†…å´æ²¡æœ‰ç›¸åº”å…ƒç´ ï¼Œé‚£ä¹ˆmapä¼šè‡ªåŠ¨å®‰æ’ä¸€ä¸ªæ–°å…ƒç´ ï¼Œå…¶value
+    //å°†è¢«å…¶ç±»å‹çš„ default æ„é€ å‡½æ•°åˆå§‹åŒ–ã€‚å› æ­¤ï¼Œä½ ä¸å¯ä»¥æŒ‡å®šä¸€ä¸ªâ€œä¸å…· default æ„é€ å‡½æ•°â€
+    //çš„value ç±»å‹ã€‚æ³¨æ„ï¼ŒåŸºç¡€ç±»å‹éƒ½æœ‰ä¸€ä¸ª default æ„é€ å‡½æ•°ï¼Œè®¾ç«‹åˆå€¼0(è§ 3.2.1 èŠ‚ç¬¬ 37é¡µ)ã€‚
 
     for_each(strmap.begin(), strmap.end(),
         [](const decltype(strmap)::value_type& pa)
@@ -1097,10 +1097,10 @@ int main()
 #endif
 
 
-//ÒÆ³ıÔªËØ£¬²¢±ÜÃâÊ¹ÓÃÒ»¸ö¡¾ÔİÊ±¡¿ÎŞĞ§µÄµü´úÆ÷
-//***×¢***
-//Èç¹ûÆäËûÔªËØ±»É¾³ı£¬ËùÓĞÈİÆ÷(³ıÁËvector ºÍ deque£¬ÒòÎª¿ÉÄÜµ¼ÖÂÄÚ´æÖØĞÂ·ÖÅä)
-//¶¼±£Ö¤µü´úÆ÷ÒÔ¼°ÓÃÒÔÖ¸ÏòÔªËØµÄreference¼ÌĞø±£³ÖÓĞĞ§¡£
+//ç§»é™¤å…ƒç´ ï¼Œå¹¶é¿å…ä½¿ç”¨ä¸€ä¸ªã€æš‚æ—¶ã€‘æ— æ•ˆçš„è¿­ä»£å™¨
+//***æ³¨***
+//å¦‚æœå…¶ä»–å…ƒç´ è¢«åˆ é™¤ï¼Œæ‰€æœ‰å®¹å™¨(é™¤äº†vector å’Œ dequeï¼Œå› ä¸ºå¯èƒ½å¯¼è‡´å†…å­˜é‡æ–°åˆ†é…)
+//éƒ½ä¿è¯è¿­ä»£å™¨ä»¥åŠç”¨ä»¥æŒ‡å‘å…ƒç´ çš„referenceç»§ç»­ä¿æŒæœ‰æ•ˆã€‚
 #if 0
 #include <iostream>
 #include <map>
@@ -1124,18 +1124,18 @@ int main()
         });
     cout << endl;
 
-    //´íÎóµÄÒÆ³ıÔªËØĞ´·¨£º
+    //é”™è¯¯çš„ç§»é™¤å…ƒç´ å†™æ³•ï¼š
 #if 0
     for (auto pos = strmap.begin(); pos != strmap.end(); ++pos)
     {
         if (pos->first == "a")
         {
-            strmap.erase(pos);//pos»á²»ÔÙ³ÉÎªÒ»¸öÓĞĞ§µÄµü´úÆ÷£¬´ËºóÎ´¶Ôpos
-        }                                 //ÖØĞÂÉèÖµ¾ÍÖ±½ÓÊ¹ÓÃ£¬»áÔì³ÉÔËĞĞÆÚ¼ä´íÎó
+            strmap.erase(pos);//posä¼šä¸å†æˆä¸ºä¸€ä¸ªæœ‰æ•ˆçš„è¿­ä»£å™¨ï¼Œæ­¤åæœªå¯¹pos
+        }                                 //é‡æ–°è®¾å€¼å°±ç›´æ¥ä½¿ç”¨ï¼Œä¼šé€ æˆè¿è¡ŒæœŸé—´é”™è¯¯
     }
 #endif
 
-    //´íÎóµÄ´¦ÀíĞ´·¨£º
+    //é”™è¯¯çš„å¤„ç†å†™æ³•ï¼š
 #if 0
     for (auto pos = strmap.begin(); pos != strmap.end(); ++pos)
     {
@@ -1149,27 +1149,27 @@ int main()
             pos = strmap.erase(pos);
         }
 
-        //***×¢***
-        //ÒÔÏÂ´úÂëÔËĞĞÊ±»á±¨´í
+        //***æ³¨***
+        //ä»¥ä¸‹ä»£ç è¿è¡Œæ—¶ä¼šæŠ¥é”™
         /*
         if (abs(pos->second - 5) <= 0.00001)
         {
-            //ÒòÎªerase()×÷ÓÃºó£¬posÖµÎªstrmap.end()¡£++posºóÖ¸ÏòÎŞĞ§Î»ÖÃ¡£
+            //å› ä¸ºerase()ä½œç”¨åï¼Œposå€¼ä¸ºstrmap.end()ã€‚++posåæŒ‡å‘æ— æ•ˆä½ç½®ã€‚
             pos = strmap.erase(pos);
         }
         */
     }
 #endif
 
-    //ÕıÈ·Ğ´·¨£º
+    //æ­£ç¡®å†™æ³•ï¼š
     for (auto pos = strmap.begin(); pos != strmap.end(); )
     {
         if (pos->first == "a" || abs(pos->second - 4.4) <= 0.00001)
         {
-            //***Àí½â***
-            //Ö¸Ïò±»²Á³ıÔªËØµÄÒıÓÃºÍµü´úÆ÷±»·Ç·¨»¯¡£ÆäËûÒıÓÃºÍµü´úÆ÷²»ÊÜÓ°Ïì¡£
-            //erase()·µ»ØÒ»¸öµü´úÆ÷Ö¸Ïò¡¾Æäºó¼ÌµÄ¡¿ÔªËØ
-            //posÓÉ´ËµÃµ½¸üĞÂ
+            //***ç†è§£***
+            //æŒ‡å‘è¢«æ“¦é™¤å…ƒç´ çš„å¼•ç”¨å’Œè¿­ä»£å™¨è¢«éæ³•åŒ–ã€‚å…¶ä»–å¼•ç”¨å’Œè¿­ä»£å™¨ä¸å—å½±å“ã€‚
+            //erase()è¿”å›ä¸€ä¸ªè¿­ä»£å™¨æŒ‡å‘ã€å…¶åç»§çš„ã€‘å…ƒç´ 
+            //posç”±æ­¤å¾—åˆ°æ›´æ–°
             pos = strmap.erase(pos);
         }
         else
@@ -1202,7 +1202,7 @@ int main()
 #endif
 
 
-//multimapµ±×ö×Öµä
+//multimapå½“åšå­—å…¸
 #if 0
 #include <map>
 #include <string>
@@ -1237,7 +1237,7 @@ int main()
     cout << endl;
 
     // print all values for key "smart"
-    //²éÕÒkey¶ÔÓ¦µÄËùÓĞvalueÖµ£¨Ç°ÌáÊÇÓĞÕâ¸ökey£¬ÈôÃ»ÓĞÔò²»ºÏÊÊ£¨Ïê¼û£º//lower_bound()¡¢upper_bound()¡¢equal_range()£©£©
+    //æŸ¥æ‰¾keyå¯¹åº”çš„æ‰€æœ‰valueå€¼ï¼ˆå‰ææ˜¯æœ‰è¿™ä¸ªkeyï¼Œè‹¥æ²¡æœ‰åˆ™ä¸åˆé€‚ï¼ˆè¯¦è§ï¼š//lower_bound()ã€upper_bound()ã€equal_range()ï¼‰ï¼‰
     string word("smart");
     cout << word << ": " << endl;
     for (auto pos = dict.lower_bound(word); pos != dict.upper_bound(word);
@@ -1247,7 +1247,7 @@ int main()
     }
 
     // print all keys for value "raffiniert"
-    //²éÕÒvalue¶ÔÓ¦µÄËùÓĞkeyÖµ
+    //æŸ¥æ‰¾valueå¯¹åº”çš„æ‰€æœ‰keyå€¼
     word = ("raffiniert");
     cout << word << ": " << endl;
     for (const auto& elem : dict)
@@ -1261,7 +1261,7 @@ int main()
 #endif
 
 
-//Ê¹ÓÃmap¡¢string²¢ÓÚÔËĞĞÆÚÖ¸¶¨ÅÅĞò×¼Ôò
+//ä½¿ç”¨mapã€stringå¹¶äºè¿è¡ŒæœŸæŒ‡å®šæ’åºå‡†åˆ™
 #if 0
 #include <iostream>
 #include <iomanip>
@@ -1278,7 +1278,7 @@ class RuntimeStringCmp
 {
 public:
     // constants for the comparison criterion
-    //                        ÆÕÍ¨Ä£Ê½    ´óĞ¡Ğ´ÎŞ¹ØÄ£Ê½
+    //                        æ™®é€šæ¨¡å¼    å¤§å°å†™æ— å…³æ¨¡å¼
     enum cmp_mode { normal, nocase };
 private:
     // actual comparison mode
@@ -1303,7 +1303,7 @@ public:
         }
         else
         {
-            //lexicographical_compare() ×ÖµäĞò±È½Ï
+            //lexicographical_compare() å­—å…¸åºæ¯”è¾ƒ
             return lexicographical_compare(s1.begin(), s1.end(),
                 s2.begin(), s2.end(), nocase_compare);
         }
@@ -1323,17 +1323,17 @@ void fillAndPrint(StringStringMap& coll);
 int main()
 {
     // create a container with the default comparison criterion
-    StringStringMap coll1;//Ê¹ÓÃÒ»¸öRuntimeStringCmpµÄº¯Êı¶ÔÏó£¬ÒÔÄ¬ÈÏµÄnormalÎª³õÖµ
+    StringStringMap coll1;//ä½¿ç”¨ä¸€ä¸ªRuntimeStringCmpçš„å‡½æ•°å¯¹è±¡ï¼Œä»¥é»˜è®¤çš„normalä¸ºåˆå€¼
     fillAndPrint(coll1);
 
     // create an object for case-insensitive comparisons
     RuntimeStringCmp ignorecase(RuntimeStringCmp::nocase);
     // create a container with the case-insensitive comparisons criterion
     StringStringMap coll2(ignorecase);
-    //***Àí½â***
-    //Ê¹ÓÃµÄÊÇ   explicit map(const Compare & comp, const Allocator & alloc = Allocator());
-    //Ê¹ÓÃÒ»¸öÀàĞÍÎªRuntimeStringCmpµÄº¯Êı¶ÔÏó£¬²¢ÒÔnocaseÎª³õÖµ¡£nocase»áÁî
-    //Õâ¸öº¯Êı¶ÔÏóÒÔ¡°´óĞ¡Ğ´ÎŞ¹Ø¡±Ä£Ê½Íê³É×Ö·û´®µÄ±È½ÏºÍÅÅĞò¡£
+    //***ç†è§£***
+    //ä½¿ç”¨çš„æ˜¯   explicit map(const Compare & comp, const Allocator & alloc = Allocator());
+    //ä½¿ç”¨ä¸€ä¸ªç±»å‹ä¸ºRuntimeStringCmpçš„å‡½æ•°å¯¹è±¡ï¼Œå¹¶ä»¥nocaseä¸ºåˆå€¼ã€‚nocaseä¼šä»¤
+    //è¿™ä¸ªå‡½æ•°å¯¹è±¡ä»¥â€œå¤§å°å†™æ— å…³â€æ¨¡å¼å®Œæˆå­—ç¬¦ä¸²çš„æ¯”è¾ƒå’Œæ’åºã€‚
 
     fillAndPrint(coll2);
 }
@@ -1364,7 +1364,7 @@ void fillAndPrint(StringStringMap& coll)
 #endif
 
 
-//ÎŞĞò¹ØÁªÈİÆ÷µÄ²¼¾Ö²Ù×÷
+//æ— åºå…³è”å®¹å™¨çš„å¸ƒå±€æ“ä½œ
 #if 0
 #include <iostream>
 #include <unordered_set>
@@ -1375,12 +1375,12 @@ int main()
 {
     unordered_multiset<int>unset;
 
-    //×î´ó¸ºÔØÒò×Ó£¨Òò×Ó¡ü£¬¹şÏ£±í¿Õ¼äÀûÓÃÂÊ¡ü£¬ĞÔÄÜ¿ÉÄÜ¡ı£©
+    //æœ€å¤§è´Ÿè½½å› å­ï¼ˆå› å­â†‘ï¼Œå“ˆå¸Œè¡¨ç©ºé—´åˆ©ç”¨ç‡â†‘ï¼Œæ€§èƒ½å¯èƒ½â†“ï¼‰
     unset.max_load_factor(0.7);
 
-    //×¼±¸100/×î´ó¸ºÔØÒò×Ó¸öÔªËØµÄ´óĞ¡µÄbucket£¬ÒÔ±ÜÃâÔÚÃ»³¬¹ı100¸öÔªËØ¾Írehash()
+    //å‡†å¤‡100/æœ€å¤§è´Ÿè½½å› å­ä¸ªå…ƒç´ çš„å¤§å°çš„bucketï¼Œä»¥é¿å…åœ¨æ²¡è¶…è¿‡100ä¸ªå…ƒç´ å°±rehash()
     unset.rehash(100 / 0.7);
-    //×¼±¸100¸öÔªËØ´óĞ¡µÄbucket
+    //å‡†å¤‡100ä¸ªå…ƒç´ å¤§å°çš„bucket
     unset.reserve(100);
 
     return 0;
@@ -1388,7 +1388,7 @@ int main()
 #endif
 
 
-//ÎŞĞò¹ØÁªÈİÆ÷£¬Ìá¹©×Ô¼ºµÄHashº¯ÊıºÍµÈ¼Û×¼Ôò
+//æ— åºå…³è”å®¹å™¨ï¼Œæä¾›è‡ªå·±çš„Hashå‡½æ•°å’Œç­‰ä»·å‡†åˆ™
 #if 0
 #include <unordered_set>
 #include <string>
@@ -1492,7 +1492,7 @@ int main()
 #endif
 
 
-//Ê¹ÓÃLambda×÷ÎªHashº¯ÊıºÍµÈ¼Û×¼Ôò
+//ä½¿ç”¨Lambdaä½œä¸ºHashå‡½æ•°å’Œç­‰ä»·å‡†åˆ™
 #if 0
 #include <string>
 #include <iostream>
@@ -1591,13 +1591,13 @@ int main()
     // create unordered set with user-defined behavior
     unordered_set<Customer, decltype(hash), decltype(eq)>
         custset(10, hash, eq);
-    //***Àí½â***
-    //±ØĞëÊ¹ÓÃdecltype²úÉú lambdaÀàĞÍ£¬Ê¹µÃÒÔ´«µİËü×÷Îª unordered ÈİÆ÷ÉùÃ÷Ê½µÄ
-    //template Êµ²Î¡£
-    //¶ø lambda²¢²»´æÔÚ default ¹¹Ôìº¯ÊıºÍ assignment ²Ù×÷·û¡£
-    //Òò´Ë£¬ÄãÒ²±ØĞë½«lambda´«¸ø¹¹Ôìº¯Êı¡£
-    //¶øÓÉÓÚËüÃÇ±»Éè¼ÆÎªµÚ¶şºÍµÚÈıÊµ²Î£¬Òò´ËÕâÖÖÇé¿öÏÂÄã±ØĞëÖ¸Ã÷×î³õµÄ bucket ´óĞ¡£¬
-    //±¾ÀıÎª10¡£
+    //***ç†è§£***
+    //å¿…é¡»ä½¿ç”¨decltypeäº§ç”Ÿ lambdaç±»å‹ï¼Œä½¿å¾—ä»¥ä¼ é€’å®ƒä½œä¸º unordered å®¹å™¨å£°æ˜å¼çš„
+    //template å®å‚ã€‚
+    //è€Œ lambdaå¹¶ä¸å­˜åœ¨ default æ„é€ å‡½æ•°å’Œ assignment æ“ä½œç¬¦ã€‚
+    //å› æ­¤ï¼Œä½ ä¹Ÿå¿…é¡»å°†lambdaä¼ ç»™æ„é€ å‡½æ•°ã€‚
+    //è€Œç”±äºå®ƒä»¬è¢«è®¾è®¡ä¸ºç¬¬äºŒå’Œç¬¬ä¸‰å®å‚ï¼Œå› æ­¤è¿™ç§æƒ…å†µä¸‹ä½ å¿…é¡»æŒ‡æ˜æœ€åˆçš„ bucket å¤§å°ï¼Œ
+    //æœ¬ä¾‹ä¸º10ã€‚
 
     custset.insert(Customer("nico", "josuttis", 42));
     PRINT_ELEMENTS(custset);
@@ -1606,17 +1606,17 @@ int main()
 #endif
 
 
-//Ê¹ÓÃBucket½Ó¿Ú
-//¿ÉÒÔ·ÃÎÊÄÚ²¿µÄÍ°£¨buckets£©¡£
-//Ã¿¸öÍ°ÊÇÒ»¸ö´æ´¢ÔªËØµÄÈİÆ÷£¬¿ÉÒÔ½«¾ßÓĞ¡¾ÏàÍ¬¹şÏ£ÖµµÄÔªËØ¡¿´æ´¢ÔÚÍ¬Ò»¸öÍ°ÖĞ¡£
-//***×¢***
-// ÏàÍ¬¹şÏ£ÖµµÄÔªËØ¡¾Ò²¿ÉÄÜÊÇ²»Í¬µÄ¼ü¡¿£¬ËüÃÇÖ»ÊÇ·¢ÉúÁË¹şÏ£³åÍ»£¬
-// ¶ø¹şÏ£±íµÄÄÚ²¿»úÖÆÈ·±£ËüÃÇÔÚÍ¬Ò»¸öÍ°ÖĞµÃµ½´æ´¢¡£ÔÚ²éÕÒÔªËØÊ±£¬
-// ¹şÏ£±í»á¸ù¾İ¼üµÄÏàµÈĞÔÀ´È·¶¨¾ßÌåÊÇÄÄ¸öÔªËØ¡£
+//ä½¿ç”¨Bucketæ¥å£
+//å¯ä»¥è®¿é—®å†…éƒ¨çš„æ¡¶ï¼ˆbucketsï¼‰ã€‚
+//æ¯ä¸ªæ¡¶æ˜¯ä¸€ä¸ªå­˜å‚¨å…ƒç´ çš„å®¹å™¨ï¼Œå¯ä»¥å°†å…·æœ‰ã€ç›¸åŒå“ˆå¸Œå€¼çš„å…ƒç´ ã€‘å­˜å‚¨åœ¨åŒä¸€ä¸ªæ¡¶ä¸­ã€‚
+//***æ³¨***
+// ç›¸åŒå“ˆå¸Œå€¼çš„å…ƒç´ ã€ä¹Ÿå¯èƒ½æ˜¯ä¸åŒçš„é”®ã€‘ï¼Œå®ƒä»¬åªæ˜¯å‘ç”Ÿäº†å“ˆå¸Œå†²çªï¼Œ
+// è€Œå“ˆå¸Œè¡¨çš„å†…éƒ¨æœºåˆ¶ç¡®ä¿å®ƒä»¬åœ¨åŒä¸€ä¸ªæ¡¶ä¸­å¾—åˆ°å­˜å‚¨ã€‚åœ¨æŸ¥æ‰¾å…ƒç´ æ—¶ï¼Œ
+// å“ˆå¸Œè¡¨ä¼šæ ¹æ®é”®çš„ç›¸ç­‰æ€§æ¥ç¡®å®šå…·ä½“æ˜¯å“ªä¸ªå…ƒç´ ã€‚
 // 
-// ÔÚ std::unordered_multimap ÖĞ£¬
-// ÏàÍ¬¹şÏ£ÖµµÄÔªËØ±»´æ´¢ÔÚÍ¬Ò»¸öÍ°ÖĞ£¬¶øÍ¬Ò»¸öÍ°ÖĞµÄÔªËØ¿ÉÄÜ¾ßÓĞ²»Í¬µÄ¼ü¡£
-// Òò´Ë£¬Í¬Ò»¸öÍ°ÖĞ´æ´¢µÄÔªËØµÄ¼ü²»Ò»¶¨ÏàÍ¬£¬µ«ËüÃÇ¾ßÓĞÏàÍ¬µÄ¹şÏ£Öµ¡£
+// åœ¨ std::unordered_multimap ä¸­ï¼Œ
+// ç›¸åŒå“ˆå¸Œå€¼çš„å…ƒç´ è¢«å­˜å‚¨åœ¨åŒä¸€ä¸ªæ¡¶ä¸­ï¼Œè€ŒåŒä¸€ä¸ªæ¡¶ä¸­çš„å…ƒç´ å¯èƒ½å…·æœ‰ä¸åŒçš„é”®ã€‚
+// å› æ­¤ï¼ŒåŒä¸€ä¸ªæ¡¶ä¸­å­˜å‚¨çš„å…ƒç´ çš„é”®ä¸ä¸€å®šç›¸åŒï¼Œä½†å®ƒä»¬å…·æœ‰ç›¸åŒçš„å“ˆå¸Œå€¼ã€‚
 #if 0
 #include <iostream>
 #include <iomanip>
@@ -1706,7 +1706,7 @@ int main()
 #endif
 
 
-//·ÇÈëÇÖÊ½»ò°ü¹ü·¨Ê¹C-Style Array×÷ÎªÒ»ÖÖSTLÈİÆ÷
+//éå…¥ä¾µå¼æˆ–åŒ…è£¹æ³•ä½¿C-Style Arrayä½œä¸ºä¸€ç§STLå®¹å™¨
 #if 0
 #include <iterator>
 #include <vector>
@@ -1719,7 +1719,7 @@ int main()
     // use begin() and end() for ordinary C arrays
     std::vector<int> v(std::begin(vals), std::end(vals));
 
-    //µÈ¼ÛÓÚÒÔÏÂĞ´·¨ £¨ÊÊÓÃÓÚC++11Ö®Ç°£©
+    //ç­‰ä»·äºä»¥ä¸‹å†™æ³• ï¼ˆé€‚ç”¨äºC++11ä¹‹å‰ï¼‰
     //std::vector<int> v(vals, vals+sizeof(vals)/sizeof(vals[0]));
 
     // use global begin() and end() for containers:
@@ -1730,9 +1730,9 @@ int main()
 #endif
 
 
-//Í¨³£STLÈİÆ÷Ìá¹©µÄÊÇvalueÓïÒå£¬¶ø²»ÊÇreferenceÓïÒå
-//STLÈİÆ÷ÒªÊµÏÖReferenceÓïÒå
-//·½·¨Ò»£º²ÉÓÃ¡¾ÖÇÄÜÖ¸Õë¡¿
+//é€šå¸¸STLå®¹å™¨æä¾›çš„æ˜¯valueè¯­ä¹‰ï¼Œè€Œä¸æ˜¯referenceè¯­ä¹‰
+//STLå®¹å™¨è¦å®ç°Referenceè¯­ä¹‰
+//æ–¹æ³•ä¸€ï¼šé‡‡ç”¨ã€æ™ºèƒ½æŒ‡é’ˆã€‘
 #if 0
 #include <iostream>
 #include <string>
@@ -1831,11 +1831,11 @@ int main()
             return elem->getName() == "Pizza";
         }));
 
-    //***×¢***
-    //Ê¹ÓÃshared_ptr<>»áÈÃÊÂÇé±ä¸´ÔÓ¡£ÀıÈç£¬Ãæ¶Ôset Ê¹ÓÃfind(),»áÕÒ³öÓµÓĞÏàµÈ
-    //value µÄÔªËØ£¬ÏÖÔÚ±È½ÏµÄÈ´ÊÇÄÚ²¿(ÓÉnew·µ»Ø)µÄ pointer 
+    //***æ³¨***
+    //ä½¿ç”¨shared_ptr<>ä¼šè®©äº‹æƒ…å˜å¤æ‚ã€‚ä¾‹å¦‚ï¼Œé¢å¯¹set ä½¿ç”¨find(),ä¼šæ‰¾å‡ºæ‹¥æœ‰ç›¸ç­‰
+    //value çš„å…ƒç´ ï¼Œç°åœ¨æ¯”è¾ƒçš„å´æ˜¯å†…éƒ¨(ç”±newè¿”å›)çš„ pointer 
     // allItems.find(ItemPtr(new Item("Pizza",2.22)))   //can'tbe successful
-    //ÒÔÏÂĞ´·¨Ò²²»ÊÊÓÃ
+    //ä»¥ä¸‹å†™æ³•ä¹Ÿä¸é€‚ç”¨
     //bestsellers[1] = find(allItems.begin(), allItems.end(),string("Pizza"));
 
     // set price of first bestseller
@@ -1848,12 +1848,12 @@ int main()
 #endif
 
 
-//Reference Wrapper £¨ÒıÓÃÍâ¸²Æ÷£©
-//ÉùÃ÷ÓÚ<functional>ÖĞµÄ class std::reference_wrapper<>Ö÷ÒªÓÃÀ´
-//¡°Î¹¡± reference ¸øfunction template, ºóÕßÔ­±¾ÒÔby value·½Ê½½ÓÊÜ²ÎÊı¡£
-// ¶ÔÓÚÒ»¸ö¸ø¶¨ÀàĞÍT, Õâ¸ö classÌá¹©ref()ÓÃÒÔÒşÊ½×ª»»ÎªT&, 
-// Ò»¸ö cref()ÓÃÒÔÒşÊ½×ª»»Îª const T&, ÕâÍùÍùÔÊĞí 
-// function template µÃÒÔ²Ù×÷ reference ¶ø²»ĞèÒªÁíĞ´ÌØ»¯°æ±¾¡£
+//Reference Wrapper ï¼ˆå¼•ç”¨å¤–è¦†å™¨ï¼‰
+//å£°æ˜äº<functional>ä¸­çš„ class std::reference_wrapper<>ä¸»è¦ç”¨æ¥
+//â€œå–‚â€ reference ç»™function template, åè€…åŸæœ¬ä»¥by valueæ–¹å¼æ¥å—å‚æ•°ã€‚
+// å¯¹äºä¸€ä¸ªç»™å®šç±»å‹T, è¿™ä¸ª classæä¾›ref()ç”¨ä»¥éšå¼è½¬æ¢ä¸ºT&, 
+// ä¸€ä¸ª cref()ç”¨ä»¥éšå¼è½¬æ¢ä¸º const T&, è¿™å¾€å¾€å…è®¸ 
+// function template å¾—ä»¥æ“ä½œ reference è€Œä¸éœ€è¦å¦å†™ç‰¹åŒ–ç‰ˆæœ¬ã€‚
 #if 0
 #include <iostream>
 
@@ -1883,9 +1883,9 @@ void f1(T val)
 #endif
 
 
-//ÊµÏÖReferenceÓïÒå
-//·½·¨¶ş£ºÊ¹ÓÃ class reference_wrapper<> 
-//ÓÅµã£º²»ĞèÒªÖÇÄÜÖ¸Õë
+//å®ç°Referenceè¯­ä¹‰
+//æ–¹æ³•äºŒï¼šä½¿ç”¨ class reference_wrapper<> 
+//ä¼˜ç‚¹ï¼šä¸éœ€è¦æ™ºèƒ½æŒ‡é’ˆ
 #if 0
 #include <iostream>
 #include <string>
@@ -1931,7 +1931,7 @@ void printItems(const std::string& msg, const Coll& coll)
 
     for (const auto& elem : coll)
     {
-        //ĞèÒªÊ¹ÓÃget()·½·¨£¬·ÃÎÊ´æ´¢µÄÒıÓÃ
+        //éœ€è¦ä½¿ç”¨get()æ–¹æ³•ï¼Œè®¿é—®å­˜å‚¨çš„å¼•ç”¨
         std::cout << ' ' << elem.get().getName() << ": "
             << elem.get().getPrice() << std::endl;
     }
@@ -1941,27 +1941,27 @@ int main()
 {
     using namespace std;
 
-    //reference_wrapper<Item>: ÕâÊÇÒ»¸öÄ£°åÀà£¬Ëü°ü×°ÁË¶Ô Item ÀàĞÍ¶ÔÏóµÄÒıÓÃ¡£
-    // reference_wrapper ÔÊĞí½«ÒıÓÃ×÷Îª¶ÔÏó½øĞĞ´«µİ£¬
-    // ¶ø²»ÊÇ´«µİÒıÓÃÊ±»á×Ô¶¯·¢ÉúµÄ½âÒıÓÃ¡£
-    // Õâ¶ÔÓÚÔÚÈİÆ÷ÖĞ´æ´¢ÒıÓÃÊÇºÜÓĞÓÃµÄ£¬ÒòÎªÈİÆ÷Í¨³£ÒªÇóÔªËØÊÇ¿É¸´ÖÆµÄ£¬
-    // ¶øÒıÓÃÔòÍ¨³£²»ÊÇ¿É¸´ÖÆµÄ¡£
-    //ÕâÖÖÉè¼Æ³£³£ÓÃÓÚĞèÒªÔÚÈİÆ÷ÖĞ´æ´¢ÒıÓÃ¶ø²»ÊÇ¸´ÖÆ¶ÔÏóµÄÇé¿ö£¬
-    // ÀıÈç£¬µ±ÄãÏëÒªÔÚÈİÆ÷ÖĞ±£´æ¶ÔÏóµÄÒıÓÃ£¬²¢ÇÒÏ£ÍûÍ¨¹ıÒıÓÃĞŞ¸ÄÔ­Ê¼¶ÔÏóÊ±¡£
+    //reference_wrapper<Item>: è¿™æ˜¯ä¸€ä¸ªæ¨¡æ¿ç±»ï¼Œå®ƒåŒ…è£…äº†å¯¹ Item ç±»å‹å¯¹è±¡çš„å¼•ç”¨ã€‚
+    // reference_wrapper å…è®¸å°†å¼•ç”¨ä½œä¸ºå¯¹è±¡è¿›è¡Œä¼ é€’ï¼Œ
+    // è€Œä¸æ˜¯ä¼ é€’å¼•ç”¨æ—¶ä¼šè‡ªåŠ¨å‘ç”Ÿçš„è§£å¼•ç”¨ã€‚
+    // è¿™å¯¹äºåœ¨å®¹å™¨ä¸­å­˜å‚¨å¼•ç”¨æ˜¯å¾ˆæœ‰ç”¨çš„ï¼Œå› ä¸ºå®¹å™¨é€šå¸¸è¦æ±‚å…ƒç´ æ˜¯å¯å¤åˆ¶çš„ï¼Œ
+    // è€Œå¼•ç”¨åˆ™é€šå¸¸ä¸æ˜¯å¯å¤åˆ¶çš„ã€‚
+    //è¿™ç§è®¾è®¡å¸¸å¸¸ç”¨äºéœ€è¦åœ¨å®¹å™¨ä¸­å­˜å‚¨å¼•ç”¨è€Œä¸æ˜¯å¤åˆ¶å¯¹è±¡çš„æƒ…å†µï¼Œ
+    // ä¾‹å¦‚ï¼Œå½“ä½ æƒ³è¦åœ¨å®¹å™¨ä¸­ä¿å­˜å¯¹è±¡çš„å¼•ç”¨ï¼Œå¹¶ä¸”å¸Œæœ›é€šè¿‡å¼•ç”¨ä¿®æ”¹åŸå§‹å¯¹è±¡æ—¶ã€‚
     vector<reference_wrapper<Item>>books;
 
     Item book1("bookname", 12.99);
-    //ÏòÈİÆ÷°²²åÔªËØ£¬µ«ÊÇ°²²åµÄÊÇ¸öÒıÓÃ
+    //å‘å®¹å™¨å®‰æ’å…ƒç´ ï¼Œä½†æ˜¯å®‰æ’çš„æ˜¯ä¸ªå¼•ç”¨
     books.push_back(book1);
 
     printItems("books:", books);
     cout << endl;
 
-    //***×¢***
-    //Ö±½ÓĞŞ¸Äbook1¶ÔÏóµÄÄÚÈİ£¬
-    //ÈôvectorÈİÆ÷ÖĞ´æµÄ²»ÊÇ¸Ã¶ÔÏóµÄÒıÓÃ£¬Ä¬ÈÏ´æµÄÊÇ¿½±´µÄvalue¼´¿½±´µÄ¶ÔÏó
-    //ÄÇ¾Í²»»áÓ°ÏìvectorÈİÆ÷ÖĞµÄ¸Ã¶ÔÏóÖĞ´æµÄÄÚÈİ¡£
-    //¶ø¸ÃÀı´æµÄÊÇ¸Ã¶ÔÏóµÄÒıÓÃ£¬ÄÇ¾Í»áÓ°ÏìvectorÈİÆ÷ÖĞµÄ¸Ã¶ÔÏóÖĞ´æµÄÄÚÈİ¡£
+    //***æ³¨***
+    //ç›´æ¥ä¿®æ”¹book1å¯¹è±¡çš„å†…å®¹ï¼Œ
+    //è‹¥vectorå®¹å™¨ä¸­å­˜çš„ä¸æ˜¯è¯¥å¯¹è±¡çš„å¼•ç”¨ï¼Œé»˜è®¤å­˜çš„æ˜¯æ‹·è´çš„valueå³æ‹·è´çš„å¯¹è±¡
+    //é‚£å°±ä¸ä¼šå½±å“vectorå®¹å™¨ä¸­çš„è¯¥å¯¹è±¡ä¸­å­˜çš„å†…å®¹ã€‚
+    //è€Œè¯¥ä¾‹å­˜çš„æ˜¯è¯¥å¯¹è±¡çš„å¼•ç”¨ï¼Œé‚£å°±ä¼šå½±å“vectorå®¹å™¨ä¸­çš„è¯¥å¯¹è±¡ä¸­å­˜çš„å†…å®¹ã€‚
     book1.setPrice(9.99);
 
     cout << books[0].get().getPrice() << endl;
@@ -1969,8 +1969,8 @@ int main()
     printItems("books:", books);
     cout << endl;
 
-    //***×¢***
-    //´´½¨ÒÔÏÂvectorµÄ³¢ÊÔ£¬ÎŞ·¨Í¨¹ı±àÒë
+    //***æ³¨***
+    //åˆ›å»ºä»¥ä¸‹vectorçš„å°è¯•ï¼Œæ— æ³•é€šè¿‡ç¼–è¯‘
     //vector<Item&>books_test;
     //books_test.push_back(book1);
     //book1.setPrice(10.5);
@@ -1979,25 +1979,25 @@ int main()
 #endif
 
 
-//Ğ¡½á£º
-//¸÷ÖÖÈİÆ÷µÄÊ¹ÓÃÊ±»ú
+//å°ç»“ï¼š
+//å„ç§å®¹å™¨çš„ä½¿ç”¨æ—¶æœº
 
-//Ä¬ÈÏÇé¿öÏÂÓ¦¸ÃÊ¹ÓÃ vector¡£VectorµÄÄÚ²¿½á¹¹×î¼òµ¥£¬²¢ÔÊĞíËæ»ú·ÃÎÊ£¬
-//ËùÒÔÊı¾İµÄ·ÃÎÊÊ®·Ö·½±ãÁé»î£¬Êı¾İµÄ´¦ÀíÒ²¹»¿ì¡£
+//é»˜è®¤æƒ…å†µä¸‹åº”è¯¥ä½¿ç”¨ vectorã€‚Vectorçš„å†…éƒ¨ç»“æ„æœ€ç®€å•ï¼Œå¹¶å…è®¸éšæœºè®¿é—®ï¼Œ
+//æ‰€ä»¥æ•°æ®çš„è®¿é—®ååˆ†æ–¹ä¾¿çµæ´»ï¼Œæ•°æ®çš„å¤„ç†ä¹Ÿå¤Ÿå¿«ã€‚
 
-//Èç¹û¾­³£ÒªÔÚĞòÁĞÍ·²¿ºÍÎ²²¿°²²åºÍÒÆ³ıÔªËØ£¬Ó¦¸Ã²ÉÓÃdeque¡£Èç¹ûÄãÏ£ÍûÔªËØ
-//±»ÒÆ³ıÊ±£¬ÈİÆ÷ÄÜ¹»×Ô¶¯Ëõ¼õÄÚ²¿ÄÚ´æÓÃÁ¿£¬ÄÇÃ´Ò²¸Ã²ÉÓÃdeque¡£
+//å¦‚æœç»å¸¸è¦åœ¨åºåˆ—å¤´éƒ¨å’Œå°¾éƒ¨å®‰æ’å’Œç§»é™¤å…ƒç´ ï¼Œåº”è¯¥é‡‡ç”¨dequeã€‚å¦‚æœä½ å¸Œæœ›å…ƒç´ 
+//è¢«ç§»é™¤æ—¶ï¼Œå®¹å™¨èƒ½å¤Ÿè‡ªåŠ¨ç¼©å‡å†…éƒ¨å†…å­˜ç”¨é‡ï¼Œé‚£ä¹ˆä¹Ÿè¯¥é‡‡ç”¨dequeã€‚
 
-//Èç¹ûĞèÒª¾­³£ÔÚÈİÆ÷ÖĞ¶ÎÖ´ĞĞÔªËØµÄ°²²å¡¢ÒÆ³ıºÍÒÆ¶¯£¬¿É¿¼ÂÇÊ¹ÓÃlist¡£
+//å¦‚æœéœ€è¦ç»å¸¸åœ¨å®¹å™¨ä¸­æ®µæ‰§è¡Œå…ƒç´ çš„å®‰æ’ã€ç§»é™¤å’Œç§»åŠ¨ï¼Œå¯è€ƒè™‘ä½¿ç”¨listã€‚
 
-//Èç¹ûÄã¾­³£ĞèÒª¸ù¾İÄ³¸ö×¼Ôò²éÕÒÔªËØ£¬Ó¦µ±Ê¹ÓÃ¡°ÒÀ¾İ¸Ã×¼Ôò½øĞĞhash¡±µÄ
-//unordered set »ò multiset
+//å¦‚æœä½ ç»å¸¸éœ€è¦æ ¹æ®æŸä¸ªå‡†åˆ™æŸ¥æ‰¾å…ƒç´ ï¼Œåº”å½“ä½¿ç”¨â€œä¾æ®è¯¥å‡†åˆ™è¿›è¡Œhashâ€çš„
+//unordered set æˆ– multiset
 
-//Èç¹ûÏë´¦Àí key/value pair,Çë²ÉÓÃunordered(multi)map¡£Èç¹ûÔªËØ´ÎĞòºÜÖØÒª£¬¿É²ÉÓÃ
+//å¦‚æœæƒ³å¤„ç† key/value pair,è¯·é‡‡ç”¨unordered(multi)mapã€‚å¦‚æœå…ƒç´ æ¬¡åºå¾ˆé‡è¦ï¼Œå¯é‡‡ç”¨
 //(multi)map
 
 
-//Ëæ»ú·ÃÎÊµü´úÆ÷µÄÌØÊâÄÜÁ¦
+//éšæœºè®¿é—®è¿­ä»£å™¨çš„ç‰¹æ®Šèƒ½åŠ›
 #if 0
 #include <vector>
 #include <iostream>
@@ -2041,25 +2041,25 @@ int main()
         cout << *pos << ' ';
     }
     cout << endl;
-    //***×¢***
-    //ÒÔ2¸öµ¥Î»Îª¿ç¶ÈÀ´ÏòÇ°Ôö¼Óµü´úÆ÷µÄÎ»ÖÃÊ±Òª×¢Òâ
-    //ÈôĞ´Îª
+    //***æ³¨***
+    //ä»¥2ä¸ªå•ä½ä¸ºè·¨åº¦æ¥å‘å‰å¢åŠ è¿­ä»£å™¨çš„ä½ç½®æ—¶è¦æ³¨æ„
+    //è‹¥å†™ä¸º
     //for(pos= coll.begin();pos< coll.end(); pos += 2)
-    //¶øÈİÆ÷ÖĞº¬ÆæÊı¸öÔªËØ£¬»áÓĞ²»Ã÷È·ĞĞÎª
-    //Ô­Òò£º
-    //½«µü´úÆ÷ÒÆÖÁ¡°Æğµã¸üÇ°Ãæ¡±»áµ¼ÖÂ²»Ã÷È·ĞĞÎª¡£Í¬ÑùµÀÀí£¬
-    //Èç¹û±í´ïÊ½pos += 2½«µü´úÆ÷ÒÆÖÁend()Ö®ºó£¬Ò²»áµ¼ÖÂ²»Ã÷È·ĞĞÎª¡£
+    //è€Œå®¹å™¨ä¸­å«å¥‡æ•°ä¸ªå…ƒç´ ï¼Œä¼šæœ‰ä¸æ˜ç¡®è¡Œä¸º
+    //åŸå› ï¼š
+    //å°†è¿­ä»£å™¨ç§»è‡³â€œèµ·ç‚¹æ›´å‰é¢â€ä¼šå¯¼è‡´ä¸æ˜ç¡®è¡Œä¸ºã€‚åŒæ ·é“ç†ï¼Œ
+    //å¦‚æœè¡¨è¾¾å¼pos += 2å°†è¿­ä»£å™¨ç§»è‡³end()ä¹‹åï¼Œä¹Ÿä¼šå¯¼è‡´ä¸æ˜ç¡®è¡Œä¸ºã€‚
 }
 #endif
 
 
-//µü´úÆ÷µÄÏà¹Ø¸¨Öúº¯Êı
-//ÓÉÓÚvector¡¢array¡¢stringµÄµü´úÆ÷
-//Í¨³£±»ÊµÏÖÎªÑ°³£pointer, ¶ø C++²¢²»ÔÊĞíÄãĞŞ¸ÄÈÎºÎ»ù´¡ÀàĞÍ
-//(°üÀ¨ pointer)µÄÁÙÊ±Öµ£¬µ«¶ÔÓÚ struct ºÍclass ÔòÔÊĞí¡£
-//Òò´Ë£¬Èç¹ûµü´úÆ÷±»ÊµÏÖÎªÑ°³£ pointer, Ôò±àÒëÊ§°Ü£»Èç¹û±»ÊµÏÖÎª class, Ôò±àÒë³É¹¦¡£
-//ÎªÁË±£Ö¤ÒÆÖ²£¬¿ÉÒÔÊ¹ÓÃC++11Ìá¹©µÄnext()
-//next()ºÃ´¦Ö®Ò»£º
+//è¿­ä»£å™¨çš„ç›¸å…³è¾…åŠ©å‡½æ•°
+//ç”±äºvectorã€arrayã€stringçš„è¿­ä»£å™¨
+//é€šå¸¸è¢«å®ç°ä¸ºå¯»å¸¸pointer, è€Œ C++å¹¶ä¸å…è®¸ä½ ä¿®æ”¹ä»»ä½•åŸºç¡€ç±»å‹
+//(åŒ…æ‹¬ pointer)çš„ä¸´æ—¶å€¼ï¼Œä½†å¯¹äº struct å’Œclass åˆ™å…è®¸ã€‚
+//å› æ­¤ï¼Œå¦‚æœè¿­ä»£å™¨è¢«å®ç°ä¸ºå¯»å¸¸ pointer, åˆ™ç¼–è¯‘å¤±è´¥ï¼›å¦‚æœè¢«å®ç°ä¸º class, åˆ™ç¼–è¯‘æˆåŠŸã€‚
+//ä¸ºäº†ä¿è¯ç§»æ¤ï¼Œå¯ä»¥ä½¿ç”¨C++11æä¾›çš„next()
+//next()å¥½å¤„ä¹‹ä¸€ï¼š
 #if 0
 #include <iostream>
 #include <algorithm>
@@ -2077,20 +2077,20 @@ int main()
     for (auto x : v)
         std::cout << x << ' ';
 
-    //***×¢***
-    // ¾¡¹Ü±í´ïÊ½ ++c.begin() Í¨³£ÄÜ±àÒë£¬È»¶ø²»±£Ö¤»áÕâÃ´×ö£º 
-    // c.begin() ÊÇÓÒÖµ±í´ïÊ½£¬¶øÎŞÀÏÊ½ÊäÈëµü´úÆ÷ (LegacyInputIterator) 
-    // ÒªÇóÖ¸¶¨ÓÒÖµµÄ×ÔÔö±£Ö¤½øĞĞ¡£
-    // ÓÈÆäÊÇµü´úÆ÷ÒÔÖ¸ÕëÊµÏÖ»òÆä operator++ Îª¡¾×óÖµÒıÓÃÏŞ¶¨¡¿Ê±£¬
-    //  ++c.begin() ²»ÄÜ±àÒë£¬¶ø std::next(c.begin()) ¿ÉÒÔ¡£
+    //***æ³¨***
+    // å°½ç®¡è¡¨è¾¾å¼ ++c.begin() é€šå¸¸èƒ½ç¼–è¯‘ï¼Œç„¶è€Œä¸ä¿è¯ä¼šè¿™ä¹ˆåšï¼š 
+    // c.begin() æ˜¯å³å€¼è¡¨è¾¾å¼ï¼Œè€Œæ— è€å¼è¾“å…¥è¿­ä»£å™¨ (LegacyInputIterator) 
+    // è¦æ±‚æŒ‡å®šå³å€¼çš„è‡ªå¢ä¿è¯è¿›è¡Œã€‚
+    // å°¤å…¶æ˜¯è¿­ä»£å™¨ä»¥æŒ‡é’ˆå®ç°æˆ–å…¶ operator++ ä¸ºã€å·¦å€¼å¼•ç”¨é™å®šã€‘æ—¶ï¼Œ
+    //  ++c.begin() ä¸èƒ½ç¼–è¯‘ï¼Œè€Œ std::next(c.begin()) å¯ä»¥ã€‚
 }
 #endif
 
 
-//¸ù¾İµü´úÆ÷ÖÖÀà£¬Ñ¡Ôñ×î¼ÑµÄÇ°½ø/ºóÍË·½°¸£ºadvance()
-//***×¢***
-//Ç°½ø£ºnext()    ºóÍË£ºprev()       º¯Êı
-//ÄÚ²¿½«¶ÔÒ»¸öÁÙÊ±¶ÔÏóµ÷ÓÃadvance()
+//æ ¹æ®è¿­ä»£å™¨ç§ç±»ï¼Œé€‰æ‹©æœ€ä½³çš„å‰è¿›/åé€€æ–¹æ¡ˆï¼šadvance()
+//***æ³¨***
+//å‰è¿›ï¼šnext()    åé€€ï¼šprev()       å‡½æ•°
+//å†…éƒ¨å°†å¯¹ä¸€ä¸ªä¸´æ—¶å¯¹è±¡è°ƒç”¨advance()
 #if 0
 #include <iterator>
 #include <iostream>
@@ -2127,9 +2127,9 @@ int main()
 #endif
 
 
-//next()ºÃ´¦Ö®¶ş£º
-//¶ÔÓÚÃ»ÓĞoperator +ºÍoperator -  µÄÕâĞ©ÈİÆ÷
-//¿ÉÒÔÓÃnext()À´È·¶¨±éÀúµ½Ä³¸öÎ»ÖÃÊ±Í£Ö¹
+//next()å¥½å¤„ä¹‹äºŒï¼š
+//å¯¹äºæ²¡æœ‰operator +å’Œoperator -  çš„è¿™äº›å®¹å™¨
+//å¯ä»¥ç”¨next()æ¥ç¡®å®šéå†åˆ°æŸä¸ªä½ç½®æ—¶åœæ­¢
 #if 0
 #include <iterator>
 #include <iostream>
@@ -2139,7 +2139,7 @@ using namespace std;
 
 int main()
 {
-    list<int> coll;//½öÓĞË«Ïòµü´úÆ÷
+    list<int> coll;//ä»…æœ‰åŒå‘è¿­ä»£å™¨
 
     // insert elements from 1 to 9
     for (int i = 1; i <= 9; ++i)
@@ -2156,8 +2156,8 @@ int main()
     }
     cout << endl;
 
-    //forward ºÍ bidirectional µü´úÆ÷²»Ìá¹© operator +ºÍ -
-    //Èç¹û²»ÓÃnext()£¬Äã¾ÍĞèÒª´´½¨Ò»¸öÁÙÊ±¶ÔÏóµÄĞ­ÖúÀ´ÅĞ¶Ï
+    //forward å’Œ bidirectional è¿­ä»£å™¨ä¸æä¾› operator +å’Œ -
+    //å¦‚æœä¸ç”¨next()ï¼Œä½ å°±éœ€è¦åˆ›å»ºä¸€ä¸ªä¸´æ—¶å¯¹è±¡çš„ååŠ©æ¥åˆ¤æ–­
     auto pos_1 = coll.begin();
     auto nextPos = pos_1;
     ++nextPos;
@@ -2173,10 +2173,10 @@ int main()
 #endif
 
 
-//¸ù¾İµü´úÆ÷ÖÖÀà£¬Ñ¡Ôñ×î¼ÑµÄ¼ÆËã¾àÀëµÄ·½°¸£ºdistance()
+//æ ¹æ®è¿­ä»£å™¨ç§ç±»ï¼Œé€‰æ‹©æœ€ä½³çš„è®¡ç®—è·ç¦»çš„æ–¹æ¡ˆï¼šdistance()
 
 
-//½»»»Á½¸öµü´úÆ÷ËùÖ¸µÄÔªËØµÄÖµ
+//äº¤æ¢ä¸¤ä¸ªè¿­ä»£å™¨æ‰€æŒ‡çš„å…ƒç´ çš„å€¼
 #if 0
 #include <iostream>
 #include <algorithm>
@@ -2222,8 +2222,8 @@ int main()
 #endif
 
 
-//µü´úÆ÷ÊÊÅäÆ÷(iterator adapter)
-//½«Õı³£µÄµü´úÆ÷×ª»¯³É·´Ïòµü´úÆ÷
+//è¿­ä»£å™¨é€‚é…å™¨(iterator adapter)
+//å°†æ­£å¸¸çš„è¿­ä»£å™¨è½¬åŒ–æˆåå‘è¿­ä»£å™¨
 #if 0
 #include <iterator>
 #include <iostream>
@@ -2249,29 +2249,29 @@ int main()
     // print value to which reverse iterator rpos refers
     cout << "rpos: " << *rpos << endl << endl;
 
-    //***×¢***
-    //×ª»»Ç°ºóµü´úÆ÷Âß¼­Î»ÖÃ·¢ÉúÁË±ä»¯
-    //µ±ÎÒÃÇ°Ñpos ×ª»»Îªrpos,ËüÃÇµÄÎïÀíÎ»ÖÃÖ¸ÏòÍ¬Ò»µã£¬µ«ËüÃÇËù´ú±íµÄÒâÒå
-    //(»òËµËüÃÇËù´ú±íµÄÂß¼­Î»ÖÃ)²»Í¬ÁË
+    //***æ³¨***
+    //è½¬æ¢å‰åè¿­ä»£å™¨é€»è¾‘ä½ç½®å‘ç”Ÿäº†å˜åŒ–
+    //å½“æˆ‘ä»¬æŠŠpos è½¬æ¢ä¸ºrpos,å®ƒä»¬çš„ç‰©ç†ä½ç½®æŒ‡å‘åŒä¸€ç‚¹ï¼Œä½†å®ƒä»¬æ‰€ä»£è¡¨çš„æ„ä¹‰
+    //(æˆ–è¯´å®ƒä»¬æ‰€ä»£è¡¨çš„é€»è¾‘ä½ç½®)ä¸åŒäº†
 
-    //***Àí½â***
-    //rbegin()Ö¸ÏòÈİÆ÷µÄ×îÄ©ÔªËØµÄÏÂÒ»¸öÎ»ÖÃ£¬¶ø¶ÔÆä½âÒıÓÃºóÖµÎª×îÄ©ÔªËØµÄÖµ
-    //rend()Ö¸ÏòÈİÆ÷µÄµÚÒ»¸öÔªËØµÄÎ»ÖÃ£¬¶ø¶ÔÆä½âÒıÓÃºóÖµÎªµÚÒ»¸öÔªËØÇ°µÄÒ»¸öÎ»ÖÃ
+    //***ç†è§£***
+    //rbegin()æŒ‡å‘å®¹å™¨çš„æœ€æœ«å…ƒç´ çš„ä¸‹ä¸€ä¸ªä½ç½®ï¼Œè€Œå¯¹å…¶è§£å¼•ç”¨åå€¼ä¸ºæœ€æœ«å…ƒç´ çš„å€¼
+    //rend()æŒ‡å‘å®¹å™¨çš„ç¬¬ä¸€ä¸ªå…ƒç´ çš„ä½ç½®ï¼Œè€Œå¯¹å…¶è§£å¼•ç”¨åå€¼ä¸ºç¬¬ä¸€ä¸ªå…ƒç´ å‰çš„ä¸€ä¸ªä½ç½®
 
-    //ÎªÊ²Ã´rend()Ö¸ÏòÈİÆ÷µÄµÚÒ»¸öÔªËØµÄÎ»ÖÃ£¿
-    //ÒòÎª±éÀúÈİÆ÷£¬Ò»°ãÎÒÃÇĞèÒª²ÉÓÃ¡°×îÄ©ÔªËØµÄÏÂÒ»Î»ÖÃ¡±¡£
-    // È»¶ø¶Ô reverse µü´úÆ÷¶øÑÔ£¬Õâ¸öÎ»ÖÃÎ»ÓÚµÚÒ»ÔªËØÖ®Ç°¡£
-    // Ôã¸âµÄÊÇ£¬Õâ¸öÎ»ÖÃ¿ÉÄÜ²¢²»´æÔÚ£¬ÒòÎªÈİÆ÷²¢²»ÒªÇóÆäµÚÒ»ÔªËØÖ®Ç°µÄÎ»ÖÃºÏ·¨
-    //ËùÒÔ¶ÔÓÚ·´Ïòµü´úÆ÷£¬ÎïÀíÉÏrend()Ö¸ÏòÈİÆ÷µÄµÚÒ»¸öÔªËØµÄÎ»ÖÃ(¸ÃÎ»ÖÃÒ»¶¨ºÏ·¨)£¬
-    //µ«ÊÇÂß¼­ÉÏ½âÊÍÎªµÚÒ»¸öÔªËØÇ°µÄÒ»¸öÎ»ÖÃ¡£
-    //ÓÉÓÚÎïÀíÒâÒåºÍÂß¼­ÒâÒå²»Í¬£¬¶ø½âÒıÓÃ½âµÄÊÇÂß¼­ÒâÒå£¬
-    //Òò´ËÂß¼­ÉÏÆä value(Ò²¾ÍÊÇÆäËùÖ¸ÔªËØÖµ)Ò²¾ÍÒÆµ½ÁËÇ°Ò»¸öÔªËØÉíÉÏ¡£
+    //ä¸ºä»€ä¹ˆrend()æŒ‡å‘å®¹å™¨çš„ç¬¬ä¸€ä¸ªå…ƒç´ çš„ä½ç½®ï¼Ÿ
+    //å› ä¸ºéå†å®¹å™¨ï¼Œä¸€èˆ¬æˆ‘ä»¬éœ€è¦é‡‡ç”¨â€œæœ€æœ«å…ƒç´ çš„ä¸‹ä¸€ä½ç½®â€ã€‚
+    // ç„¶è€Œå¯¹ reverse è¿­ä»£å™¨è€Œè¨€ï¼Œè¿™ä¸ªä½ç½®ä½äºç¬¬ä¸€å…ƒç´ ä¹‹å‰ã€‚
+    // ç³Ÿç³•çš„æ˜¯ï¼Œè¿™ä¸ªä½ç½®å¯èƒ½å¹¶ä¸å­˜åœ¨ï¼Œå› ä¸ºå®¹å™¨å¹¶ä¸è¦æ±‚å…¶ç¬¬ä¸€å…ƒç´ ä¹‹å‰çš„ä½ç½®åˆæ³•
+    //æ‰€ä»¥å¯¹äºåå‘è¿­ä»£å™¨ï¼Œç‰©ç†ä¸Šrend()æŒ‡å‘å®¹å™¨çš„ç¬¬ä¸€ä¸ªå…ƒç´ çš„ä½ç½®(è¯¥ä½ç½®ä¸€å®šåˆæ³•)ï¼Œ
+    //ä½†æ˜¯é€»è¾‘ä¸Šè§£é‡Šä¸ºç¬¬ä¸€ä¸ªå…ƒç´ å‰çš„ä¸€ä¸ªä½ç½®ã€‚
+    //ç”±äºç‰©ç†æ„ä¹‰å’Œé€»è¾‘æ„ä¹‰ä¸åŒï¼Œè€Œè§£å¼•ç”¨è§£çš„æ˜¯é€»è¾‘æ„ä¹‰ï¼Œ
+    //å› æ­¤é€»è¾‘ä¸Šå…¶ value(ä¹Ÿå°±æ˜¯å…¶æ‰€æŒ‡å…ƒç´ å€¼)ä¹Ÿå°±ç§»åˆ°äº†å‰ä¸€ä¸ªå…ƒç´ èº«ä¸Šã€‚
 }
 #endif
 
 
-//·´Ïòµü´úÆ÷µÄÓ¦ÓÃ
-//Ê¹ÓÃÒ»¶Ôµü´úÆ÷£¬ÕıÏòºÍÄæÏò´òÓ¡ÕÒ³öµÄÔªËØ
+//åå‘è¿­ä»£å™¨çš„åº”ç”¨
+//ä½¿ç”¨ä¸€å¯¹è¿­ä»£å™¨ï¼Œæ­£å‘å’Œé€†å‘æ‰“å°æ‰¾å‡ºçš„å…ƒç´ 
 #if 0
 #include <iterator>
 #include <iostream>
@@ -2314,10 +2314,10 @@ int main()
     for_each(rpos2, rpos1,   // range
         print);         // operation
     cout << endl;
-    //***Àí½â***
-    //ÎïÀíÎ»ÖÃ²»±ä£¬µ«ÊÇÂß¼­Î»ÖÃ¸Ä±ä£¬´òÓ¡³öµÄÄÚÈİÕıºÃ·ûºÏÔ¤ÆÚ¡£
+    //***ç†è§£***
+    //ç‰©ç†ä½ç½®ä¸å˜ï¼Œä½†æ˜¯é€»è¾‘ä½ç½®æ”¹å˜ï¼Œæ‰“å°å‡ºçš„å†…å®¹æ­£å¥½ç¬¦åˆé¢„æœŸã€‚
 
-    //Ê¹ÓÃbase()½«·´Ïòµü´úÆ÷×ª»¯ÎªÕı³£µü´úÆ÷
+    //ä½¿ç”¨base()å°†åå‘è¿­ä»£å™¨è½¬åŒ–ä¸ºæ­£å¸¸è¿­ä»£å™¨
     deque<int>::const_iterator rrpos1(rpos1.base());
 
     cout << "*rrpos1=" << *rrpos1 << endl;
@@ -2325,8 +2325,8 @@ int main()
 #endif
 
 
-//back_insert_iterator¡¢back_inserter()µÄÓ¦ÓÃ
-//Ö»ÄÜÓÃÔÚvector¡¢deque¡¢list¡¢stringÉÏ
+//back_insert_iteratorã€back_inserter()çš„åº”ç”¨
+//åªèƒ½ç”¨åœ¨vectorã€dequeã€listã€stringä¸Š
 #if 0
 #include <vector>
 #include <algorithm>
@@ -2371,11 +2371,11 @@ int main()
 
     // use back inserter to append all elements again
     // - reserve enough memory to avoid reallocation
-    //***×¢***
-    //°²²åĞÍµü´úÆ÷È·ÊµÄÜ°²²åÔªËØµ½ÈİÆ÷ÖĞ£¬
-    //µ«ÊÇ¡¾¶ÔÓÚvectorµÈÄÚ´æ¿ÉÄÜĞèÒªÖØĞÂ·ÖÅäµÄÈİÆ÷¡¿
-    //back inserter ÔÚ°²²åÔªËØÊ±£¬¿ÉÄÜ»áÔì³ÉÖ¸Ïò¸Ã vectorµÄÆäËûµü´úÆ÷Ê§Ğ§¡£
-    //Òò´Ë£¬Èç¹ûÌáÇ°²»ÉêÇë×ã¹»¿Õ¼ä£¬Õâ¸öËã·¨¿ÉÄÜ»áĞÎ³É¡°Ô´¶Ëµü´úÆ÷Ê§Ğ§¡±×´Ì¬¡£
+    //***æ³¨***
+    //å®‰æ’å‹è¿­ä»£å™¨ç¡®å®èƒ½å®‰æ’å…ƒç´ åˆ°å®¹å™¨ä¸­ï¼Œ
+    //ä½†æ˜¯ã€å¯¹äºvectorç­‰å†…å­˜å¯èƒ½éœ€è¦é‡æ–°åˆ†é…çš„å®¹å™¨ã€‘
+    //back inserter åœ¨å®‰æ’å…ƒç´ æ—¶ï¼Œå¯èƒ½ä¼šé€ æˆæŒ‡å‘è¯¥ vectorçš„å…¶ä»–è¿­ä»£å™¨å¤±æ•ˆã€‚
+    //å› æ­¤ï¼Œå¦‚æœæå‰ä¸ç”³è¯·è¶³å¤Ÿç©ºé—´ï¼Œè¿™ä¸ªç®—æ³•å¯èƒ½ä¼šå½¢æˆâ€œæºç«¯è¿­ä»£å™¨å¤±æ•ˆâ€çŠ¶æ€ã€‚
     coll.reserve(2 * coll.size());
 
     copy(coll.begin(), coll.end(), back_insert_iterator<vector<int>>(coll));
@@ -2386,14 +2386,14 @@ int main()
     copy(coll.begin(), coll.end(), back_inserter(coll));
     PRINT_ELEMENTS(coll);
 
-    //»¹¿ÉÒÔÊ¹ÓÃvectorÈİÆ÷×Ô¼ºµÄinsert·½·¨
-    //£¨´«ÈëµÄÊÇ¸öÖ¸Ïò×ÔÉíµÄÄ³¸öÔªËØµÄµü´úÆ÷Ê±£¬Ò²Òª×¢Òâ²Ù×÷ºóµü´úÆ÷¿ÉÄÜ»áÊ§Ğ§£©
+    //è¿˜å¯ä»¥ä½¿ç”¨vectorå®¹å™¨è‡ªå·±çš„insertæ–¹æ³•
+    //ï¼ˆä¼ å…¥çš„æ˜¯ä¸ªæŒ‡å‘è‡ªèº«çš„æŸä¸ªå…ƒç´ çš„è¿­ä»£å™¨æ—¶ï¼Œä¹Ÿè¦æ³¨æ„æ“ä½œåè¿­ä»£å™¨å¯èƒ½ä¼šå¤±æ•ˆï¼‰
 }
 #endif
 
 
-//front_insert_iterator¡¢front_inserter()µÄÓ¦ÓÃ
-//Ö»ÄÜÓÃÔÚdeque¡¢list¡¢forward list
+//front_insert_iteratorã€front_inserter()çš„åº”ç”¨
+//åªèƒ½ç”¨åœ¨dequeã€listã€forward list
 #if 0
 #include <list>
 #include <algorithm>
@@ -2446,11 +2446,11 @@ int main()
 #endif
 
 
-//insert_iterator¡¢inserter()Ó¦ÓÃ
-//general inserter ¡¾¶ÔËùÓĞ±ê×¼ÈİÆ÷¾ùÊÊÓÃ¡¿(Ö»ÓĞ array ºÍ forward list ³ıÍâ),
-// ÒòÎªÄÇĞ©ÈİÆ÷¶¼Ìá¹©ÓĞinsert()³ÉÔ±º¯Êı(¼û8.7.1½ÚµÚ413Ò³)¡£
-// È»¶ø¶Ô associative ºÍ unordered ÈİÆ÷¶øÑÔ£¬°²²åÎ»ÖÃÖ»ÊÇ¸öÌáÊ¾£¬
-// ÒòÎªÔÚÕâÁ½ÖÖÈİÆ÷ÖĞÔªËØµÄÕæÕıÎ»ÖÃÊÓÆävalue¶ø¶¨¡£
+//insert_iteratorã€inserter()åº”ç”¨
+//general inserter ã€å¯¹æ‰€æœ‰æ ‡å‡†å®¹å™¨å‡é€‚ç”¨ã€‘(åªæœ‰ array å’Œ forward list é™¤å¤–),
+// å› ä¸ºé‚£äº›å®¹å™¨éƒ½æä¾›æœ‰insert()æˆå‘˜å‡½æ•°(è§8.7.1èŠ‚ç¬¬413é¡µ)ã€‚
+// ç„¶è€Œå¯¹ associative å’Œ unordered å®¹å™¨è€Œè¨€ï¼Œå®‰æ’ä½ç½®åªæ˜¯ä¸ªæç¤ºï¼Œ
+// å› ä¸ºåœ¨è¿™ä¸¤ç§å®¹å™¨ä¸­å…ƒç´ çš„çœŸæ­£ä½ç½®è§†å…¶valueè€Œå®šã€‚
 #if 0
 #include <set>
 #include <list>
@@ -2515,28 +2515,28 @@ int main()
     auto pos = coll2.end();
     for (int i = 1; i < 9; ++i)
     {
-        //´íÎóĞ´·¨£º
+        //é”™è¯¯å†™æ³•ï¼š
         //coll2.insert(pos,i);
-        //ÕıÈ·Ğ´·¨£º
+        //æ­£ç¡®å†™æ³•ï¼š
         pos = coll2.insert(pos, i);
         ++pos;
     }
 
-    //***×¢***
-    //°²²å¶¯×÷Íê³Éºó£¬general inserter »ñµÃ¸Õ±»°²²åµÄÄÇ¸öÔªËØµÄÎ»ÖÃ£¬Ïàµ±ÓÚ
+    //***æ³¨***
+    //å®‰æ’åŠ¨ä½œå®Œæˆåï¼Œgeneral inserter è·å¾—åˆšè¢«å®‰æ’çš„é‚£ä¸ªå…ƒç´ çš„ä½ç½®ï¼Œç›¸å½“äº
     //pos = container.insert(pos,value);
     //++pos;
-    //ÕâÑùÊ¹ÎªÁËÈ·±£¸Ãµü´úÆ÷µÄÎ»ÖÃÊ¼ÖÕÓĞĞ§¡£Èç¹û
-    //Ã»ÓĞÕâÒ»¸³Öµ¶¯×÷£¬ÔÚ deque¡¢vector ºÍ stringÖĞ£¬
-    //¸Ã general inserter±¾Éí¿ÉÄÜ»áÊ§Ğ§¡£ÒòÎªÃ¿Ò»´Î°²²å¶¯×÷¶¼»á
-    //(»òÖÁÉÙ¿ÉÄÜ»á)Ê¹Ö¸ÏòÈİÆ÷µÄËùÓĞµü´úÆ÷Ê§Ğ§¡£
+    //è¿™æ ·ä½¿ä¸ºäº†ç¡®ä¿è¯¥è¿­ä»£å™¨çš„ä½ç½®å§‹ç»ˆæœ‰æ•ˆã€‚å¦‚æœ
+    //æ²¡æœ‰è¿™ä¸€èµ‹å€¼åŠ¨ä½œï¼Œåœ¨ dequeã€vector å’Œ stringä¸­ï¼Œ
+    //è¯¥ general inserteræœ¬èº«å¯èƒ½ä¼šå¤±æ•ˆã€‚å› ä¸ºæ¯ä¸€æ¬¡å®‰æ’åŠ¨ä½œéƒ½ä¼š
+    //(æˆ–è‡³å°‘å¯èƒ½ä¼š)ä½¿æŒ‡å‘å®¹å™¨çš„æ‰€æœ‰è¿­ä»£å™¨å¤±æ•ˆã€‚
 
     PRINT_ELEMENTS(coll2, "list: ");
 }
 #endif
 
 
-//Ê¹ÓÃostream_iterator
+//ä½¿ç”¨ostream_iterator
 #if 0
 #include <iostream>
 #include <vector>
@@ -2573,7 +2573,7 @@ int main()
 #endif
 
 
-//Ê¹ÓÃistream_iterator
+//ä½¿ç”¨istream_iterator
 #if 0
 #include <iostream>
 #include <iterator>
@@ -2596,15 +2596,15 @@ int main()
         ++intReader;
     }
 
-    //***×¢***
-    // ÈôÊäÈë×Ö·ûa½«µ¼ÖÂ³ÌĞò½áÊø¡£ÓÉÓÚ¸ñÊ½´íÎó£¬stream²»ÔÙ´¦ÓÚ good ×´Ì¬£¬
-    // ÓÚÊÇ istreamµü´úÆ÷ intReader ¾ÍºÍ end - of - stream µü´úÆ÷ intReaderEOF ÏàÍ¬£¬
-    // Ê¹µÃÑ­»·Ìõ¼şÎª false, ½ø¶ø½áÊøÑ­»·¡£
+    //***æ³¨***
+    // è‹¥è¾“å…¥å­—ç¬¦aå°†å¯¼è‡´ç¨‹åºç»“æŸã€‚ç”±äºæ ¼å¼é”™è¯¯ï¼Œstreamä¸å†å¤„äº good çŠ¶æ€ï¼Œ
+    // äºæ˜¯ istreamè¿­ä»£å™¨ intReader å°±å’Œ end - of - stream è¿­ä»£å™¨ intReaderEOF ç›¸åŒï¼Œ
+    // ä½¿å¾—å¾ªç¯æ¡ä»¶ä¸º false, è¿›è€Œç»“æŸå¾ªç¯ã€‚
 }
 #endif
 
 
-//ÀûÓÃadvance()ºÍistream_iteratorÀ´Ìø¹ıÖ¸¶¨¸öÊıµÄÊäÈëÄÚÈİ
+//åˆ©ç”¨advance()å’Œistream_iteratoræ¥è·³è¿‡æŒ‡å®šä¸ªæ•°çš„è¾“å…¥å†…å®¹
 #if 0
 #include <iterator>
 #include <iostream>
@@ -2623,8 +2623,8 @@ int main()
     {
         // ignore the following two strings
         advance(cinPos, 2);
-        //***×¢***
-        //ÈôÖ¸ÏòEOFµÄºóÒ»¸öÎ»ÖÃ£¬³ÌĞò»á±ÀÀ£
+        //***æ³¨***
+        //è‹¥æŒ‡å‘EOFçš„åä¸€ä¸ªä½ç½®ï¼Œç¨‹åºä¼šå´©æºƒ
 
         // read and write the third string
         if (cinPos != istream_iterator<string>())
@@ -2634,7 +2634,7 @@ int main()
     }
     cout << endl;
 
-    //***×¢***  ÈôÊäÈë£º
+    //***æ³¨***  è‹¥è¾“å…¥ï¼š
 /*
 a
 b
@@ -2645,23 +2645,23 @@ f
 g
 h
 */
-//³ÌĞò»áÔÚÊäÈëµ½dÊ±£¬Á¢¼´Êä³öc
-//·ÖÎö£º
-//while Ñ­»·¿ªÊ¼£¬´ÓÊäÈëÖĞ¡¾¶ÁÈ¡ÁË¡¿ a µ«±»ºöÂÔ£¬Í¬ÀíbÒ²±»ºöÂÔ
-//¶ÁÈ¡µ½c£¬Í¨¹ıÊä³öµü´úÆ÷Êä³öµ½ÆÁÄ»£¬µ«ÓÉÓÚÊäÈëµü´úÆ÷ÈÔ½«¼ì²âÊäÈëµÄÄÚÈİ
-//Òò´Ë²»»áÂíÉÏÊä³öc¡£µÈµ½ÊäÈëµü´úÆ÷ÔÙ¶ÁÈ¡Ò»¸östring¸ñÊ½µÄÄÚÈİºó£¬²ÅÊä³öc
-//»òÕßÖ±½Ó¼üÈë^Zºó£¬Êä³öc
+//ç¨‹åºä¼šåœ¨è¾“å…¥åˆ°dæ—¶ï¼Œç«‹å³è¾“å‡ºc
+//åˆ†æï¼š
+//while å¾ªç¯å¼€å§‹ï¼Œä»è¾“å…¥ä¸­ã€è¯»å–äº†ã€‘ a ä½†è¢«å¿½ç•¥ï¼ŒåŒç†bä¹Ÿè¢«å¿½ç•¥
+//è¯»å–åˆ°cï¼Œé€šè¿‡è¾“å‡ºè¿­ä»£å™¨è¾“å‡ºåˆ°å±å¹•ï¼Œä½†ç”±äºè¾“å…¥è¿­ä»£å™¨ä»å°†æ£€æµ‹è¾“å…¥çš„å†…å®¹
+//å› æ­¤ä¸ä¼šé©¬ä¸Šè¾“å‡ºcã€‚ç­‰åˆ°è¾“å…¥è¿­ä»£å™¨å†è¯»å–ä¸€ä¸ªstringæ ¼å¼çš„å†…å®¹åï¼Œæ‰è¾“å‡ºc
+//æˆ–è€…ç›´æ¥é”®å…¥^Zåï¼Œè¾“å‡ºc
 
-//ÈôÊäÈë£º
+//è‹¥è¾“å…¥ï¼š
 /*
 a b c d e f g h
 */
-//ÔòÊä³öc f
+//åˆ™è¾“å‡ºc f
 }
 #endif
 
 
-//ÒÔº¯Êı¶ÔÏóÎªÅÅĞò×¼Ôò
+//ä»¥å‡½æ•°å¯¹è±¡ä¸ºæ’åºå‡†åˆ™
 #if 0
 #include <iostream>
 #include <string>
@@ -2733,16 +2733,16 @@ int main()
 
     // create such a collection
     PersonSet coll;
-    //***Àí½â***
-    //coll¹¹Ôìº¯Êı»á×Ô¶¯²úÉú class PersonSortCriterionµÄÒ»¸öÊµÀı(instance),
-    // ËùÓĞÔªËØ¶¼½«ÒÔ´ËÎªÅÅĞò×¼Ôò½øĞĞÅÅĞò
+    //***ç†è§£***
+    //collæ„é€ å‡½æ•°ä¼šè‡ªåŠ¨äº§ç”Ÿ class PersonSortCriterionçš„ä¸€ä¸ªå®ä¾‹(instance),
+    // æ‰€æœ‰å…ƒç´ éƒ½å°†ä»¥æ­¤ä¸ºæ’åºå‡†åˆ™è¿›è¡Œæ’åº
 
-    //Ğ´·¨¶ş£º
+    //å†™æ³•äºŒï¼š
     /*
     PersonSortCriterion PSC;
     set<Person, PersonSortCriterion> coll(PSC);
     */
-    //ÏêÏ¸¼û//¶ÔÓÚ¹ØÁªÈİÆ÷£¬ÊµÏÖÔËĞĞÆÚÖ¸¶¨ÅÅĞò×¼Ôò
+    //è¯¦ç»†è§//å¯¹äºå…³è”å®¹å™¨ï¼Œå®ç°è¿è¡ŒæœŸæŒ‡å®šæ’åºå‡†åˆ™
 
     coll.insert(p1);
     coll.insert(p2);
@@ -2764,7 +2764,7 @@ int main()
 #endif
 
 
-//º¯Êı¶ÔÏóÓµÓĞÄÚ²¿×´Ì¬(Internal State)
+//å‡½æ•°å¯¹è±¡æ‹¥æœ‰å†…éƒ¨çŠ¶æ€(Internal State)
 #if 0
 #include <iostream>
 #include <list>
@@ -2821,7 +2821,7 @@ int main()
 #endif
 
 
-//for_each()¶ÀÃÅ¾ø¼¼£º¿ÉÒÔ´«»ØÆäº¯Êı¶ÔÏó
+//for_each()ç‹¬é—¨ç»æŠ€ï¼šå¯ä»¥ä¼ å›å…¶å‡½æ•°å¯¹è±¡
 #if 0
 #include <iostream>
 #include <vector>
@@ -2866,8 +2866,8 @@ int main()
 
     cout << "mean value: " << mv.value() << endl;
 
-    //***Àí½â***
-    //for_each()µÄÊµÏÖ£º
+    //***ç†è§£***
+    //for_each()çš„å®ç°ï¼š
     /*
     template<class InputIt, class UnaryFunction>
     UnaryFunction for_each(InputIt first, InputIt last, UnaryFunction f)
@@ -2875,14 +2875,14 @@ int main()
         for (; first != last; ++first) {
             f(*first);
         }
-        return f; // C++11 ÆğÒşÊ½ÒÆ¶¯
-    }               // (´ËÀıÖĞµ÷ÓÃMeanValueµÄ×Ô¶¯Ìá¹©µÄ¸´ÖÆ¹¹Ôìº¯Êı)
+        return f; // C++11 èµ·éšå¼ç§»åŠ¨
+    }               // (æ­¤ä¾‹ä¸­è°ƒç”¨MeanValueçš„è‡ªåŠ¨æä¾›çš„å¤åˆ¶æ„é€ å‡½æ•°)
     */
 }
 #endif
 
 
-//remove_if()ÅöÉÏº¯Êı¶ÔÏó×÷ÎªÎ½´Ê (Predicate)»á³öÏÖµÄÎÊÌâ
+//remove_if()ç¢°ä¸Šå‡½æ•°å¯¹è±¡ä½œä¸ºè°“è¯ (Predicate)ä¼šå‡ºç°çš„é—®é¢˜
 #if 0
 #include <iostream>
 #include <list>
@@ -2928,9 +2928,9 @@ int main()
 
     PRINT_ELEMENTS(coll, "3rd removed: ");
 
-    //½á¹ûÎª£º1 2 4 5 7 8 9 10
-    //Àí½â£º
-    //remove_if()µÄÊµÏÖ
+    //ç»“æœä¸ºï¼š1 2 4 5 7 8 9 10
+    //ç†è§£ï¼š
+    //remove_if()çš„å®ç°
     /*
     template <typename ForwIter,typename Predicate>
     ForwIter std::remove_if(ForwIter beg,ForwIter end,
@@ -2943,23 +2943,23 @@ int main()
         }
         else {
         ForwIter next = beg;
-        return remove_copy_if(++next,end,beg,op);//Ìá¸ß´úÂëµÄ¸´ÓÃĞÔºÍ×ñÑ­µ¥Ò»ÔğÈÎÔ­Ôò
+        return remove_copy_if(++next,end,beg,op);//æé«˜ä»£ç çš„å¤ç”¨æ€§å’Œéµå¾ªå•ä¸€è´£ä»»åŸåˆ™
         }
     }
     */
-    // Ê¹ÓÃfind_if()²éÕÒÓ¦±»ÒÆ³ıµÄµÚÒ»¸öÔªËØ¡£È»¶ø£¬
-    // ½ÓÏÂÀ´remove_copy_if()Ê¹ÓÃ´«ÈëµÄ predicate opµÄ¿½±´È¥´¦ÀíÊ£ÓàÔªËØ£¬
-    // ÕâÊ±Ô­Ê¼×´Ì¬ÏÂµÄNthÔÙ´Î±»Ê¹ÓÃ£¬Òò¶ø
-    // »áÒÆ³ıÊ£ÓàÔªËØÖĞµÄµÚ3¸öÔªËØ£¬Ò²¾ÍÊÇÕûÌåµÄµÚ6¸öÔªËØ¡£
+    // ä½¿ç”¨find_if()æŸ¥æ‰¾åº”è¢«ç§»é™¤çš„ç¬¬ä¸€ä¸ªå…ƒç´ ã€‚ç„¶è€Œï¼Œ
+    // æ¥ä¸‹æ¥remove_copy_if()ä½¿ç”¨ä¼ å…¥çš„ predicate opçš„æ‹·è´å»å¤„ç†å‰©ä½™å…ƒç´ ï¼Œ
+    // è¿™æ—¶åŸå§‹çŠ¶æ€ä¸‹çš„Nthå†æ¬¡è¢«ä½¿ç”¨ï¼Œå› è€Œ
+    // ä¼šç§»é™¤å‰©ä½™å…ƒç´ ä¸­çš„ç¬¬3ä¸ªå…ƒç´ ï¼Œä¹Ÿå°±æ˜¯æ•´ä½“çš„ç¬¬6ä¸ªå…ƒç´ ã€‚
 
-    //½â¾ö·½·¨£ºÊ¹ÓÃremove_copy_if()
+    //è§£å†³æ–¹æ³•ï¼šä½¿ç”¨remove_copy_if()
     pos = remove_copy_if(coll.begin(), coll.end(),  // range
         coll.begin(), Nth(3));                  // remove criterion
     coll.erase(pos, coll.end());
 
     PRINT_ELEMENTS(coll, "3rd removed: ");
 
-    //Ê¹ÓÃlambda¸üÖ±¹Û£º
+    //ä½¿ç”¨lambdaæ›´ç›´è§‚ï¼š
     int cnt = 0;
     pos = remove_if(coll.begin(), coll.end(), [&cnt](int)
         {
@@ -2970,7 +2970,7 @@ int main()
     PRINT_ELEMENTS(coll, "3rd removed: ");
 }
 /*
-remove_copy_ifµÄÊµÏÖ£º
+remove_copy_ifçš„å®ç°ï¼š
 template<class InputIt, class OutputIt, class UnaryPredicate>
 OutputIt remove_copy_if
 (InputIt first, InputIt last, OutputIt d_first, UnaryPredicate p)
@@ -2984,13 +2984,13 @@ OutputIt remove_copy_if
 }
 */
 #endif
-//Çø±ğ£º
-//remove_if ÓÃÓÚ´ÓÈİÆ÷ÖĞÒÆ³ıÔªËØ£¬¶ø remove_copy_if ÔòÊÇ½«²»Âú×ãÌõ¼şµÄÔªËØ
-//¸´ÖÆµ½ÁíÒ»¸öÈİÆ÷ÖĞ¡£ĞèÒª×¢ÒâµÄÊÇ£¬remove_if ²»»áÕæÕıÉ¾³ıÔªËØ£¬
-//¶øÊÇ½«ËüÃÇÒÆµ½ÈİÆ÷Ä©Î²£¬ĞèÒª½áºÏ erase ²Ù×÷À´ÕæÕıÉ¾³ı¡£
+//åŒºåˆ«ï¼š
+//remove_if ç”¨äºä»å®¹å™¨ä¸­ç§»é™¤å…ƒç´ ï¼Œè€Œ remove_copy_if åˆ™æ˜¯å°†ä¸æ»¡è¶³æ¡ä»¶çš„å…ƒç´ 
+//å¤åˆ¶åˆ°å¦ä¸€ä¸ªå®¹å™¨ä¸­ã€‚éœ€è¦æ³¨æ„çš„æ˜¯ï¼Œremove_if ä¸ä¼šçœŸæ­£åˆ é™¤å…ƒç´ ï¼Œ
+//è€Œæ˜¯å°†å®ƒä»¬ç§»åˆ°å®¹å™¨æœ«å°¾ï¼Œéœ€è¦ç»“åˆ erase æ“ä½œæ¥çœŸæ­£åˆ é™¤ã€‚
 
 
-//bind()Ç¶Ì×ºÏ³É¸ü¸´ÔÓµÄº¯Êı¶ÔÏó
+//bind()åµŒå¥—åˆæˆæ›´å¤æ‚çš„å‡½æ•°å¯¹è±¡
 #if 0
 #include <functional>
 #include <iostream>
@@ -3022,7 +3022,7 @@ int main()
     std::cout << "invdiv: " << inversDivide(49, 7) << std::endl;
 }
 #endif
-//¸ÄÓÃLambdaÀ´ÊµÏÖ¸ü¸´ÔÓµÄ¼ÆËã
+//æ”¹ç”¨Lambdaæ¥å®ç°æ›´å¤æ‚çš„è®¡ç®—
 #if 0
 #include <iostream>
 
@@ -3051,11 +3051,11 @@ int main()
 #endif
 
 
-//bind()µ÷ÓÃÈ«¾Öº¯Êı
-//Ê¹ÓÃsearch()º¯Êı¼ìÑéÒ»¸ö×Ö·û´®ÊÇ·ñÊÇÁíÒ»¸ö×Ö·û´®µÄ×Ó´®£¬
-//¼´²éÕÒµÚÒ»¸ö×ÓÇø¼ä
-//***×¢***
-//search() Ç¿µ÷µÄÊÇ²éÕÒµÚÒ»¸öÆ¥Åä£¬¶ø find_end() Ç¿µ÷µÄÊÇ²éÕÒ×îºóÒ»¸öÆ¥Åä
+//bind()è°ƒç”¨å…¨å±€å‡½æ•°
+//ä½¿ç”¨search()å‡½æ•°æ£€éªŒä¸€ä¸ªå­—ç¬¦ä¸²æ˜¯å¦æ˜¯å¦ä¸€ä¸ªå­—ç¬¦ä¸²çš„å­ä¸²ï¼Œ
+//å³æŸ¥æ‰¾ç¬¬ä¸€ä¸ªå­åŒºé—´
+//***æ³¨***
+//search() å¼ºè°ƒçš„æ˜¯æŸ¥æ‰¾ç¬¬ä¸€ä¸ªåŒ¹é…ï¼Œè€Œ find_end() å¼ºè°ƒçš„æ˜¯æŸ¥æ‰¾æœ€åä¸€ä¸ªåŒ¹é…
 #if 0
 #include <iostream>
 #include <algorithm>
@@ -3092,7 +3092,7 @@ int main()
     }
 }
 #endif
-//ÓÃlambdaÀ´ÊµÏÖµ÷ÓÃÈ«¾Öº¯Êı
+//ç”¨lambdaæ¥å®ç°è°ƒç”¨å…¨å±€å‡½æ•°
 #if 0
 #include <iostream>
 #include <algorithm>
@@ -3123,7 +3123,7 @@ int main()
             << endl;
     }
 
-    //find_first_of   ¡±ËÆºõ¡°Ò²¿ÉÒÔ£¿
+    //find_first_of   â€ä¼¼ä¹â€œä¹Ÿå¯ä»¥ï¼Ÿ
     pos = find_first_of(s.begin(), s.end(),           // string to search in
         sub.begin(), sub.end(),       // substring to search
         [](char c1, char c2) {      // compar. criterion
@@ -3138,7 +3138,7 @@ int main()
 #endif
 
 
-//search()ºÍfind_first_of()µÄÇø±ğ
+//search()å’Œfind_first_of()çš„åŒºåˆ«
 #if 0
 #include <iostream>
 #include <string>
@@ -3147,8 +3147,8 @@ int main() {
     std::string str = "Hello world";
     std::string sub_str = "world";
 
-    // Ê¹ÓÃ find_first_of() 
-    //Ñ°ÕÒµÈÓÚ str ÖĞ×Ö·ûÖ®Ò»µÄÊ×¸ö×Ö·û¡£
+    // ä½¿ç”¨ find_first_of() 
+    //å¯»æ‰¾ç­‰äº str ä¸­å­—ç¬¦ä¹‹ä¸€çš„é¦–ä¸ªå­—ç¬¦ã€‚
     size_t pos = str.find_first_of(sub_str);
     if (pos != std::string::npos) {
         std::cout << "Substring found at position: " << pos << std::endl;
@@ -3157,18 +3157,18 @@ int main() {
         std::cout << "Substring not found" << std::endl;
     }
 
-    //***×¢***
-    //Ã»ÓĞfind_last_of()º¯Êı£¬½östringÓĞ¸Ã·½·¨
-    //ÏëÒªÊµÏÖÑ°ÕÒ×îºóÒ»¸öµÈÓÚ str ÖĞ×Ö·ûÖ®Ò»µÄÊ×¸ö×Ö·ûµÄÔªËØÎ»ÖÃ
-    //¶ÔÓÚ·Çstring¶ÔÏó£¬¿ÉÒÔÓÃ
+    //***æ³¨***
+    //æ²¡æœ‰find_last_of()å‡½æ•°ï¼Œä»…stringæœ‰è¯¥æ–¹æ³•
+    //æƒ³è¦å®ç°å¯»æ‰¾æœ€åä¸€ä¸ªç­‰äº str ä¸­å­—ç¬¦ä¹‹ä¸€çš„é¦–ä¸ªå­—ç¬¦çš„å…ƒç´ ä½ç½®
+    //å¯¹äºéstringå¯¹è±¡ï¼Œå¯ä»¥ç”¨
     /*
     find_first_of(s.rbegin(), s.rend(),           // string to search in
         sub.begin(), sub.end(),       // substring to search
     */
-    //£¨·´Ïòµü´úÆ÷£©
+    //ï¼ˆåå‘è¿­ä»£å™¨ï¼‰
 
-    // Ê¹ÓÃ find()·½·¨Ïàµ±ÓÚÊ¹ÓÃsearch() 
-    //  ÔÚ×Ö·û´®ÖĞ²éÕÒÍêÈ«Æ¥ÅäÖ¸¶¨×Ó´®µÄµÚÒ»¸öÎ»ÖÃ
+    // ä½¿ç”¨ find()æ–¹æ³•ç›¸å½“äºä½¿ç”¨search() 
+    //  åœ¨å­—ç¬¦ä¸²ä¸­æŸ¥æ‰¾å®Œå…¨åŒ¹é…æŒ‡å®šå­ä¸²çš„ç¬¬ä¸€ä¸ªä½ç½®
     pos = str.find(sub_str);
     if (pos != std::string::npos) {
         std::cout << "Substring found at position: " << pos << std::endl;
@@ -3182,8 +3182,8 @@ int main() {
 #endif
 
 
-//bind()µ÷ÓÃ³ÉÔ±º¯Êı
-//²»Ö±¹Û£¬¸öÈË¸üÏ²»¶ÓÃlambda
+//bind()è°ƒç”¨æˆå‘˜å‡½æ•°
+//ä¸ç›´è§‚ï¼Œä¸ªäººæ›´å–œæ¬¢ç”¨lambda
 #if 0
 #include <functional>
 #include <algorithm>
@@ -3227,7 +3227,7 @@ int main()
     bind(&Person::print2, _1, "This is: ")(Person("nico"));
 }
 #endif
-//ÓÃlambdaÊµÏÖµ÷ÓÃ³ÉÔ±º¯Êı
+//ç”¨lambdaå®ç°è°ƒç”¨æˆå‘˜å‡½æ•°
 #if 0
 #include <algorithm>
 #include <vector>
@@ -3288,10 +3288,10 @@ int main()
     //auto pos=find_if(link_list.begin(),link_list.end(),check);
     auto pos=find_if(link_list.begin(),link_list.end(),
         function<bool (int)>(check));
-    //¿ÉÒÔ²»Ê¹ÓÃfunction<>
-    //µ±ĞèÒª´æ´¢²»Í¬ÀàĞÍµÄ¿Éµ÷ÓÃ¶ÔÏó¡¢
-    // ½«ËüÃÇ×÷Îª²ÎÊı´«µİ¸øº¯Êı»òÍ¨¹ı´«µİ¿Éµ÷ÓÃ¶ÔÏóÎª
-    // ÓÃ»§Ìá¹©×Ô¶¨ÒåĞĞÎªµÄÁé»îĞÔÊ±£¬ std::function µÄÊ¹ÓÃ±äµÃ¸ü¼ÓÏà¹Ø
+    //å¯ä»¥ä¸ä½¿ç”¨function<>
+    //å½“éœ€è¦å­˜å‚¨ä¸åŒç±»å‹çš„å¯è°ƒç”¨å¯¹è±¡ã€
+    // å°†å®ƒä»¬ä½œä¸ºå‚æ•°ä¼ é€’ç»™å‡½æ•°æˆ–é€šè¿‡ä¼ é€’å¯è°ƒç”¨å¯¹è±¡ä¸º
+    // ç”¨æˆ·æä¾›è‡ªå®šä¹‰è¡Œä¸ºçš„çµæ´»æ€§æ—¶ï¼Œ std::function çš„ä½¿ç”¨å˜å¾—æ›´åŠ ç›¸å…³
 
     cout << *pos << endl;
 
@@ -3308,8 +3308,8 @@ bool check(int elem)
 
 
 //search_n()
-//ÔÚ·¶Î§ [first, last) ÖĞËÑË÷ count ¸öµÈÍ¬ÔªËØµÄĞòÁĞ£¬
-//Ã¿¸ö¶¼µÈÓÚ¸ø¶¨µÄÖµ value »òÕß Âú×ã¶şÔªÎ½´Ê
+//åœ¨èŒƒå›´ [first, last) ä¸­æœç´¢ count ä¸ªç­‰åŒå…ƒç´ çš„åºåˆ—ï¼Œ
+//æ¯ä¸ªéƒ½ç­‰äºç»™å®šçš„å€¼ value æˆ–è€… æ»¡è¶³äºŒå…ƒè°“è¯
 #if 0
 #include <iostream>
 #include <deque>
@@ -3359,13 +3359,13 @@ int main()
     pos = search_n(coll.begin(), coll.end(),    // range
         4,                           // count
         0,                           // value
-        [](int elem, int value) // criterion   ***×¢***
+        [](int elem, int value) // criterion   ***æ³¨***
         {     
             return elem % 2 == 1;
         });
-    //***×¢***
-    // ±ØĞëĞ´³É¶şÔªÎ½´Ê
-    //²»ÄÜĞ´³É
+    //***æ³¨***
+    // å¿…é¡»å†™æˆäºŒå…ƒè°“è¯
+    //ä¸èƒ½å†™æˆ
     /*
     pos = search_n(coll.begin(), coll.end(),    // range
         4,                           // count
@@ -3376,13 +3376,13 @@ int main()
         });
         */
     
-    //ÒòÎªÓĞÈçÏÂĞ´·¨£º
-    //ÕÒ³öËÄ¸öÖµ´óÓÚ3µÄÁ¬ĞøÔªËØ
+    //å› ä¸ºæœ‰å¦‚ä¸‹å†™æ³•ï¼š
+    //æ‰¾å‡ºå››ä¸ªå€¼å¤§äº3çš„è¿ç»­å…ƒç´ 
 #if 0
     pos = search_n(coll.begin(), coll.end(), // range
         4, // count
         3, // value
-        greater<int>()); // criterion   ¶şÔªÎ½´Ê
+        greater<int>()); // criterion   äºŒå…ƒè°“è¯
 #endif
 
     // print result
@@ -3403,7 +3403,7 @@ int main()
 #endif
 
 
-//search()ÒÔ¸ü¸´ÔÓµÄ×¼Ôò²éÕÒÄ³¸ö×ÓĞòÁĞ
+//search()ä»¥æ›´å¤æ‚çš„å‡†åˆ™æŸ¥æ‰¾æŸä¸ªå­åºåˆ—
 #if 0
 #include <iostream>
 #include <vector>
@@ -3474,7 +3474,7 @@ int main()
 #endif
 
 
-//²éÕÒ×îºóÒ»¸ö×ÓÇø¼ä£¨search()²éµÄÊÇµÚÒ»¸ö×ÓÇø¼ä£©£ºfind_end() 
+//æŸ¥æ‰¾æœ€åä¸€ä¸ªå­åŒºé—´ï¼ˆsearch()æŸ¥çš„æ˜¯ç¬¬ä¸€ä¸ªå­åŒºé—´ï¼‰ï¼šfind_end() 
 #if 0
 #include <iostream>
 #include <deque>
@@ -3528,7 +3528,7 @@ int main()
             << distance(coll.begin(), pos) + 1
             << endl;
 
-        //ÕÒµ¹ÊıµÚ¶ş¸ö·ûºÏµÄ×Ó×Ö·û´®Î»ÖÃ
+        //æ‰¾å€’æ•°ç¬¬äºŒä¸ªç¬¦åˆçš„å­å­—ç¬¦ä¸²ä½ç½®
         // search next occurrence of subcoll
         end = pos;
         pos = find_end(coll.begin(), end,               // range
@@ -3538,7 +3538,7 @@ int main()
 #endif
 
 
-//Ë³ĞòÎŞËùÎ½Çé¿öÏÂ£¬Á½Çø¼äµÄÔªËØÊÇ·ñÏàµÈ£ºis_permutation() 
+//é¡ºåºæ— æ‰€è°“æƒ…å†µä¸‹ï¼Œä¸¤åŒºé—´çš„å…ƒç´ æ˜¯å¦ç›¸ç­‰ï¼šis_permutation() 
 #if 0
 #include <iostream>
 #include <vector>
@@ -3608,7 +3608,7 @@ int main()
 #endif
 
 
-//¼ìÑéÀàµÄËã·¨£ºall_of()¡¢any_of()¡¢none_of()
+//æ£€éªŒç±»çš„ç®—æ³•ï¼šall_of()ã€any_of()ã€none_of()
 #if 0
 #include <iostream>
 #include <vector>
@@ -3660,8 +3660,8 @@ int main()
 #endif
 
 
-//Ê¹ÓÃcopy()×÷Îª±ê×¼ÊäÈëÉè±¸ºÍ±ê×¼Êä³öÉè±¸Ö®¼äµÄÊı¾İÉ¸¼ì³ÌĞò¡£
-//³ÌĞò¶ÁÈ¡ string, ²¢ÒÔÒ»ĞĞÒ»¸öµÄ·½Ê½´òÓ¡ËüÃÇ
+//ä½¿ç”¨copy()ä½œä¸ºæ ‡å‡†è¾“å…¥è®¾å¤‡å’Œæ ‡å‡†è¾“å‡ºè®¾å¤‡ä¹‹é—´çš„æ•°æ®ç­›æ£€ç¨‹åºã€‚
+//ç¨‹åºè¯»å– string, å¹¶ä»¥ä¸€è¡Œä¸€ä¸ªçš„æ–¹å¼æ‰“å°å®ƒä»¬
 #if 0
 #include <iostream>
 #include <algorithm>
@@ -3678,8 +3678,8 @@ int main()
 #endif
 
 
-//unique_ptrµÄ¸´ÖÆ¹¹Ôìº¯Êı¡¢¸³ÖµÔËËã·ûÖØÔØº¯ÊıµÄÊµ²ÎĞèÒªÊ¹ÓÃmove()
-// move() À´ÌåÏÖÒÆ¶¯ÓïÒåµÄÏ¸½Ú
+//unique_ptrçš„å¤åˆ¶æ„é€ å‡½æ•°ã€èµ‹å€¼è¿ç®—ç¬¦é‡è½½å‡½æ•°çš„å®å‚éœ€è¦ä½¿ç”¨move()
+// move() æ¥ä½“ç°ç§»åŠ¨è¯­ä¹‰çš„ç»†èŠ‚
 #if 0
 #include <iostream>
 #include <vector>
@@ -3720,30 +3720,30 @@ int main()
     // print elements of coll2
     // - copy elements to cout using an ostream iterator
     // - use move() because these elements in coll2 are not used again
-    //Ê¹ÓÃmove()£¬ÒòÎªcoll2ÖĞµÄÕâĞ©ÔªËØ²»»áÔÙ´ÎÊ¹ÓÃ
+    //ä½¿ç”¨move()ï¼Œå› ä¸ºcoll2ä¸­çš„è¿™äº›å…ƒç´ ä¸ä¼šå†æ¬¡ä½¿ç”¨
     move(coll2.cbegin(), coll2.cend(),         // source range
         ostream_iterator<string>(cout, " "));  // destination range
     cout << endl;
-    //***×¢***
-    //coll2µÄÔªËØÔÚËüÃÇ³õ´Î±»Êä³öºó£¬×´Ì¬¾Í±äµÃ¡¾²»È·¶¨¡¿£¬
-    // ÒòÎªÕâÀïÓÃµÄÊÇmove()¡£
-    //È»¶ø²¢²»ÒâÎ¶×Åcoll2ÈİÆ÷²»ÄÜÔÙ³öÏÖÔÚÒÔºóµÄ´úÂëÖĞ£¬
-    //coll2µÄ´óĞ¡ÈÔÈ»ÊÇ5, ËùÒÔÎÒÃÇ¿ÉÒÔÔÙ´Îµ÷ÓÃmove()¸²¸Ç(overwrite)ÕâĞ©ÔªËØ¡£
+    //***æ³¨***
+    //coll2çš„å…ƒç´ åœ¨å®ƒä»¬åˆæ¬¡è¢«è¾“å‡ºåï¼ŒçŠ¶æ€å°±å˜å¾—ã€ä¸ç¡®å®šã€‘ï¼Œ
+    // å› ä¸ºè¿™é‡Œç”¨çš„æ˜¯move()ã€‚
+    //ç„¶è€Œå¹¶ä¸æ„å‘³ç€coll2å®¹å™¨ä¸èƒ½å†å‡ºç°åœ¨ä»¥åçš„ä»£ç ä¸­ï¼Œ
+    //coll2çš„å¤§å°ä»ç„¶æ˜¯5, æ‰€ä»¥æˆ‘ä»¬å¯ä»¥å†æ¬¡è°ƒç”¨move()è¦†ç›–(overwrite)è¿™äº›å…ƒç´ ã€‚
 
-    //ÑéÖ¤Êä³ö£º
+    //éªŒè¯è¾“å‡ºï¼š
     copy(coll2.cbegin(), coll2.cend(),        
         ostream_iterator<string>(cout, " "));
     cout << endl;
-    //Êä³öÄÚÈİÕı³££¬½á¹û±íÃ÷£º
-    //move() ²¢²»×ÜÊÇ»áÒÆ¶¯ÔªËØ¡£
-    // ËüÖ»ÊÇ¸æËß±àÒëÆ÷£¬¡¾Èç¹û¿ÉÄÜµÄ»°£¬¿ÉÒÔÊ¹ÓÃÒÆ¶¯ÓïÒåÀ´´¦Àí¡£¡¿
-    // µ«ÔÚÕâÖÖÇé¿öÏÂ£¬ostream_iterator ¶ÔÔªËØ½øĞĞÊä³ö£¬
-    // ²¢Ã»ÓĞÕæÕıµÄÒÆ¶¯ÔªËØ¡£
-    //Òò´Ë£¬ËäÈ»Ê¹ÓÃÁË move()£¬µ«ÔªËØÈÔÈ»±£ÁôÔÚ coll2 ÖĞ£¬
-    // ËùÒÔµÚ¶ş¸ö copy() µ÷ÓÃÊä³öÁË coll2 ÖĞµÄÔªËØ¡£
+    //è¾“å‡ºå†…å®¹æ­£å¸¸ï¼Œç»“æœè¡¨æ˜ï¼š
+    //move() å¹¶ä¸æ€»æ˜¯ä¼šç§»åŠ¨å…ƒç´ ã€‚
+    // å®ƒåªæ˜¯å‘Šè¯‰ç¼–è¯‘å™¨ï¼Œã€å¦‚æœå¯èƒ½çš„è¯ï¼Œå¯ä»¥ä½¿ç”¨ç§»åŠ¨è¯­ä¹‰æ¥å¤„ç†ã€‚ã€‘
+    // ä½†åœ¨è¿™ç§æƒ…å†µä¸‹ï¼Œostream_iterator å¯¹å…ƒç´ è¿›è¡Œè¾“å‡ºï¼Œ
+    // å¹¶æ²¡æœ‰çœŸæ­£çš„ç§»åŠ¨å…ƒç´ ã€‚
+    //å› æ­¤ï¼Œè™½ç„¶ä½¿ç”¨äº† move()ï¼Œä½†å…ƒç´ ä»ç„¶ä¿ç•™åœ¨ coll2 ä¸­ï¼Œ
+    // æ‰€ä»¥ç¬¬äºŒä¸ª copy() è°ƒç”¨è¾“å‡ºäº† coll2 ä¸­çš„å…ƒç´ ã€‚
 
     // copy elements of coll1 into coll2 in reverse order
-    // - now overwriting (coll2.size() still fits)  ÏÈÒª±£Ö¤ÒÆÈëµÄÈİÆ÷µÄÈİÁ¿×ã¹»
+    // - now overwriting (coll2.size() still fits)  å…ˆè¦ä¿è¯ç§»å…¥çš„å®¹å™¨çš„å®¹é‡è¶³å¤Ÿ
     // - use move() because the elements in coll1 are not used again
     move(coll1.crbegin(), coll1.crend(),       // source range
         coll2.begin());                       // destination range
@@ -3757,8 +3757,8 @@ int main()
 #endif
 
 
-//»¥»»Ä³Á½¸öÇø¼äµÄÔªËØ swap_ranges
-//(Èç¹ûÒª½«ÏàÍ¬ÀàĞÍµÄÁ½¸öÈİÆ÷ÄÚµÄËùÓĞÔªËØ¶¼»¥»»£¬Ó¦Ê¹ÓÃswap()³ÉÔ±º¯Êı)
+//äº’æ¢æŸä¸¤ä¸ªåŒºé—´çš„å…ƒç´  swap_ranges
+//(å¦‚æœè¦å°†ç›¸åŒç±»å‹çš„ä¸¤ä¸ªå®¹å™¨å†…çš„æ‰€æœ‰å…ƒç´ éƒ½äº’æ¢ï¼Œåº”ä½¿ç”¨swap()æˆå‘˜å‡½æ•°)
 #if 0
 #include <iostream>
 #include <vector>
@@ -3803,11 +3803,11 @@ int main()
     pos = swap_ranges(coll1.begin(), coll1.end(),  // first range
         coll2.begin());              // second range
 
-    //***×¢***
-    //½«coll1µÄÔªËØºÍcoll2µÄ¶ÔÓ¦ÔªËØ½»»»¡£ 
-    // ÔªËØ¸öÊıÎªdistance(coll1.begin(), coll1.end())
-    // coll2 Ö®ÄÚµÄÆäÓàÔªËØ²»±ä¶¯¡£ 
-    // swap_ranges()Ëã·¨·µ»ØµÚÒ»¸öÎ´±»¸Ä¶¯µÄÔªËØ¡£
+    //***æ³¨***
+    //å°†coll1çš„å…ƒç´ å’Œcoll2çš„å¯¹åº”å…ƒç´ äº¤æ¢ã€‚ 
+    // å…ƒç´ ä¸ªæ•°ä¸ºdistance(coll1.begin(), coll1.end())
+    // coll2 ä¹‹å†…çš„å…¶ä½™å…ƒç´ ä¸å˜åŠ¨ã€‚ 
+    // swap_ranges()ç®—æ³•è¿”å›ç¬¬ä¸€ä¸ªæœªè¢«æ”¹åŠ¨çš„å…ƒç´ ã€‚
 
     PRINT_ELEMENTS(coll1, "\ncoll1: ");
     PRINT_ELEMENTS(coll2, "coll2: ");
@@ -3825,18 +3825,18 @@ int main()
 #endif
 
 
-//fill()ºÍgenerate()µÄÇø±ğ
+//fill()å’Œgenerate()çš„åŒºåˆ«
 //std::fill(myVector.begin(), myVector.end(), 5);
 
-//Ê¹ÓÃ lambda º¯Êı×÷ÎªÉú³ÉÆ÷º¯Êı£¬ÒÀ´ÎÌî³äÏòÁ¿µÄÃ¿¸öÔªËØ
+//ä½¿ç”¨ lambda å‡½æ•°ä½œä¸ºç”Ÿæˆå™¨å‡½æ•°ï¼Œä¾æ¬¡å¡«å……å‘é‡çš„æ¯ä¸ªå…ƒç´ 
 //int value = 0;
 //std::generate(myVector.begin(), myVector.end(), [&value]() { return value++; });
 
-//fill() ÓÃÓÚ½«·¶Î§ÄÚµÄÔªËØÉèÖÃÎª¸ø¶¨Öµ£¬
-//¶ø generate() ÔòÓÃÓÚÊ¹ÓÃÉú³ÉÆ÷º¯ÊıÀ´Ìî³ä·¶Î§ÄÚµÄÔªËØ
+//fill() ç”¨äºå°†èŒƒå›´å†…çš„å…ƒç´ è®¾ç½®ä¸ºç»™å®šå€¼ï¼Œ
+//è€Œ generate() åˆ™ç”¨äºä½¿ç”¨ç”Ÿæˆå™¨å‡½æ•°æ¥å¡«å……èŒƒå›´å†…çš„å…ƒç´ 
 
 
-//Ğı×ªÔªËØrotate()
+//æ—‹è½¬å…ƒç´ rotate()
 #if 0
 #include <iostream>
 #include <vector>
@@ -3894,7 +3894,7 @@ int main()
 #endif
 
 
-//¶ÔÔªËØÖØĞÂÏ´ÅÆ random_shuffle()
+//å¯¹å…ƒç´ é‡æ–°æ´—ç‰Œ random_shuffle()
 #if 0
 #include <iostream>
 #include <vector>
@@ -3949,7 +3949,7 @@ int main()
 #endif
 
 
-//½«ÔªËØÏòÇ°°á partition()¡¢stable_partition()
+//å°†å…ƒç´ å‘å‰æ¬ partition()ã€stable_partition()
 #if 0
 #include <iostream>
 #include <vector>
@@ -4000,11 +4000,11 @@ int main()
             return elem % 2 == 0;
         });
 
-    //partition()ºÍstable_partition()¶¼½«ÔªËØ·ÖÎªÁ½×é
-    //·µ»ØÖµÖ¸ÏòµÚ¶ş×éÔªËØÊ×ÔªËØµÄµü´úÆ÷¡£
+    //partition()å’Œstable_partition()éƒ½å°†å…ƒç´ åˆ†ä¸ºä¸¤ç»„
+    //è¿”å›å€¼æŒ‡å‘ç¬¬äºŒç»„å…ƒç´ é¦–å…ƒç´ çš„è¿­ä»£å™¨ã€‚
 
-    //stable_partition()±£³ÖÁËÆæÊıÔªËØºÍÅ¼ÊıÔªËØµÄÏà¶Ô´ÎĞò£¬
-    // ÕâÒ»µãºÍpartition()²»Í¬¡£
+    //stable_partition()ä¿æŒäº†å¥‡æ•°å…ƒç´ å’Œå¶æ•°å…ƒç´ çš„ç›¸å¯¹æ¬¡åºï¼Œ
+    // è¿™ä¸€ç‚¹å’Œpartition()ä¸åŒã€‚
 
     // print collections and first odd element
     PRINT_ELEMENTS(coll1, "coll1: ");
@@ -4015,7 +4015,7 @@ int main()
 #endif
 
 
-//¸ù¾İÎ½´Êº¯Êı£¬»®·ÖÁ½¸ö×ÓÇø¼ä partition_copy()
+//æ ¹æ®è°“è¯å‡½æ•°ï¼Œåˆ’åˆ†ä¸¤ä¸ªå­åŒºé—´ partition_copy()
 #if 0
 #include <iostream>
 #include <vector>
@@ -4067,7 +4067,7 @@ int main()
 #endif
 
 
-//sort()ºÍstable_sort()µÄÇø±ğ
+//sort()å’Œstable_sort()çš„åŒºåˆ«
 #if 0
 #include <iostream>
 #include <vector>
@@ -4121,7 +4121,7 @@ int main()
     stable_sort(coll2.begin(), coll2.end(),    // range
         lessLength);                   // criterion
 
-    //stable_sort()ÔÚÅÅĞòºó±£³ÖÁËÔªËØµÄÏà¶ÔÎ»ÖÃ
+    //stable_sort()åœ¨æ’åºåä¿æŒäº†å…ƒç´ çš„ç›¸å¯¹ä½ç½®
 
     PRINT_ELEMENTS(coll1, "\nwith sort():\n ");
     PRINT_ELEMENTS(coll2, "\nwith stable_sort():\n ");
@@ -4129,7 +4129,7 @@ int main()
 #endif
 
 
-//²¿·ÖÅÅĞòpartial_sort()¡¢partial_sort_copy()
+//éƒ¨åˆ†æ’åºpartial_sort()ã€partial_sort_copy()
 #if 0
 #include <iostream>
 #include <vector>
@@ -4176,13 +4176,13 @@ int main()
         coll.end());       // end of full range
     PRINT_ELEMENTS(coll);
 
-    //***×¢***
+    //***æ³¨***
     //partial_sort(coll.begin(), coll.begin() + 5, coll.end())
-    //²»µÈÓÚ
+    //ä¸ç­‰äº
     //sort(coll.begin(), coll.begin() + 5)
-    //¶øÓ¦Àí½âÎª£º
-    //È«²¿ÅÅºÃĞòµÄĞòÁĞÈ¡ÆäÇ°5¸öÔªËØ£¬ÆäÓàÔªËØÅÅĞò°´Ò»¶¨·½Ê½ÅÅÁĞ£¬
-    // ²»Ò»¶¨ÓĞĞò
+    //è€Œåº”ç†è§£ä¸ºï¼š
+    //å…¨éƒ¨æ’å¥½åºçš„åºåˆ—å–å…¶å‰5ä¸ªå…ƒç´ ï¼Œå…¶ä½™å…ƒç´ æ’åºæŒ‰ä¸€å®šæ–¹å¼æ’åˆ—ï¼Œ
+    // ä¸ä¸€å®šæœ‰åº
 
     // sort inversely until the first five elements are sorted
     partial_sort(coll.begin(),      // beginning of the range
@@ -4200,8 +4200,8 @@ int main()
 #endif
 
 
-//Ö»ĞèÒªn¸ö×î´ó»ò×îĞ¡ÔªËØ£¬µ«²»ÒªÇóËüÃÇ±ØĞë´¦ÓÚÅÅĞò×´Ì¬(sorted), 
-//Ê¹ÓÃnth_element()
+//åªéœ€è¦nä¸ªæœ€å¤§æˆ–æœ€å°å…ƒç´ ï¼Œä½†ä¸è¦æ±‚å®ƒä»¬å¿…é¡»å¤„äºæ’åºçŠ¶æ€(sorted), 
+//ä½¿ç”¨nth_element()
 #if 0
 #include <iostream>
 #include <deque>
@@ -4244,15 +4244,15 @@ int main()
         coll.begin() + 3,   // element that should be sorted correctly
         coll.end());      // end of range
 
-    //***Àí½â***
-    //µÚ¶ş¸öÊµ²Înth ËùÖ¸ÏòµÄÔªËØ±»¸ü¸ÄÎª¼ÙÈç [first, last) ÒÑÅÅĞò
-    //Ôò¸ÃÎ»ÖÃ»á³öÏÖµÄÔªËØ¡£
-    //Õâ¸öĞÂµÄ nth ÔªËØÇ°µÄËùÓĞÔªËØĞ¡ÓÚ»òµÈÓÚĞÂµÄ nth ÔªËØºóµÄËùÓĞÔªËØ¡£
+    //***ç†è§£***
+    //ç¬¬äºŒä¸ªå®å‚nth æ‰€æŒ‡å‘çš„å…ƒç´ è¢«æ›´æ”¹ä¸ºå‡å¦‚ [first, last) å·²æ’åº
+    //åˆ™è¯¥ä½ç½®ä¼šå‡ºç°çš„å…ƒç´ ã€‚
+    //è¿™ä¸ªæ–°çš„ nth å…ƒç´ å‰çš„æ‰€æœ‰å…ƒç´ å°äºæˆ–ç­‰äºæ–°çš„ nth å…ƒç´ åçš„æ‰€æœ‰å…ƒç´ ã€‚
 
-    // Ê¹µÚ4¸öÎ»ÖÃÉÏµÄÔªËØ¾ÍÎ»£¬Ò²¾ÍÊÇËµËùÓĞÔÚÎ»ÖÃ4Ö®Ç°µÄÔªËØ
-    // ¶¼Ğ¡ÓÚµÈÓÚËü£¬ËùÓĞÔÚÎ»ÖÃnÖ®ºóµÄÔªËØ¶¼´óÓÚµÈÓÚËü¡£
-    // ÕâÑù£¬¾ÍµÃµ½ÁË¡°¸ù¾İnÎ»ÖÃÉÏµÄÔªËØ¡±·Ö¸î¿ªÀ´µÄÁ½¸ö×ÓĞòÁĞ£¬
-    // µÚÒ»×ÓĞòÁĞµÄÔªËØÍ³Í³Ğ¡ÓÚµÚ¶ş×ÓĞòÁĞµÄÔªËØ¡£
+    // ä½¿ç¬¬4ä¸ªä½ç½®ä¸Šçš„å…ƒç´ å°±ä½ï¼Œä¹Ÿå°±æ˜¯è¯´æ‰€æœ‰åœ¨ä½ç½®4ä¹‹å‰çš„å…ƒç´ 
+    // éƒ½å°äºç­‰äºå®ƒï¼Œæ‰€æœ‰åœ¨ä½ç½®nä¹‹åçš„å…ƒç´ éƒ½å¤§äºç­‰äºå®ƒã€‚
+    // è¿™æ ·ï¼Œå°±å¾—åˆ°äº†â€œæ ¹æ®nä½ç½®ä¸Šçš„å…ƒç´ â€åˆ†å‰²å¼€æ¥çš„ä¸¤ä¸ªå­åºåˆ—ï¼Œ
+    // ç¬¬ä¸€å­åºåˆ—çš„å…ƒç´ ç»Ÿç»Ÿå°äºç¬¬äºŒå­åºåˆ—çš„å…ƒç´ ã€‚
 
     // print them
     cout << "the four lowest elements are:  ";
@@ -4286,7 +4286,7 @@ int main()
 #endif
 
 
-//Ê¹ÓÃheapÏà¹ØËã·¨
+//ä½¿ç”¨heapç›¸å…³ç®—æ³•
 #if 0
 #include <iostream>
 #include <vector>
@@ -4353,13 +4353,13 @@ int main()
 #endif
 
 
-//ÒÑÅÅĞòÇø¼äµÄËÑË÷Ëã·¨
-//¼ì²éÄ³¸öÔªËØÊÇ·ñ´æÔÚ£ºbinary_search()
-//***×¢***
-//binary_search()µÄÊµÏÖÖĞÒªµ÷ÓÃstd::lower_bound()
-//¶østd::lower_bound()µÄÊµÏÖÊÇÊ¹ÓÃ¶ş·ÖËÑË÷Ëã·¨À´²éÕÒ¸ø¶¨Öµ
-//ÔÚÒÑÅÅĞòĞòÁĞÖĞµÄ²åÈëÎ»ÖÃ¡£
-//Òò´Ë¿ÉÒÔ½«binary_search()×÷ÎªÆÕÍ¨¶ş·ÖËÑË÷Ëã·¨µÄ´úÌæ
+//å·²æ’åºåŒºé—´çš„æœç´¢ç®—æ³•
+//æ£€æŸ¥æŸä¸ªå…ƒç´ æ˜¯å¦å­˜åœ¨ï¼šbinary_search()
+//***æ³¨***
+//binary_search()çš„å®ç°ä¸­è¦è°ƒç”¨std::lower_bound()
+//è€Œstd::lower_bound()çš„å®ç°æ˜¯ä½¿ç”¨äºŒåˆ†æœç´¢ç®—æ³•æ¥æŸ¥æ‰¾ç»™å®šå€¼
+//åœ¨å·²æ’åºåºåˆ—ä¸­çš„æ’å…¥ä½ç½®ã€‚
+//å› æ­¤å¯ä»¥å°†binary_search()ä½œä¸ºæ™®é€šäºŒåˆ†æœç´¢ç®—æ³•çš„ä»£æ›¿
 #if 0
 #include "algostuff.hpp"
 using namespace std;
@@ -4371,8 +4371,8 @@ int main()
     INSERT_ELEMENTS(coll, 1, 9);
     PRINT_ELEMENTS(coll);
 
-    //***×¢***
-    //Ê¹ÓÃbinary_search()Ç°Çø¼ä±ØĞëÒÑ¾­ÅÅĞò£¡
+    //***æ³¨***
+    //ä½¿ç”¨binary_search()å‰åŒºé—´å¿…é¡»å·²ç»æ’åºï¼
 
     // check existence of element with value 5
     if (binary_search(coll.cbegin(), coll.cend(), 5))
@@ -4397,11 +4397,11 @@ int main()
 #endif
 
 
-//ÒÑÅÅĞòµÄÇø¼ä
-//¼ì²éÊı¸öÔªËØÊÇ·ñ´æÔÚ£¨Çø¼ä2ÊÇ·ñÎªÇø¼ä1µÄ×Ó¼¯£©£ºincludes()
-//ÈôÒÑÅÅĞò·¶Î§ [first2, last2) ÊÇÒÑÅÅĞò·¶Î§ [first1, last1) µÄ×ÓĞòÁĞÔò·µ»Ø true
-//***×¢***
-//ÒªÓësearch()Çø·Ö
+//å·²æ’åºçš„åŒºé—´
+//æ£€æŸ¥æ•°ä¸ªå…ƒç´ æ˜¯å¦å­˜åœ¨ï¼ˆåŒºé—´2æ˜¯å¦ä¸ºåŒºé—´1çš„å­é›†ï¼‰ï¼šincludes()
+//è‹¥å·²æ’åºèŒƒå›´ [first2, last2) æ˜¯å·²æ’åºèŒƒå›´ [first1, last1) çš„å­åºåˆ—åˆ™è¿”å› true
+//***æ³¨***
+//è¦ä¸search()åŒºåˆ†
 #if 0
 #include "algostuff.hpp"
 using namespace std;
@@ -4420,8 +4420,8 @@ int main()
     PRINT_ELEMENTS(search, "search: ");
 
     // check whether all elements in search are also in coll
-    if (includes(coll.cbegin(), coll.cend(),  //Çø¼ä1
-        search.cbegin(), search.cend()))      //Çø¼ä2
+    if (includes(coll.cbegin(), coll.cend(),  //åŒºé—´1
+        search.cbegin(), search.cend()))      //åŒºé—´2
     {
         cout << "all elements of search are also in coll"
             << endl;
@@ -4442,17 +4442,17 @@ int main()
         << endl;
 }
 #endif
-//***Ğ¡½á***
-//ÒÑÅÅĞòÇø¼ä£¬Çø¼ä2ÖĞËùÓĞÔªËØĞÎ³ÉµÄĞòÁĞÊÇ·ñÔÚÇø¼ä1ÖĞ¶¼ÓĞ
-// (×ÓĞòÁĞ²»±ØÏà½Ó(Á¬Ğø))£ºincludes()
-//Çø¼ä2ÖĞËùÓĞÔªËØĞÎ³ÉµÄĞòÁĞÊÇ·ñÔÚÇø¼ä1ÖĞÓĞ
-// (×ÓĞòÁĞĞèÒªÏà½Ó(Á¬Ğø))£ºsearch()
-//Çø¼ä2ÖĞÄ³¸öÔªËØÊÇ·ñÔÚÇø¼ä1ÖĞÓĞ£ºfind_first_of()
+//***å°ç»“***
+//å·²æ’åºåŒºé—´ï¼ŒåŒºé—´2ä¸­æ‰€æœ‰å…ƒç´ å½¢æˆçš„åºåˆ—æ˜¯å¦åœ¨åŒºé—´1ä¸­éƒ½æœ‰
+// (å­åºåˆ—ä¸å¿…ç›¸æ¥(è¿ç»­))ï¼šincludes()
+//åŒºé—´2ä¸­æ‰€æœ‰å…ƒç´ å½¢æˆçš„åºåˆ—æ˜¯å¦åœ¨åŒºé—´1ä¸­æœ‰
+// (å­åºåˆ—éœ€è¦ç›¸æ¥(è¿ç»­))ï¼šsearch()
+//åŒºé—´2ä¸­æŸä¸ªå…ƒç´ æ˜¯å¦åœ¨åŒºé—´1ä¸­æœ‰ï¼šfind_first_of()
 
 
-//ÒÑÅÅĞòµÄÇø¼ä
-//²éÕÒµÚÒ»¸ö»ò×îºóÒ»¸ö¿ÉÄÜµÄÎ»ÖÃ£ºlower_bound()¡¢upper_bound()
-//¿ÉÒÔÅäºÏinsert()·½·¨Ê¹ÓÃ£¬ÊµÏÖÔÚÖ¸¶¨Î»ÖÃ²åÈëÔªËØ¶ø²»ÆÆ»µÒÑÅÅĞòµÄ×´Ì¬
+//å·²æ’åºçš„åŒºé—´
+//æŸ¥æ‰¾ç¬¬ä¸€ä¸ªæˆ–æœ€åä¸€ä¸ªå¯èƒ½çš„ä½ç½®ï¼šlower_bound()ã€upper_bound()
+//å¯ä»¥é…åˆinsert()æ–¹æ³•ä½¿ç”¨ï¼Œå®ç°åœ¨æŒ‡å®šä½ç½®æ’å…¥å…ƒç´ è€Œä¸ç ´åå·²æ’åºçš„çŠ¶æ€
 #if 0
 #include "algostuff.hpp"
 using namespace std;
@@ -4493,7 +4493,7 @@ int main()
     PRINT_ELEMENTS(coll);
 }
 #endif
-//Ò»´ÎĞÔ²é³öµÚÒ»¸ö»ò×îºóÒ»¸ö¿ÉÄÜµÄÎ»ÖÃ£ºequal_range()
+//ä¸€æ¬¡æ€§æŸ¥å‡ºç¬¬ä¸€ä¸ªæˆ–æœ€åä¸€ä¸ªå¯èƒ½çš„ä½ç½®ï¼šequal_range()
 #if 0
 #include "algostuff.hpp"
 using namespace std;
@@ -4521,9 +4521,9 @@ int main()
 #endif
 
 
-//ÒÑÅÅĞòµÄÈİÆ÷
-//ºÏ²¢Ëã·¨£ºmerge()¡¢set_union()¡¢set_intersection()¡¢
-// set_difference()¡¢set_symmetric_difference()
+//å·²æ’åºçš„å®¹å™¨
+//åˆå¹¶ç®—æ³•ï¼šmerge()ã€set_union()ã€set_intersection()ã€
+// set_difference()ã€set_symmetric_difference()
 #if 0
 #include "algostuff.hpp"
 using namespace std;
@@ -4550,7 +4550,7 @@ int main()
         ostream_iterator<int>(cout, " "));
     cout << endl;
 
-    //Çó²¢¼¯
+    //æ±‚å¹¶é›†
     // unite the ranges by using set_union()
     cout << "set_union():                ";
     set_union(c1.cbegin(), c1.cend(),
@@ -4558,7 +4558,7 @@ int main()
         ostream_iterator<int>(cout, " "));
     cout << endl;
 
-    //Çó½»¼¯
+    //æ±‚äº¤é›†
     // intersect the ranges by using set_intersection()
     cout << "set_intersection():         ";
     set_intersection(c1.cbegin(), c1.cend(),
@@ -4566,7 +4566,7 @@ int main()
         ostream_iterator<int>(cout, " "));
     cout << endl;
 
-    //Çó²î¼¯
+    //æ±‚å·®é›†
     // determine elements of first range without elements of second range
     // by using set_difference()
     cout << "set_difference():           ";
@@ -4574,30 +4574,30 @@ int main()
         c2.cbegin(), c2.cend(),
         ostream_iterator<int>(cout, " "));
     cout << endl;
-    //Çó³öÔÚµÚÒ»¸öÁĞ±íÖĞ¶ø²»ÔÚµÚ¶ş¸öÁĞ±íÖĞ´æÔÚµÄÔªËØ
+    //æ±‚å‡ºåœ¨ç¬¬ä¸€ä¸ªåˆ—è¡¨ä¸­è€Œä¸åœ¨ç¬¬äºŒä¸ªåˆ—è¡¨ä¸­å­˜åœ¨çš„å…ƒç´ 
 
-    //ÇóÇø¼äS1,S2µÄ¶Ô³Æ²î¼¯
+    //æ±‚åŒºé—´S1,S2çš„å¯¹ç§°å·®é›†
     // determine difference the ranges with set_symmetric_difference()
     cout << "set_symmetric_difference(): ";
     set_symmetric_difference(c1.cbegin(), c1.cend(),
         c2.cbegin(), c2.cend(),
         ostream_iterator<int>(cout, " "));
     cout << endl;
-    //Êä³ö£º
+    //è¾“å‡ºï¼š
     // 1 2 3 4 6 7 7 8
 
-    //¶Ô³Æ²î¼¯Ö¸µÄÊÇÖ»ÊôÓÚS1»òS2,µ«²»Í¬Ê±ÊôÓÚS1ºÍS2µÄ
+    //å¯¹ç§°å·®é›†æŒ‡çš„æ˜¯åªå±äºS1æˆ–S2,ä½†ä¸åŒæ—¶å±äºS1å’ŒS2çš„
 
-    //***×¢***
-    //Êä³öÖĞ 2 ³öÏÖµÄÔ­Òò¿ÉÄÜÊÇ¼¯ºÏ c1 ÖĞÓĞÁ½¸öÖµÎª 2 µÄÔªËØ£¬
-    // ¶ø¼¯ºÏ c2 ÖĞÖ»ÓĞÒ»¸öÖµÎª 2 µÄÔªËØ
-    //ÕâÑùµÄ»° 2 Ò²»á±»ÊÓÎªÊôÓÚ¶Ô³Æ²î¼¯
-    //Í¬Àí¶Ô³Æ²î¼¯ÖĞÒ²ÓĞ6Õâ¸öÊı×Ö
+    //***æ³¨***
+    //è¾“å‡ºä¸­ 2 å‡ºç°çš„åŸå› å¯èƒ½æ˜¯é›†åˆ c1 ä¸­æœ‰ä¸¤ä¸ªå€¼ä¸º 2 çš„å…ƒç´ ï¼Œ
+    // è€Œé›†åˆ c2 ä¸­åªæœ‰ä¸€ä¸ªå€¼ä¸º 2 çš„å…ƒç´ 
+    //è¿™æ ·çš„è¯ 2 ä¹Ÿä¼šè¢«è§†ä¸ºå±äºå¯¹ç§°å·®é›†
+    //åŒç†å¯¹ç§°å·®é›†ä¸­ä¹Ÿæœ‰6è¿™ä¸ªæ•°å­—
 }
 #endif
 
 
-//¶ÔÒÑÅÅĞòµÄÇø¼ä£¬¾ÍµØÒ»·ÖÎª¶ş½øĞĞºÏ²¢£ºinplace_merge()
+//å¯¹å·²æ’åºçš„åŒºé—´ï¼Œå°±åœ°ä¸€åˆ†ä¸ºäºŒè¿›è¡Œåˆå¹¶ï¼šinplace_merge()
 #if 0
 #include "algostuff.hpp"
 using namespace std;
@@ -4620,15 +4620,15 @@ int main()
 
     // merge into one sorted range
     inplace_merge(coll.begin(), pos, coll.end());
-    //ÒÑÅÅĞòÔ´Çø¼ä [beg1,end1beg2) ºÍ[end1beg2,end2)µÄÔªËØºÏ²¢£¬
-    // Ê¹Çø¼ä    [begl,end2)    ³ÉÎªÁ½ÕßÖ®×ÜºÍ(ÇÒĞÎ³ÉÒÑÅÅĞò×´Ì¬)¡£
+    //å·²æ’åºæºåŒºé—´ [beg1,end1beg2) å’Œ[end1beg2,end2)çš„å…ƒç´ åˆå¹¶ï¼Œ
+    // ä½¿åŒºé—´    [begl,end2)    æˆä¸ºä¸¤è€…ä¹‹æ€»å’Œ(ä¸”å½¢æˆå·²æ’åºçŠ¶æ€)ã€‚
 
     PRINT_ELEMENTS(coll);
 }
 #endif
 
 
-//Ò»¸öÓÃ»§×Ô¶¨ÒåµÄStackÀà
+//ä¸€ä¸ªç”¨æˆ·è‡ªå®šä¹‰çš„Stackç±»
 #if 0
 #ifndef STACK_HPP
 #define STACK_HPP
@@ -4643,14 +4643,14 @@ protected:
     std::deque<T> c;        // container for the elements
 
 public:
-    //***×¢***
-    // //´´½¨Ç¶Ì×Àà
+    //***æ³¨***
+    // //åˆ›å»ºåµŒå¥—ç±»
     // exception class for pop() and top() with empty stack
     class ReadEmptyStack : public std::exception
     {
     public:
-        //***×¢***
-        //×îºóĞ´ throw() ±íÊ¾¸Ãº¯Êı²»»áÅ×³öÈÎºÎÒì³£
+        //***æ³¨***
+        //æœ€åå†™ throw() è¡¨ç¤ºè¯¥å‡½æ•°ä¸ä¼šæŠ›å‡ºä»»ä½•å¼‚å¸¸
         virtual const char* what() const throw() 
         {
             return "read empty stack";
@@ -4705,7 +4705,7 @@ public:
 #endif
 
 
-//Ò»¸öÓÃ»§×Ô¶¨ÒåµÄQueueÀà
+//ä¸€ä¸ªç”¨æˆ·è‡ªå®šä¹‰çš„Queueç±»
 #if 0
 #ifndef QUEUE_HPP
 #define QUEUE_HPP
@@ -4778,7 +4778,7 @@ public:
 #endif
 
 
-//½«bitsetµ±×÷Ò»×é±êÖ¾
+//å°†bitsetå½“ä½œä¸€ç»„æ ‡å¿—
 #if 0
 #include <bitset>
 #include <iostream>
@@ -4794,29 +4794,29 @@ int main()
     };
 
     // create bitset for all bits/colors
-    bitset<numColors> usedColors;//´´½¨bitsetÀà¶ÔÏó£¬Ä¬ÈÏÃ¿Ò»Î»¶¼Îª0
+    bitset<numColors> usedColors;//åˆ›å»ºbitsetç±»å¯¹è±¡ï¼Œé»˜è®¤æ¯ä¸€ä½éƒ½ä¸º0
 
     // set bits for two colors
     usedColors.set(red);
     usedColors.set(blue);
-    //***Àí½â***
-    //bitsetÀàÖĞµÄ·½·¨ÉùÃ÷£ºbitset& set( std::size_t pos, bool value = true );
-    // ĞÎ²ÎposÏàµ±ÓÚindex
-    //usedColors.set(red);±íÊ¾bitsetÀà¶ÔÏóµÄµÚ1¸öÔªËØÖµÉèÎª1
+    //***ç†è§£***
+    //bitsetç±»ä¸­çš„æ–¹æ³•å£°æ˜ï¼šbitset& set( std::size_t pos, bool value = true );
+    // å½¢å‚posç›¸å½“äºindex
+    //usedColors.set(red);è¡¨ç¤ºbitsetç±»å¯¹è±¡çš„ç¬¬1ä¸ªå…ƒç´ å€¼è®¾ä¸º1
 
     // print some bitset data
     cout << "bitfield of used colors:   " << usedColors << endl;
     cout << "number   of used colors:   " << usedColors.count() << endl;
-    cout << "bitfield of unused colors: " << ~usedColors << endl;//·­×ªËùÓĞÎ»
+    cout << "bitfield of unused colors: " << ~usedColors << endl;//ç¿»è½¬æ‰€æœ‰ä½
 
-    //to_string()·½·¨£º
+    //to_string()æ–¹æ³•ï¼š
     std::cout << usedColors.to_string() << '\n'
         << usedColors.to_string('*') << '\n'
         << usedColors.to_string('O', 'X') << '\n';
 
-    //***×¢***
-    //bitsetµÄbitset<N>::all, std::bitset<N>::any, std::bitset<N>::none ÕâĞ©·½·¨
-    //Ê±¼ä¸´ÔÓ¶È¶¼ÊÇO(N)
+    //***æ³¨***
+    //bitsetçš„bitset<N>::all, std::bitset<N>::any, std::bitset<N>::none è¿™äº›æ–¹æ³•
+    //æ—¶é—´å¤æ‚åº¦éƒ½æ˜¯O(N)
     // if any color is used
     if (usedColors.any()) {
         // loop over all colors
@@ -4831,7 +4831,7 @@ int main()
 #endif
 
 
-//bitsetµÄÌØÉ«¹¦ÄÜ£ºÓÃbitset±íÊö¶ş½øÖÆ
+//bitsetçš„ç‰¹è‰²åŠŸèƒ½ï¼šç”¨bitsetè¡¨è¿°äºŒè¿›åˆ¶
 #if 0
 #include <bitset>
 #include <iostream>
@@ -4853,16 +4853,16 @@ int main()
     cout << "10,000,000 with 24 bits: "
         << bitset<24>(1e7) << endl;
 
-    //ÓÃÊıÖµÀàĞÍ³õÊ¼»¯bitsetÀà¶ÔÏó
-    //*** (bitsetÀà¶ÔÏó´æ´¢µÄÊÇÊıÖµÀàĞÍµÄ¶ş½øÖÆ±íÊ¾)***
-    //Ê¹ÓÃto_string()·½·¨½«bitsetÀà¶ÔÏóÊä³öÎªstringÀà¶ÔÏó
+    //ç”¨æ•°å€¼ç±»å‹åˆå§‹åŒ–bitsetç±»å¯¹è±¡
+    //*** (bitsetç±»å¯¹è±¡å­˜å‚¨çš„æ˜¯æ•°å€¼ç±»å‹çš„äºŒè¿›åˆ¶è¡¨ç¤º)***
+    //ä½¿ç”¨to_string()æ–¹æ³•å°†bitsetç±»å¯¹è±¡è¾“å‡ºä¸ºstringç±»å¯¹è±¡
     // write binary representation into string
     string s = bitset<42>(12345678).to_string();
     cout << "12,345,678 with 42 bits: " << s << endl;
 
-    //ÓÃC-stringÀàĞÍ³õÊ¼»¯bitsetÀà¶ÔÏó
-    //*** (bitsetÀà¶ÔÏó´æ´¢µÄÊÇC-stringÀàĞÍÖ¸Ê¾µÄ¶ş½øÖÆÄÚÈİ) ***
-    //Ê¹ÓÃto_ullong()·½·¨½«bitsetÀà¶ÔÏóÊä³öÎªunsigned long longÕûÊıÀàĞÍ
+    //ç”¨C-stringç±»å‹åˆå§‹åŒ–bitsetç±»å¯¹è±¡
+    //*** (bitsetç±»å¯¹è±¡å­˜å‚¨çš„æ˜¯C-stringç±»å‹æŒ‡ç¤ºçš„äºŒè¿›åˆ¶å†…å®¹) ***
+    //ä½¿ç”¨to_ullong()æ–¹æ³•å°†bitsetç±»å¯¹è±¡è¾“å‡ºä¸ºunsigned long longæ•´æ•°ç±»å‹
     // transform binary representation into integral number
     cout << "\"1000101011\" as number:  "
         << bitset<100>("1000101011").to_ullong() << endl;
@@ -4870,8 +4870,8 @@ int main()
 #endif
 
 
-//stringÀàµÄÄÜÁ¦ºÍÓÃ·¨
-//ÌáÁ¶ÁÙÊ±ÎÄ¼şÃû
+//stringç±»çš„èƒ½åŠ›å’Œç”¨æ³•
+//æç‚¼ä¸´æ—¶æ–‡ä»¶å
 #if 0
 #include <iostream>
 #include <string>
@@ -4890,20 +4890,20 @@ int main(int argc, char* argv[])
 
         // search period in filename
         string::size_type idx = filename.find('.');
-        //***×¢***
-        //´Ë´¦±ØĞëÊ¹ÓÃstring::size_typeÀàĞÍ
-        //²»ÄÜÒÔ int»ò unsigned ×÷Îª·µ»ØÖµÀàĞÍ£»·ñÔò·µ»ØÖµÓëstring::nposÖ®¼äµÄ
-        //±È½Ï¿ÉÄÜÎŞ·¨ÕıÈ·Ö´ĞĞ¡£ÕâÊÇÒòÎªnpos±»Éè¼ÆÎªsize_typeÀàĞÍµÄ -1
-        //²»ĞÒµÄÊÇsize_type(ÓÉstringµÄ·ÖÅäÆ÷¶¨Òå³ö)±ØĞëÊÇ¸öÎŞÕı¸ººÅÕûÊıÀàĞÍ
-        //ÓÚÊÇ-1 ±»×ª»»ÎªÎŞÕı¸ººÅÕûÊıÀàĞÍ£¬npos Ò²¾Í³ÉÁË¸ÃÀàĞÍµÄ×î´óÎŞÕı¸ººÅÖµ¡£
-        //È»¶øÊµ¼ÊÖµÈ¡¾öÓÚÀàĞÍsize_typeµÄÕæÊµ¶¨Òå¡£
-        // ²»ĞÒµÄÊÇ¶ÔÓÚ²»Í¬µÄ²Ù×÷ÏµÍ³£¬ÕâĞ©×î´óÖµÀàĞÍºÍÖµ¿ÉÄÜ¶¼²»ÏàÍ¬¡£
-        // ÊÂÊµÉÏ(unsigned long) - 1ºÍ(unsigned short) - 1 ²»Í¬¡£
+        //***æ³¨***
+        //æ­¤å¤„å¿…é¡»ä½¿ç”¨string::size_typeç±»å‹
+        //ä¸èƒ½ä»¥ intæˆ– unsigned ä½œä¸ºè¿”å›å€¼ç±»å‹ï¼›å¦åˆ™è¿”å›å€¼ä¸string::nposä¹‹é—´çš„
+        //æ¯”è¾ƒå¯èƒ½æ— æ³•æ­£ç¡®æ‰§è¡Œã€‚è¿™æ˜¯å› ä¸ºnposè¢«è®¾è®¡ä¸ºsize_typeç±»å‹çš„ -1
+        //ä¸å¹¸çš„æ˜¯size_type(ç”±stringçš„åˆ†é…å™¨å®šä¹‰å‡º)å¿…é¡»æ˜¯ä¸ªæ— æ­£è´Ÿå·æ•´æ•°ç±»å‹
+        //äºæ˜¯-1 è¢«è½¬æ¢ä¸ºæ— æ­£è´Ÿå·æ•´æ•°ç±»å‹ï¼Œnpos ä¹Ÿå°±æˆäº†è¯¥ç±»å‹çš„æœ€å¤§æ— æ­£è´Ÿå·å€¼ã€‚
+        //ç„¶è€Œå®é™…å€¼å–å†³äºç±»å‹size_typeçš„çœŸå®å®šä¹‰ã€‚
+        // ä¸å¹¸çš„æ˜¯å¯¹äºä¸åŒçš„æ“ä½œç³»ç»Ÿï¼Œè¿™äº›æœ€å¤§å€¼ç±»å‹å’Œå€¼å¯èƒ½éƒ½ä¸ç›¸åŒã€‚
+        // äº‹å®ä¸Š(unsigned long) - 1å’Œ(unsigned short) - 1 ä¸åŒã€‚
 
-        //Òò´Ë£¬¶ÔÓÚ£º
+        //å› æ­¤ï¼Œå¯¹äºï¼š
         //idx == std::string::npos
-        //Èç¹û idxµÄÖµÎª - 1, ÓÉÓÚ idxºÍ×Ö·û´® string::nposÀàĞÍ²»Í¬£¬
-        // ±È½Ï½á¹û¿ÉÄÜ»áÊÇ false
+        //å¦‚æœ idxçš„å€¼ä¸º - 1, ç”±äº idxå’Œå­—ç¬¦ä¸² string::nposç±»å‹ä¸åŒï¼Œ
+        // æ¯”è¾ƒç»“æœå¯èƒ½ä¼šæ˜¯ false
 
         if (idx == string::npos) 
         {
@@ -4918,13 +4918,13 @@ int main(int argc, char* argv[])
             basename = filename.substr(0, idx);
             extname = filename.substr(idx + 1);
 
-            //***Àí½â***
-            //find()·½·¨·µ»ØÒªËÑË÷µÄ×Ö·ûÔÚstringÀà¶ÔÏóÖĞµÄindexÖµ
+            //***ç†è§£***
+            //find()æ–¹æ³•è¿”å›è¦æœç´¢çš„å­—ç¬¦åœ¨stringç±»å¯¹è±¡ä¸­çš„indexå€¼
 
             //filename.substr(0, idx);
-            //·µ»Ø [0, 0+idx) 
+            //è¿”å› [0, 0+idx) 
             //filename.substr(idx + 1);
-            //·µ»Ø [pos, size())
+            //è¿”å› [pos, size())
 
             if (extname.empty()) 
             {
@@ -4943,8 +4943,8 @@ int main(int argc, char* argv[])
                 // replace any extension with tmp
                 tmpname = filename;
                 tmpname.replace(idx + 1, string::npos, suffix);
-                //***×¢***
-                //string::npos±ØĞëÒªĞ´ÀàÃûstring
+                //***æ³¨***
+                //string::nposå¿…é¡»è¦å†™ç±»åstring
             }
         }
 
@@ -4955,7 +4955,7 @@ int main(int argc, char* argv[])
 #endif
 
 
-//ÌáÁ¶µ¥´Ê²¢·´Ïò´òÓ¡£¨¿ÉÍ¬Ê±²é¿´//ÃæÊÔÌâ58£º·­×ª×Ö·û´®£©
+//æç‚¼å•è¯å¹¶åå‘æ‰“å°ï¼ˆå¯åŒæ—¶æŸ¥çœ‹//é¢è¯•é¢˜58ï¼šç¿»è½¬å­—ç¬¦ä¸²ï¼‰
 #if 0
 #include <iostream>
 #include <string>
@@ -4963,7 +4963,7 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    //ËùÓĞ¼ä¸ô×Ö·û±»¶¨ÒåÓÚÒ»¸öÌØÊâµÄ string ³£Á¿ÄÚ£º
+    //æ‰€æœ‰é—´éš”å­—ç¬¦è¢«å®šä¹‰äºä¸€ä¸ªç‰¹æ®Šçš„ string å¸¸é‡å†…ï¼š
     const string delims(" \t,.;");
     string line;
 
@@ -4978,9 +4978,9 @@ int main(int argc, char** argv)
         // while beginning of a word found
         while (begIdx != string::npos) 
         {
-            //***×¢***
-            //´ÓindexÎªbegIdx¿ªÊ¼£¬Ñ°ÕÒµÈÓÚdelimsÖĞÈÎÒ»×Ö·ûµÄ×Ö·ûËùÔÚµÄÎ»ÖÃ
-            // ´Ë·¶Î§ÄÜ°üº¬¿Õ×Ö·û¡£
+            //***æ³¨***
+            //ä»indexä¸ºbegIdxå¼€å§‹ï¼Œå¯»æ‰¾ç­‰äºdelimsä¸­ä»»ä¸€å­—ç¬¦çš„å­—ç¬¦æ‰€åœ¨çš„ä½ç½®
+            // æ­¤èŒƒå›´èƒ½åŒ…å«ç©ºå­—ç¬¦ã€‚
             // search end of the actual word
             endIdx = line.find_first_of(delims, begIdx);
 
