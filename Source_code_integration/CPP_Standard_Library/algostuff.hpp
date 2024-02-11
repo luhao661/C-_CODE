@@ -69,4 +69,4 @@ inline void PRINT_MAPPED_ELEMENTS(const T& coll,
     std::cout << std::endl;
 }
 
-#endif /*ALGOSTUFF_HPP*/
+#endif /*ALGOSTUFF_HPP*/ 
