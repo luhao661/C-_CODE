@@ -50,7 +50,7 @@ inline void PRINT_ELEMENTS(const T& coll,
     for (auto elem : coll) {
         std::cout << elem << ' ';
     }
-    std::cout << std::endl;
+    std::cout << std::endl;  
 }
 
 // PRINT_MAPPED_ELEMENTS()
