@@ -835,7 +835,7 @@ int main()
 #include <iostream>
 #include <algorithm>
 #include <iterator>
-#include <string>
+#include <string> 
 using namespace std;
 
 void printLists(const string& s, const forward_list<int>& l1,
