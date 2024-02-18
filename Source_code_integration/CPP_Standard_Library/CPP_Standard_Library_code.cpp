@@ -4354,8 +4354,8 @@ int main()
 
 
 //已排序区间的搜索算法
-//检查某个元素是否存在：binary_search()
-//***注***
+//检查某个元素是否存在：binary_search() 
+//***注*** 
 //binary_search()的实现中要调用std::lower_bound()
 //而std::lower_bound()的实现是使用二分搜索算法来查找给定值
 //在已排序序列中的插入位置。
@@ -4412,7 +4412,7 @@ int main()
     vector<int> search;
 
     INSERT_ELEMENTS(coll, 1, 9);
-    PRINT_ELEMENTS(coll, "coll:   ");
+    PRINT_ELEMENTS(coll, "coll:   "); 
 
     search.push_back(3);
     search.push_back(4);
