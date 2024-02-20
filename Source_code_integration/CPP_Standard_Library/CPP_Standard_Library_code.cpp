@@ -5161,3 +5161,196 @@ int main()
     }
 }
 #endif
+
+
+//unique()函数需要结合erase()使用   （remove()也要结合erase()）
+#if 0
+#include <string>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+    // create constant string
+    const string hello("Hello, how are you?");
+
+    // initialize string s with all characters of string hello
+    string s(hello.cbegin(), hello.cend());
+
+    // ranged-based for loop that iterates through all the characters
+    for (char c : s) {
+        cout << c;
+    }
+    cout << endl;
+
+    // reverse the order of all characters inside the string
+    reverse(s.begin(), s.end());
+    cout << "reverse:       " << s << endl;
+
+    // sort all characters inside the string
+    sort(s.begin(), s.end());
+    cout << "ordered:       " << s << endl;
+
+    //错误写法：
+    //unique(s.begin(), s.end());
+    //cout << s << endl;
+
+    //正确写法：
+    // remove adjacent duplicates
+    // - unique() reorders and returns new end
+    // - erase() shrinks accordingly
+    s.erase(
+        unique(s.begin(), s.end()),
+        s.end());
+    cout << "no duplicates: " << s << endl;
+    //理解：
+    //unique()从来自范围 [first, last) 的相继等价元素组消除首元素外的元素，
+    //并返回范围的新逻辑结尾的尾后迭代器。
+    
+    //unique()保持剩余元素的相对顺序，且不更改容器的物理大小。
+    //指向范围的新逻辑结尾和物理结尾之间元素的迭代器仍然可解引用，
+    // 但元素自身拥有【未指定值】。
+    // 调用 unique 后有时会调用容器的 erase 成员函数，
+    // 它擦除未指定值并减小容器的物理大小，以匹配其新的逻辑大小。
+}
+#endif
+
+
+//不使用getline()，向string对象输入多行数据，且不忽略空白字符的方法
+#if 0
+#include <string>
+#include <iostream>
+#include <algorithm>
+#include <iterator>
+#include <locale>
+using namespace std;
+
+int main()
+{
+    string input;
+
+    //禁用流 str 中的 skipws 标志
+    //禁用有格式输入函数所做的跳过前导空白符（默认启用）。在输出上无效果。
+    // don't skip leading whitespaces
+    cin.unsetf(ios::skipws);
+
+    // read all characters while compressing whitespaces
+    //const locale& loc(cin.getloc());    // locale
+
+    //使用unique_copy函数从标准输入流cin中读取字符，
+    // 并将其复制到容器input中，但是只保留连续的不同字符。
+    // 在这个特定的例子中，unique_copy函数还接受了一个谓词函数作为参数，
+    // 用于定义何为"相邻的重复字符"。
+    unique_copy(istream_iterator<char>(cin),  // beginning of source
+        istream_iterator<char>(),     // end of source
+        back_inserter(input),         // destination
+        [=](char c1, char c2) {      // criterion for adj. duplicates
+            //return isspace(c1, loc) && isspace(c2, loc);
+            return isspace(c1) && isspace(c2);
+        });
+
+    // process input
+    // - here: write it to the standard output
+    cout << input;
+
+    cout << endl;
+    for (auto it = input.begin(); it != input.end(); ++it)
+        if (*it == ' ')
+            cout << "[space]";
+        else if (*it == '\n')
+			cout << "[\\n]";
+		else if (*it != '\n')
+			cout << *it;
+}
+//测试：
+//输入：
+/*
+        a          b
+      c          d
+^Z
+*/
+//输出：
+/*
+ a b
+c d
+
+[space]a[space]b[\n]c[space]d[\n]
+*/ 
+//***注***
+//第二行开始的空白字符被忽略了
+#endif
+
+
+//打开文件读取数据，并写入数据到文件
+#if 0
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+int main()
+{
+    ifstream fin("DataReceive.txt");
+
+	if (!fin.is_open())
+		cout << "Can not open DataReceive.txt !" << endl;
+
+	string str;
+
+	//不好的写法：
+#if 0
+	while (fin)
+	{
+		getline(fin, str);
+
+		cout << str << endl;
+	}
+#endif
+//输出：
+/*
+            a              b
+      c               d
+      c               d
+*/
+
+    //合适的写法：
+	getline(fin, str);
+	while (fin)
+	{
+		cout << str << endl;
+
+		getline(fin, str);
+	}
+//输出：
+/*
+            a              b
+      c               d
+*/
+
+    //清除标志位
+    fin.clear();
+    //回到文件开头
+    fin.seekg(0);
+
+    ofstream fout("DataOutput.txt",ios_base::out | ios_base::app);
+    if(!fout.is_open())
+        cout<< "Can not open DataOutput.txt !" << endl;
+
+    getline(fin, str);
+    while (fin)
+    {
+        cout << str << endl;
+
+        fout << str<<'\n';
+        //fout << str.c_str()<<'\n';
+
+        getline(fin, str);
+    }
+
+    fin.close(); // 关闭文件流
+    fout.close();
+
+    return 0;
+}
+#endif
