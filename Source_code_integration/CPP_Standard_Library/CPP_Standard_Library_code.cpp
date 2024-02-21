@@ -5306,6 +5306,8 @@ int main()
 
 		cout << str << endl;
 	}
+    //原因：
+    //读到EOF时eof()为1，fail()也为1，fin的布尔值才为false
 #endif
 //输出：
 /*
@@ -5352,5 +5354,246 @@ int main()
     fout.close();
 
     return 0;
+}
+#endif
+
+
+//使用string stream
+//用途：
+//以“独立于真实I/O设备以外”的方式来处理I/O。
+// 例如output的文字格式可以在 string 中设定，
+// 然后再将string发送至某个输出通道。
+// 也可以逐行读取 input, 并以 string stream 处理每一行。
+#if 0
+#include <iostream>
+#include <sstream>//ostringstream类
+#include <bitset>
+using namespace std;
+
+int main()
+{
+    ostringstream os;
+
+    // decimal and hexadecimal value
+    os << "dec: " << 15 << hex << " hex: " << 15 << endl;
+    //str()方法：将缓冲区内容当做一个string返回
+    cout << os.str() << endl;
+
+    // append floating value and bitset
+    bitset<15> b(5789);
+    os << "float: " << 4.67 << " bitset: " << b << endl;
+
+    // overwrite with octal value
+    //运用seekp()将涂写位置设于stream 起始处，
+    // 这么一来后继的 operator<< 就把输出写到 string 头部，
+    // 于是覆盖了原本的string stream 头部内容。未被覆盖的字符依然有效。
+    os.seekp(0);
+
+    os << "oct: " << oct << 15;
+    cout << os.str() << endl;
+
+    //补充：
+    //要删除 stream 的现有内容，可利用函数str()将崭新内容赋予缓冲区：
+    //strm.str("");
+}
+#endif
+
+
+//Input string stream的主要用途
+//格式化地从既有string中读取数据
+//应用场景：
+//文件中每行数据先存入string对象，再将string内容设置为缓冲区内容
+//再对缓冲区内容进行格式化的读取处理
+#if 0
+#include <iostream>
+#include <sstream>
+
+using namespace std;
+
+int main()
+{
+    int x;
+    float f;
+
+    string str = "1.12";
+
+    //将string内容设置为缓冲区内容
+    istringstream is(str);
+
+    is >> x >> f;
+
+    cout << x << ' ' << f << endl;
+
+    return 0;
+}
+#endif
+
+
+//使用C++中的随机数
+#if 0
+#include <random>//第一步：包含随机数程序库
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+int main()
+{
+    //第二步：提供产生随机数的引擎
+    // create default engine as source of randomness
+    std::default_random_engine dre;
+
+    //第三步：使用均匀分布，得到指定范围的随机数
+    // uniform_int_distribution：用于生成整数类型的随机数。
+    // 你可以指定生成随机数的范围，包括范围内的所有整数。
+    // use engine to generate integral numbers between 10 and 20 (both included)
+    std::uniform_int_distribution<int> di(10, 20);
+    for (int i = 0; i < 20; ++i) {
+        std::cout << di(dre) << " ";
+    }
+    std::cout << std::endl;
+
+    //uniform_real_distribution：用于生成浮点数类型的随机数。
+    // 你可以指定生成随机数的范围，在指定的范围内生成均匀分布的浮点数。
+    // use engine to generate floating-point numbers between 10.0 and 20.0
+    // (10.0 included, 20.0 not included)
+    std::uniform_real_distribution<double> dr(10, 20);
+    for (int i = 0; i < 8; ++i) {
+        std::cout << dr(dre) << " ";
+    }
+    std::cout << std::endl;
+
+    //使用随机数生成引擎来打乱容器内元素次序
+    // use engine to shuffle elements
+    std::vector<int> v = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    //...
+    std::shuffle(v.begin(), v.end(),  // range
+        dre);                // source of randomness
+    for (int i = 0; i < v.size(); ++i) {
+        std::cout << v[i] << " ";
+    }
+    std::cout << std::endl;
+}
+#endif
+//补充：
+//使用C标准随机值生成器会造成的问题(P912)
+
+
+//并发编程
+//高级接口：async()、future
+//低层接口：thread、promise
+
+//并行运行func1()、func2()
+#if 1
+#include <future>
+#include <thread>
+#include <chrono>
+#include <random>
+#include <iostream>
+#include <exception>
+using namespace std;
+
+int doSomething(char c)
+{
+    // random-number generator (use c as seed to get different sequences)
+    std::default_random_engine dre(c);
+    std::uniform_int_distribution<int> id(10, 1000);
+
+    // loop to print character after a random period of time
+    for (int i = 0; i < 10; ++i) 
+    {
+        //当前线程暂停时间
+        this_thread::sleep_for(chrono::milliseconds(id(dre)));
+        cout.put(c).flush();
+    }
+
+    return c;
+}
+
+int func1()
+{
+    return doSomething('.');
+}
+
+int func2()
+{
+    return doSomething('+');
+}
+
+int main()
+{
+    std::cout << "starting func1() in background"
+        << " and func2() in foreground:" << std::endl;
+
+    //将以下写法：
+    //int result = func1()+func2();
+    //改成：
+
+    //第一步：
+    // 异步启动func1()
+    // start func1() asynchronously (now or later or never):
+    std::future<int> result1(std::async(func1));
+    //理解：
+    //使用 std::async()尝试启动 func1()于后台，并将结果赋值给某个 std::future对象
+    //async()尝试将其所获得的函数立刻【异步启动】于一个分离线程内。
+    // 因此概念上func1()在这里被启动了，不会造成main()停滞。
+    // 基于两个原因，返回 future 对象 是必要的：
+    /*
+        1.它允许你取得“传给 async()的那个函数”的未来结果——
+            也许是个返回值，也许是个异常。
+            这个 future object已受到“被启动函数”返回类型的特化，
+            如果被启动的是个返回“无物”的后台任务(background task),
+            这就会是 std::future<void>。
+        2.它必须存在，确保“目标函数”或快或慢终会被调用。
+            注意先前我说async()尝试启动目标函数。
+            如果这样的事情没发生，稍后我们需要这个 future 对象才能强迫启动之
+            (当我们需要函数的运行结果或当我们想要确保该函数被执行时)。
+     */
+
+    //第二步：
+    //正常启动func2()于前台
+    int result2 = func2();    // call func2() synchronously (here and now)
+
+    //第三步：
+    // 使用get()方法
+    // print result (wait for func1() to finish and add its result to result2
+    int result = result1.get() + result2;
+
+    // get()被调用，以下三件事情之一会发生；
+    /*
+     1.如果 func1()被 async()启动于一个分离线程中并且已结束，你会立刻获得其结果。
+     2.如果func1()被启动但尚未结束，get()会引发停滞(block)
+        待 func1()结束后获得结果。
+     3.如果 func1()尚未启动，会被强迫启动如同一个同步调用；
+         get()会引发停滞直至产生结果。
+     这样的行为很重要，因为这确保了在单线程环境中，
+     或是当async()无法启动新线程时(不论基于任何理由), 程序仍能有效运作。
+     */
+
+    /*
+    因此，
+    std::future<int> result1(std::async(func1));
+    和
+    result1.get()
+    的组合允许你以某种方式优化程序：
+    (1)如果可能，当 main 线程的下一个语句被处理时func1()被并行运行，
+    (2)如果无法并行运行，那么func1()会在 get()被调用时
+    被循序调用(called sequentially)。
+    这就意味着无论如何都能保证至少在 get()执行后一定会调用
+    func1()——不是异步就是同步。
+    */
+
+    //补充：
+    /*
+    以下或许不是你要的：
+    std::future<int> result1(std::async(func1));
+
+    int result = func2()+ result1.get();//might call func2() after func1() ends
+
+    由于上述第二个语句右侧的核算顺序，result1.get()有可能在 func2()之前被调用
+    */
+
+    //整体运行时间是func1()和func2()运行时间中的较大者  加上 计算总和的时间
+    std::cout << "\nresult of func1()+func2(): " << result
+        << std::endl;
 }
 #endif
