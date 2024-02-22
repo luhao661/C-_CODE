@@ -72,7 +72,7 @@ int main()
         //写法一：
         up.get()[i] = i * 42;
         //写法二：
-        up[i] = i * 42;
+        up[i] = i * 42;//***注***上面若用写法二创建智能指针，就不能用该写法二访问元素
     }
 
     // deal with shared memory somewhere else:
@@ -2020,6 +2020,16 @@ int main()
 
 //如果想处理 key/value pair,请采用unordered(multi)map。如果元素次序很重要，可采用
 //(multi)map
+
+//补充：
+//map 使用红黑树（Red-Black Tree）作为底层数据结构，
+// 它保持元素的有序状态，因此在查找操作时具有 O(log n) 的时间复杂度。
+//unordered_map 使用哈希表作为底层数据结构，它通过哈希函数将键映射到桶（buckets），
+//并在桶中进行搜索。在理想情况下（哈希函数均匀分布），
+// 查询操作的平均时间复杂度为 O(1)。但在最坏情况下，
+// 可能需要 O(n) 的时间复杂度，例如当哈希冲突严重时。
+//因此，在大多数情况下，unordered_map 提供了比 map 更快的查询速度，
+//但是在保持元素顺序或者需要有序遍历时，map 会更适合。
 
 
 //随机访问迭代器的特殊能力
@@ -5555,7 +5565,7 @@ int main()
 
     //第三步：
     // 使用get()方法
-    // print result (wait for func1() to finish and add its result to result2
+    // print result (wait for func1() to finish and add its result to result2)
     int result = result1.get() + result2;
 
     // get()被调用，以下三件事情之一会发生；
