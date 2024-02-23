@@ -3165,7 +3165,8 @@ int main()
             return myToupper(c1) == myToupper(c2);
         });
 
-    if (pos != s.end()) {
+    if (pos != s.end()) 
+    {
         cout << "\"" << sub << "\" is part of \"" << s << "\""
             << endl;
     }
@@ -5493,7 +5494,7 @@ int main()
 //低层接口：thread、promise
 
 //并行运行func1()、func2()
-#if 1
+#if 0
 #include <future>
 #include <thread>
 #include <chrono>
@@ -5564,7 +5565,7 @@ int main()
     int result2 = func2();    // call func2() synchronously (here and now)
 
     //第三步：
-    // 使用get()方法
+    // 使用get()方法，意思是欲明确索求目标函数的结果
     // print result (wait for func1() to finish and add its result to result2)
     int result = result1.get() + result2;
 
@@ -5605,5 +5606,213 @@ int main()
     //整体运行时间是func1()和func2()运行时间中的较大者  加上 计算总和的时间
     std::cout << "\nresult of func1()+func2(): " << result
         << std::endl;
+}
+#endif
+//补充：
+//Launch(发射)策略
+/*
+//指示async()被调用时应明确地以异步方式启动目标函数：（该做法不必非得调用get()）
+// force func1() to start asynchronously now or throw std::system_error
+
+std::future<long> result1 = std::async(std::launch:: async, func1);
+
+//指示强制延缓执行(deferred execution)：
+以 std::launch:deferred为发射策略传给 async()。下面的做法允许你延缓func1()直到你对f调用get() :
+   
+std::future<…> f(std::async(std::launch::deferred,
+        func1));                                                     //defer func1 until get()
+
+//这保证 func1()绝不会在没有get()(或 wait(); 见第953页)的情况下启动。
+*/
+
+
+//处理后台操作所产生的异常，只需使用get()做出“以同步方式调用该操作”
+//所做的相同动作即可
+#if 0
+#include <future>
+#include <list>
+#include <iostream>
+#include <exception>
+
+using namespace std;
+
+void task1()
+{
+    // endless insertion and memory allocation
+    // - will sooner or later raise an exception
+    // - BEWARE: this is bad practice
+    list<int> v;
+    while (true) 
+    {
+        for (int i = 0; i < 1000000; ++i)
+        {
+            v.push_back(i);
+        }
+        cout.put('.').flush();
+    }
+}
+
+int main()
+{
+    cout << "starting 2 tasks" << endl;
+    cout << "- task1: process endless loop of memory consumption" << endl;
+    cout << "- task2: wait for <return> and then for task1" << endl;
+
+    auto f1 = async(task1);  // start task1() asynchronously (now or later or never)
+
+    cin.get();  // read a character (like getchar())
+
+    cout << "\nwait for the end of task1: " << endl;
+    try 
+    {
+        f1.get();  // wait for task1() to finish (raises exception if any)
+    }
+    catch (const exception& e)
+    {
+        cerr << "EXCEPTION: " << e.what() << endl;
+    }
+}
+#endif
+
+
+//class std::future提供了“处理并发运算之未来结果”的能力。然而
+//你只能处理该结果一次。第二次调用get()会导致不可预期的行为
+//有时候，多次处理“并发运算之未来结果”是合理的，特别当多个其他线程都想
+//处理这份结果时。基于这个目的，C++标准库提供了class std::shared_future, 
+// 于是你可以多次调用get(), 导致相同结果，或导致抛出同一个异常
+#if 0
+#include <future>
+#include <thread>
+#include <iostream>
+#include <exception>
+#include <stdexcept>
+using namespace std;
+
+int queryNumber()
+{
+    // read number
+    cout << "read number: ";
+    int num;
+    cin >> num;
+
+    // throw exception if none
+    if (!cin) 
+    {
+        throw runtime_error("no number read");
+    }
+
+    return num;
+}
+
+void doSomething(char c, shared_future<int> f)
+{
+    try
+    {
+        // wait for number of characters to print
+        int num = f.get();  // get result of queryNumber()
+
+        for (int i = 0; i < num; ++i) 
+        {
+            this_thread::sleep_for(chrono::milliseconds(100));
+            cout.put(c).flush();
+        }
+    }
+    catch (const exception& e)
+    {
+        cerr << "EXCEPTION in thread " << this_thread::get_id()
+            << ": " << e.what() << endl;
+    }
+}
+
+int main()
+{
+    try 
+    {
+        //启动一个线程来查询一个数字
+        // start one thread to query a number
+        shared_future<int> f = async(queryNumber);
+        //shared future可以以寻常的 future为初值，
+        // 于是 future的状态(state)会被搬移到 shared future 身上
+        //就内部而言，所有 shared future object共享所谓 shared state,
+        // 后者由 async()建立，用来存放目标函数的运行结果
+        // (也存放函数本身——如果它被推迟执行的话)。
+
+        // start three threads each processing this number in a loop
+        auto f1 = async(launch::async, doSomething, '.', f);
+        auto f2 = async(launch::async, doSomething, '+', f);
+        auto f3 = async(launch::async, doSomething, '*', f);
+        //***注***
+        //每一次 doSomething()被调用，
+        // 便通过传入之第二参数shared future的成员函数get(),
+        // 等待及处理 queryNumber()的执行结果：
+
+        // wait for all loops to be finished
+        f1.get();
+        f2.get();
+        f3.get();
+    }
+    catch (const exception& e)
+    {
+        cout << "\nEXCEPTION: " << e.what() << endl;
+    }
+    cout << "\ndone" << endl;
+}
+#endif
+
+
+//使用thread
+#if 0
+#include <thread>
+#include <chrono>
+#include <random>
+#include <iostream>
+#include <exception>
+using namespace std;
+
+void doSomething(int num, char c)
+{
+    try {
+        // random-number generator (use c as seed to get different sequences)
+        default_random_engine dre(42 * c);
+        uniform_int_distribution<int> id(10, 1000);
+        for (int i = 0; i < num; ++i) {
+            this_thread::sleep_for(chrono::milliseconds(id(dre)));
+            cout.put(c).flush();
+            //...
+        }
+    }
+    // make sure no exception leaves the thread and terminates the program
+    catch (const exception& e) {
+        cerr << "THREAD-EXCEPTION (thread "
+            << this_thread::get_id() << "): " << e.what() << endl;
+    }
+    catch (...) {
+        cerr << "THREAD-EXCEPTION (thread "
+            << this_thread::get_id() << ")" << endl;
+    }
+}
+
+int main()
+{
+    try {
+        thread t1(doSomething, 5, '.');  // print five dots in separate thread
+        cout << "- started fg thread " << t1.get_id() << endl;
+
+        // print other characters in other background threads
+        for (int i = 0; i < 5; ++i) {
+            thread t(doSomething, 10, 'a' + i); // print 10 chars in separate thread
+            cout << "- detach started bg thread " << t.get_id() << endl;
+            t.detach();  // detach thread into the background
+        }
+
+        cin.get();  // wait for any input (return)
+
+        cout << "- join fg thread " << t1.get_id() << endl;
+        t1.join();  // wait for t1 to finish
+    }
+    catch (const exception& e)
+    {
+        cerr << "EXCEPTION: " << e.what() << endl;
+    }
 }
 #endif
