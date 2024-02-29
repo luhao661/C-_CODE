@@ -5747,7 +5747,7 @@ int main()
         auto f2 = async(launch::async, doSomething, '+', f);
         auto f3 = async(launch::async, doSomething, '*', f);
         //***注***
-        //每一次 doSomething()被调用，
+        // 每一次 doSomething()被调用，
         // 便通过传入之第二参数shared future的成员函数get(),
         // 等待及处理 queryNumber()的执行结果：
 
@@ -5828,4 +5828,115 @@ int main()
         cerr << "EXCEPTION: " << e.what() << endl;
     }
 }
+//***注***
+//多个线程会共享数据区和堆，每个线程维护自己的栈。
+#endif
+
+//关于线程的ID
+// 实现(implementation)有可能在被申请时才动态生成这些ID,而不是在thread 
+// 被启动时就生成之，那么 main thread 的编号就取决于先前对 thread ID的申请次数
+// 
+// 因此，识别线程(例如主线程 master thread)的唯一办法是，
+// 将线程启动时的 ID存储下来，以此为唯一识别值：
+/*
+std::thread::id masterThreadID;
+
+void doSomething()
+{
+if(std::this_thread::get_id()== masterThreadID)
+{
+    ...
+}
+
+std::thread master(doSomething);
+masterThreadID = master.get_id();
+std::thread slave(doSomething);
+*/
+
+
+//用来传递运行结果和异常的一般性机制：promise
+#if 0
+#include <thread>
+#include <future>
+#include <iostream>
+#include <string>
+#include <exception>
+#include <stdexcept>
+#include <functional>
+#include <utility>
+
+void doSomething(std::promise<std::string>& p)
+{
+    try {
+        // read character and throw exception if 'x'
+        std::cout << "read char ('x' for exception): ";
+
+        char c = std::cin.get();
+        if (c == 'x')
+        {
+            throw std::runtime_error(std::string("char ") + c + " read");
+        }
+
+        std::string s = std::string("char ") + c + " processed";
+
+        p.set_value_at_thread_exit(std::move(s));    // store result
+    }
+    catch (...)
+    {
+        p.set_exception_at_thread_exit(std::current_exception());  // store exception
+    }
+}
+
+int main()
+{
+    try {
+        // create a promise to 【store】 the outcome
+        std::promise<std::string> p;
+        //存string的值或一个异常，并可被 future object 取其数据当作线程结果。
+
+        // create a future to 【process】 the outcome
+        std::future<std::string> f(p.get_future());
+        //创建一个future对象，通过p.get_future()获取promise对象的future，
+        // 用于获取线程的结果。这里的 f 将会持有异步任务的未来结果。
+
+        // start a thread using the promise to store the outcome
+        std::thread t(doSomething, std::ref(p));
+        //***注***
+        //创建一个新的线程，线程的执行函数是doSomething，
+        // 并传递了一个std::reference_wrapper<std::promise<std::string>>类型的参数，
+        // 引用了之前创建的promise对象p。使其状态可以被改变。
+        // 这个线程将会执行异步任务。
+
+        t.detach();
+        //...
+
+        // process the outcome
+        std::cout << "result: " << f.get() << std::endl;
+        //通过get(),我们可以取得“被存储的结果”,或是令“被存储的异常”再次被抛出
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "EXCEPTION: " << e.what() << std::endl;
+    }
+    catch (...) 
+    {
+        std::cerr << "EXCEPTION " << std::endl;
+    }
+    //***注***
+    //catch (...)用于捕获任何可能发生的异常，不管是标准异常（派生自std::exception）
+    // 还是其他类型的异常。这样做可以确保即使出现了未预期的异常类型，
+    // 程序也可以通过输出错误信息来进行适当的处理，而不至于直接崩溃
+}
+#endif
+
+
+//线程同步化技术：
+//Mutex、lock
+//条件变量
+//Atomic
+
+
+//
+#if 1
+
 #endif
