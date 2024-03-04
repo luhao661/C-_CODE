@@ -5419,7 +5419,7 @@ int main()
 //格式化地从既有string中读取数据
 //应用场景：
 //文件中每行数据先存入string对象，再将string内容设置为缓冲区内容
-//再对缓冲区内容进行格式化的读取处理
+//再对缓冲区内容进行格式化的读取处理（见面试题36：后缀表达式）
 #if 0
 #include <iostream>
 #include <sstream>
@@ -5930,13 +5930,114 @@ int main()
 #endif
 
 
+//packaged_task<>
+//尝试立即启动于后台
+
+
+//并发
+// 使用多线程(multiple thread)几乎总是会伴随“数据的并发访问”(concurrent data access)。
+// 线程有可能提供数据给其他线程处理，或是备妥必要的先决条件(precondition)
+// 用以启动其他进程(process)。
+//第一条规则：
+//多个线程并发处理相同的数据而又不曾同步化(synchronization),
+// 那么唯一安全的情况就是：所有线程只读取数据。
+
+//当两个或更多线程并发处理相同的变量或对象或成员，而且至少其中一个线程改动了它，
+// 而你又不曾同步化(synchronize)该处理动作，你就可能有了深深的麻烦。这就是C++
+// 所谓的 data race。
+// C++11标准中定义的 data race 是“不同线程中的两个互相冲突的动作，
+// 其中至少一个动作不是atomic(不可切割的), 而且无一个动作发生在另一动作之前”。
+// Data race 总是导致不可预期的行为。
+
+//Concurrent Data Access (并发数据访问)为什么造成问题
+//C++,总是个抽象层，一个像 C++这样的标准具体描述了语句和操作的影响，
+// 但并非等同于其所产生的汇编码(assembler code)。标准描述的是 what而不是how。
+//编译器都可以将代码无限优化，只要程序行为外观上相同(这些优化只考虑在单线程情况下)。
+// 因此，被生成的代码是个黑盒子，是可以化的变，只要可观测行为保持稳定
+//任何实现(implementation)可以自由忽视国际标准(International Standard)的任何规定，
+// 只要最终成果貌似遵守了那些规定
+
+//什么情况下可能出错：
+//Unsynchronized data access(未同步化的数据访问):
+// 并行运行的两个线程读和写同一笔数据，不知道哪一个语句先来。
+//Half-written data(写至半途的数据):
+// 某个线程正在读数据，另一个线程改动它，于是读取中的线程甚至可能读到改了一半的数据，
+//读到一个半新半旧值。
+//Reordered statement(重新安排的语句) :语句和操作有可能被重新安排次序(reordered),
+//也许对于每一个单线程正确，但对于多个线程的组合却破坏了预期的行为。
+
+//除非另有说明，C++标准库提供的函数通常不支持“写或读”动作
+// 与另一个“写”动作(写至同一笔数据)并发执行。
+//并发处理同一容器内的不同元素是可以的(但vector<bool>例外)。因此，不同的线程
+//可以并发读和/或写同一容器内的不同元素。例如，每个线程可以处理某些事然后将结果
+//存储于一个共享的 vector 内专属该线程的某元素。
+//并发处理 string stream、file stream或 stream buffer 会导致不可预期的行为。
+// 但是格式化输入自和输出至某个标准stream(它和C I/O同步化了，见15.14.1节第845页)
+// 是可以的，虽然这可能导致插叙的字符
+
+//C++的vollatile对于解决并发数据访问产生的问题无效
+//volatile 关键字主要用于告知编译器不要对标记为 volatile 的变量进行优化，
+// 以确保每次访问该变量时都从内存中读取其最新值，而不是使用缓存的值。
+// 然而，volatile 并不能保证线程安全或解决并发数据访问的问题。
+
 //线程同步化技术：
 //Mutex、lock
 //条件变量
 //Atomic
 
 
-//
-#if 1
+//使用Mutex和Lock
+//为了获得独占式的资源访问能力，相应的线程必须锁定(lock) mutex,
+// 这样可以防止其他线程也锁定mutex, 直到第一个线程解锁(unlock) mutex。
 
+//传统的mutex和lock用法的缺点：
+// 你应该确保异常——它会终止独占——也解除(unlock)相应的 mutex, 
+// 否则资源就有可能被永远锁住。此外也可能出现deadlock 情景：
+// 两个线程在释放它们自己的lock 之前彼此等待对方的 lock。
+
+//解决：
+//根据RAII守则(Resource Acquisition Is Initialization),构造函数将获得资源，而析构函数
+//甚至当“异常造成生命期结束”它也总是会被调用——则负责为我们释放资源
+// 使用C++标准库提供的
+//class std::lock_guard
+#if 1
+#include <future>
+#include <mutex>
+#include <iostream>
+#include <string>
+
+std::mutex printMutex;  // enable synchronized output with print()
+
+void print(const std::string& s)
+{
+    // ...
+    
+    //lock应该被限制在可能之最短周期内，因为它们会阻塞(block)其他代码的并行运行机会
+    {
+        std::lock_guard<std::mutex> lg(printMutex);
+        for (char c : s)
+        {
+            std::cout.put(c);
+        }
+        std::cout << std::endl;
+    }
+    //令每次对print()的调用都独占地写出所有字符
+    //实现【输出同步化(synchronize)】
+
+    //...
+}
+
+int main()
+{
+    auto f1 = std::async(std::launch::async,
+        print, "Hello from a first thread");
+
+    auto f2 = std::async(std::launch::async,
+        print, "Hello from a second thread");
+
+    print("Hello from the main thread");
+
+    //***注***
+    //lock 的次序仍旧不明确，因此上述三行输出有可能以任何次序出现。
+}
 #endif
