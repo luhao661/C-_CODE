@@ -5443,6 +5443,56 @@ int main()
     return 0;
 }
 #endif
+/*
+可以方便地将字符串分割成各种部分，
+或者将字符串中的数字提取出来并转换为数值类型。
+这在处理文本数据或者解析格式化的输入时非常有用。
+*/
+//解析格式化的输入
+#if 0
+#include <iostream>
+#include <sstream>
+#include <string>
+
+struct Student 
+{
+    std::string name;
+    int age;
+    float score;
+};
+
+int main()
+{
+    // 假设这是一个包含学生信息的文本文件
+    std::string studentData = "Alice,20,85.5\nBob,22,78.2\nCharlie,21,90.0";
+
+    std::istringstream iss(studentData); // 使用istringstream从字符串中读取数据
+
+    std::string line;
+    while (std::getline(iss, line))// 逐行读取数据
+    { 
+        std::istringstream lineStream(line);
+        std::string name;
+        int age;
+        float score;
+
+        // 使用流操作符将每一行的数据提取出来
+        if (std::getline(lineStream, name, ',') &&
+            lineStream >> age &&
+            lineStream.ignore(1) && // 忽略逗号
+            lineStream >> score)
+        {
+
+            // 创建学生对象并输出信息
+            Student student{ name, age, score };
+            std::cout << "Name: " << student.name << ", Age: " << student.age << ", Score: " << student.score << std::endl;
+        }
+    }
+
+    return 0;
+}
+
+#endif
 
 
 //使用C++中的随机数
@@ -6078,7 +6128,7 @@ createTable()完成。
 
 
 //使用递归的Lock  (Recursive Lock)解决死锁
-#if 1
+#if 0
 #include <mutex>
 
 class DatabaseAccess
@@ -6127,7 +6177,7 @@ public:
     int getData() const
     {
         std::call_once(initDataFlag, &X::initData, this);
-        // once flag 对象 当作第一实参传给call_once()是为了确保传入的机能只被执行一次。
+        // once flag 对象当作第一实参传给call_once()是为了确保传入的机能只被执行一次。
         // 因此，如果第一次调用成功，下一次调用又带着相同的 once flag,
         // 传入的机能就不会被调用——即使该机能与第一次有异
     }
@@ -6177,16 +6227,31 @@ public:
 #endif
 
 
-//使用Condition Variable(条件变量)
+//使用Condition Variable(条件变量) 同步化线程之间的数据流逻辑依赖关系
+//一个线程可以唤醒(wake up)一或多个其他等待中的线程(waiting thread)。
 #if 0
-//第一步：
-//包含<condition_variable> 和 <mutex>头文件
+//第一步：包含<condition_variable> 和 <mutex>头文件
 #include <condition_variable>
 #include <mutex>
 #include <future>
 #include <iostream>
 
+//第二步，创建flag检查数据是否真的备妥
 bool readyFlag;
+//补充：
+/*
+condition variable 也许有所谓假醒(spurious wakeup)。
+也就是某个 condition variable 的 wait动作有可能在该 condition variable 
+尚未被 notified 时便返回。假醒无法被测定，以使用者的观点来看它们实质上是随机的。
+然而它们通常发生于 thread library 无法可靠确定某个 waiting thread 不遗漏任何
+notification时。由于遗漏 notification 便代表 condition variable 无用，
+thread library 宁愿在线程的 wait 之中唤醒它而不愿承受风险。”
+因此，发生 wakeup 不一定意味着线程所需要的条件已经掌握了。更确切地说，
+在wakeup之后你仍然需要代码去验证“条件实际已达成”。
+因此(例如)我们必须检查数据是否真正备妥，或是我们仍需要诸如ready flag之类的东西。
+*/
+
+//第三步：创建锁和条件变量
 std::mutex readyMutex;
 std::condition_variable readyCondVar;
 
@@ -6196,18 +6261,25 @@ void thread1()
     std::cout << "<return>" << std::endl;
     std::cin.get();
 
+    //第四步：锁住，更新flag，解锁，通知条件变量
+    
     // signal that thread1 has prepared a condition
     {
         std::lock_guard<std::mutex> lg(readyMutex);
-        readyFlag = true;
+        readyFlag = true;//***为什么对于基本数据类型也要这样？***见//使用atomic来取代mutex和lock
     } // release lock
 
-    //那个激发“条件终于满足”的线程(或多线程之一)必须调用
+    //那个用来激发“条件终于满足”的线程(或多线程之一)必须调用notify_one()或notify_all()
     readyCondVar.notify_one();
+    //唤醒一个或所有等待中的线程(waiting thread)。
+    //***注***
+    //通知动作不需要被安排在 lock 保护区内。
 }
 
 void thread2()
 {
+    //第五步：以一个 unique_lock锁住 mutex,一面检查条件一面等待被通知，然后释放锁
+
     // wait until thread1 is ready (readyFlag is true)
     {
         std::unique_lock<std::mutex> ul(readyMutex);
@@ -6216,7 +6288,33 @@ void thread2()
         // 因为 wait()的内部会明确地对 mutex 进行解锁和锁定。
 
         //那个“等待条件被满足”的线程必须调用
-        readyCondVar.wait(ul, [] { return readyFlag; });
+        readyCondVar.wait(ul, []() { return readyFlag; });// wait()内部会不断调用该第二实参，直到它返回 true
+
+        //这段代码相当于
+        /*
+        {
+            std::unique_lock<std::mutex> ul(readyMutex);
+            while(!readyFlag)
+            {
+                readyCondVar.wait(ul);
+            }
+        }// release lock
+        */
+
+        //补充：
+        /*
+        std::condition_variable::wait()函数的内部需要在等待期间解锁互斥量，
+        并在条件满足时重新锁定互斥量。而std::lock_guard无法手动解锁，
+        它只能在构造时锁定互斥量，在析构时自动释放锁。
+        这就意味着如果在std::lock_guard的作用域内调用wait()函数，
+        它将尝试在等待期间重新解锁已经被锁定的互斥量，
+        而std::lock_guard不支持手动解锁，从而导致未定义的行为。
+
+        因此，为了能够在等待期间手动解锁并在条件满足时重新锁定互斥量，
+        必须使用std::unique_lock。std::unique_lock允许在其生命周期内
+        手动控制锁的获取和释放，这与std::condition_variable的要求相符合。
+        */
+
     } // release lock
 
     // do whatever shall happen after thread1 has prepared things
@@ -6240,10 +6338,171 @@ unique_lock 不一定要拥有 mutex，所以可以通过
 default constructor 建立出一个空的 unique_lock。
 unique_lock 虽然一样不可复制（non-copyable），但是它是可以转移的（movable）。
 所以，unique_lock 不但可以被函数回传，也可以放到 STL 的 container 里。
-另外，unique_lock 也有提供 lock()、unlock() 等函数，可以用来加锁解锁mutex
+
+另外，unique_lock 也有提供 lock()、unlock() 等函数，可以用来手动加锁解锁mutex
 unique_lock本身还可以用于std::lock参数，
 因为其具备lock、unlock、try_lock成员函数,这些函数不仅完成
 针对mutex的操作还要更新mutex的状态。
 */
+
+
+//使用 Condition Variable(条件变量)实现多线程 Queue
+#if 0
+#include <condition_variable>
+#include <mutex>
+#include <future>
+#include <thread>
+#include <iostream>
+#include <queue>
+
+//创建一个queue被并发使用
+std::queue<int> queue;
+
+std::mutex queueMutex;
+std::condition_variable queueCondVar;
+
+void provider(int val)
+{
+    // push different values (val til val+5 with timeouts of val milliseconds into the queue
+    for (int i = 0; i < 6; ++i) 
+    {
+        {
+            std::lock_guard<std::mutex> lg(queueMutex);
+            queue.push(val + i);
+        } // release lock
+
+        //condition variable 用来在“有新元素可用”时激发和唤醒某一个线程
+        queueCondVar.notify_one();
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(val));
+    }
+}
+
+void consumer(int num)
+{
+    // pop values if available (num identifies the consumer)
+    while (true) 
+    {
+        int val;
+        {
+            //***注***
+            //所有等待某个 condition variable 的线程都必须使用相同的 mutex;
+            // 当 wait()家族的某个成员被调用时该mutex 必须被 unique_lock 锁定，
+            // 否则会发生不明确的行为。
+            std::unique_lock<std::mutex> ul(queueMutex);
+            
+            queueCondVar.wait(ul, [] { return !queue.empty(); });
+
+            val = queue.front();
+            queue.pop();
+        } // release lock
+
+        std::cout << "consumer " << num << ": " << val << std::endl;
+    }
+}
+
+int main()
+{
+    //三个线程都把数值推入(push)某个 queue,另两个线程则是从中读取数据
+
+    // start three providers for values 100+, 300+, and 500+
+    auto p1 = std::async(std::launch::async, provider, 100);
+    auto p2 = std::async(std::launch::async, provider, 300);
+    auto p3 = std::async(std::launch::async, provider, 500);
+
+    // start two consumers printing the values
+    auto c1 = std::async(std::launch::async, consumer, 1);
+    auto c2 = std::async(std::launch::async, consumer, 2);
+
+    //***注***
+    //两个 consumer的输出并非同步，所以字符有可能交错。
+    // 也请注意，并发等待者(线程)的被通知次序是不确定的。
+}
+#endif
+
+
+//使用atomic来取代mutex和lock
+//在//使用Condition Variable(条件变量) 同步化线程之间的数据流逻辑依赖关系
+//中有如下代码块：
+/*
+    // signal that thread1 has prepared a condition
+    {
+        std::lock_guard<std::mutex> lg(readyMutex);
+        readyFlag = true;
+    } // release lock
+*/
+//1.
+//一般而言，即使面对基本数据类型，读和写也不是 atomic(不可切割的)
+//因此你可能读到一个被写一半的 bool值，C++ standard 说这会带来不明确的行为。
+//2.
+//编译器生成的代码有可能改变操作次序，所以供应端(线程)有可能在供应数据之前
+// 就先设置 ready flag, 而消费端(线程)亦有可能在侦测 ready flag 之前就处理该数据。
+
+
+//使用atomic的高层接口，它所提供的操作将使用默认保证，不论内存访问次序如何。
+// 这个默认保证提供了顺序一致性(sequential consistency), 意思是在线程之中
+// atomic 操作保证一定“像代码出现的次序”那样地发生。
+// 因此 18.4.3 节第 986 页所说的重排语句也就不会出现。
+
+//重写//使用Condition Variable(条件变量) 同步化线程之间的数据流逻辑依赖关系
+#if 1
+#include <condition_variable>
+#include <mutex>
+#include <future>
+#include <iostream>
+#include <atomic>
+
+std::atomic_bool readyFlag(false);
+//***注***
+//总是应该将 atomic object 初始化，
+// 因为其 default 构造函数并不完全初始化它
+// (倒不是其初值不明确，而是其lock 未被初始化)。
+
+std::mutex readyMutex;
+std::condition_variable readyCondVar;
+
+void thread1()
+{
+    std::cout << "<return>" << std::endl;
+    std::cin.get();
+        
+	readyFlag.store(true);    
+    //***注***
+    /*
+    readyFlag.store(true);
+    这是一种原子操作，将true存储到readyFlag中。
+    它确保在存储期间没有其他线程可以同时访问或修改readyFlag的值。
+    这个操作返回void，因此它不会返回任何值。
+    readyFlag = true;
+    这是普通的赋值操作。在单线程环境下可能是安全的，
+    但在多线程环境下可能会导致竞态条件。
+    在多线程环境下，如果有其他线程同时访问或修改readyFlag，
+    可能会导致未定义的行为或程序错误。
+    */
+
+    readyCondVar.notify_one();
+}
+
+void thread2()
+{
+    {
+        //***注***
+        //使用condition variable 时我们仍然需要 mutex 才能保护对 
+        // condition variable 的消费 (即使readyFlag现在是个 atomic object)
+        std::unique_lock<std::mutex> ul(readyMutex);
+
+        readyCondVar.wait(ul, []() { return readyFlag.load(); });
+
+    } 
+    std::cout << "done" << std::endl;
+}
+
+int main()
+{
+    auto f1 = std::async(std::launch::async, thread1);
+    auto f2 = std::async(std::launch::async, thread2);
+}
+#endif
+
 
 
