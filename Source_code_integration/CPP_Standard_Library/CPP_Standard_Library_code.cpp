@@ -6445,7 +6445,8 @@ int main()
 // 因此 18.4.3 节第 986 页所说的重排语句也就不会出现。
 
 //重写//使用Condition Variable(条件变量) 同步化线程之间的数据流逻辑依赖关系
-#if 1
+//atomic的高级接口：store()、load()
+#if 0
 #include <condition_variable>
 #include <mutex>
 #include <future>
@@ -6469,6 +6470,7 @@ void thread1()
 	readyFlag.store(true);    
     //***注***
     /*
+    比较：
     readyFlag.store(true);
     这是一种原子操作，将true存储到readyFlag中。
     它确保在存储期间没有其他线程可以同时访问或修改readyFlag的值。
@@ -6505,4 +6507,122 @@ int main()
 #endif
 
 
+//atomic 的store()、load()方法的细节
+#if 0
+#include <atomic>    // for atomics
+#include <future>    // for async() and futures
+#include <thread>    // for this_thread
+#include <chrono>    // for durations
+#include <iostream>
+
+long data;
+std::atomic<bool> readyFlag(false);
+
+void provider()
+{
+    // after reading a character
+    std::cout << "<return>" << std::endl;
+    std::cin.get();
+
+    // provide some data
+    data = 42;
+
+    // and signal readiness
+    readyFlag.store(true);
+    //***注***
+    //store()会对影响所及的内存区执行一个所谓 release 操作，确保此前所有内存操作(all prior memory operations)
+    // 不论是否为 atomic, 在store发挥效用之前都变成“可被其他线程看见”。
+    //***理解***
+    //这意味着在执行store()之后，其他线程可以看到该线程之前所有的内存修改，
+    // 无论这些修改是否为原子操作。
+    // 这样可以确保【内存的一致性】，避免了出现数据不一致或者竞态条件的情况。
+}
+
+void consumer()
+{
+    // wait for readiness and do something else
+    while (!readyFlag.load())
+    {
+        std::cout.put('.').flush();
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    }
+    //load()会对影响所及的内存区执行一个所谓 acquire 操作，确保随后所有内存操作(all following memory operations)
+    // 不论是否为 atomic, 在 load 之后都变成“可被其他线程看见"。
+
+    //***理解***
+    //由于data的设值发生在 provider()将readyFlag存储(store)为 true之前，
+    //而对 data的处理发生在 consumer()将true载入(loaded)放进 readyFlag之后，
+    // 因此对data的处理保证发生在 data已提供之后
+
+    // and process provided data
+    std::cout << "\nvalue : " << data << std::endl;
+}
+
+int main()
+{
+    // start provider and consumer
+    auto p = std::async(std::launch::async, provider);
+    auto c = std::async(std::launch::async, consumer);
+}
+#endif
+
+
+//补充：
+/*
+
+long data;
+std::atomic<bool> readyFlag(false);
+
+data = 42; //provide some data
+readyFlag.store(true); //and signal readiness
+
+while(!readyFlag.load()){ //loop until ready
+}
+std::cout << data << std::endl; //and process provided data
+
+使用默认的内存处理次序(default memory order),于是保证顺序一致性(sequential consistency)
+
+事实上，我们真正调用的是：
+
+data = 42;
+readyFlag.store(true,std::memory_order_seq_cst);
+
+while(!readyFlag.load(std::memory_order_seq_cst)){
+}
+std::cout << data << std::endl;
+
+上述操作都有一个可有可无的实参用来指定内存次序(memory order),默认实参值
+是std::memory_order_seq_cst(代表 sequential consistent memory order顺序一致的内存次序)。
+
+如果指定另一种内存处理次序(memory order),我们就可以削弱(weaken)对次序的保证，
+在我们的例子中这就足以(例如)要求 provider(数据供应者)不推迟 atomic store
+之后的操作(not delay operations past the atomic store),而 consumer(数据消费者)不会在
+atomic load 之后带来向前操作(not bring forward operations following the atomic load):
+
+data = 42;
+readyFlag.store(true,std::memory_order_release);
+
+和
+
+while(!readyFlag.load(std::memory_order_acquire)){
+}
+std::cout << data << std::end1;
+
+然而如果放宽(relaxing)atomic操作次序上的所有约束，会导致不明确的行为：
+// ERROR:undefined behavior:
+data = 42;
+readyFlag.store(true,std::memory_order_relaxed);
+
+原因是 std::memory_order_relaxed 不保证此前所有内存操作
+(all prior memory operations)在store发挥效用前都变得“可被其他线程看见”。
+因此 provider 线程有可能在设置ready flag 之后才写 data,
+于是 consumer 线程有可能在 data 正被写时读它，这就会造成data race
+
+*/
+
+
+//atomic的低层接口
+//如上所述，ad、store、exchange、CAS 及 fetch等操作提供了一个增补能力：
+// 它们允许你额外传递一个内存次序(memory order)实参。
+//这些低层接口是为真正的并发专家准备的
 
