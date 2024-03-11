@@ -1,25 +1,42 @@
-//ã€ŠC++æ ‡å‡†åº“ã€‹
+//¡¶C++±ê×¼¿â¡·
 
 
-//å¯¹C-Style array ä½¿ç”¨åŸºäºèŒƒå›´çš„forå¾ªç¯
+//C++11ĞÂÌØĞÔ£º
+/*
+C£º
+
+auto   ºóÖÃ·µ»ØÀàĞÍ  ¡£¡£¡£¡£¡£
+
+
+ÀàºÍ¶ÔÏó£º
+
+Ä£°å£º
+
+STL£º
+
+*/
+
+
+//¶ÔC-Style array Ê¹ÓÃ»ùÓÚ·¶Î§µÄforÑ­»·
 #if 0
 #include <iostream>
 
 using namespace std;
 
 int main()
-{ 
+{
     int array[] = { 1,2,3,4,5 };
 
     for (const auto& x : array)
         cout << x << " ";
 
     return 0;
-} 
+}
 #endif
 
 
-//shared_ptrçš„use_count()
+//shared_ptrµÄuse_count()
+//·µ»Ø¹ÜÀíµ±Ç°¶ÔÏóµÄ²»Í¬ shared ptr ÊµÀı(°üº¬ this )ÊıÁ¿¡£ÈôÎŞ¹ÜÀí¶ÔÏó£¬Ôò·µ»Ø 0
 #if 0
 #include <iostream>
 
@@ -36,7 +53,7 @@ int main()
 #endif
 
 
-//shared_ptrå’Œunique_ptrç”¨æ³•åŒºåˆ«
+//shared_ptrºÍunique_ptrÓÃ·¨Çø±ğ
 #if 0
 #include <iostream>
 
@@ -44,35 +61,35 @@ int main()
 {
     // shared_ptr
     // get and attach shared memory for 100 ints:
-    //å†™æ³•ä¸€ï¼š
+    //Ğ´·¨Ò»£º
     std::shared_ptr<int> sp(new int[100], [](int* p)
         { delete[]p; }
     );
-    //å†™æ³•äºŒï¼š
+    //Ğ´·¨¶ş£º
     std::shared_ptr<int> sp1(new int[100], std::default_delete<int[]>());
 
     // unique_ptr
-    //å†™æ³•ä¸€ï¼š
+    //Ğ´·¨Ò»£º
     std::unique_ptr<int[]> up(new int[100]);
-    //å†™æ³•äºŒï¼š
+    //Ğ´·¨¶ş£º
     std::unique_ptr<int, void (*)(int*)> up1(new int[100], [](int* p) {
         delete[]p;
         });
-    //é”™è¯¯å†™æ³•ï¼š
+    //´íÎóĞ´·¨£º
     /*std::unique_ptr<int[], void(*)(int*)> up1(new int[100], []() {
         });*/
 
     for (int i = 0; i < 100; ++i) {
         sp.get()[i] = i * 42;
-        //é”™è¯¯å†™æ³•ï¼š
+        //´íÎóĞ´·¨£º
         //*(smp + i) = i * 42;
     }
 
     for (int i = 0; i < 100; ++i) {
-        //å†™æ³•ä¸€ï¼š
+        //Ğ´·¨Ò»£º
         up.get()[i] = i * 42;
-        //å†™æ³•äºŒï¼š
-        up[i] = i * 42;//***æ³¨***ä¸Šé¢è‹¥ç”¨å†™æ³•äºŒåˆ›å»ºæ™ºèƒ½æŒ‡é’ˆï¼Œå°±ä¸èƒ½ç”¨è¯¥å†™æ³•äºŒè®¿é—®å…ƒç´ 
+        //Ğ´·¨¶ş£º
+        up[i] = i * 42;//***×¢***ÉÏÃæÈôÓÃĞ´·¨¶ş´´½¨ÖÇÄÜÖ¸Õë£¬¾Í²»ÄÜÓÃ¸ÃĞ´·¨¶ş·ÃÎÊÔªËØ
     }
 
     // deal with shared memory somewhere else:
@@ -87,7 +104,7 @@ int main()
 #endif
 
 
-//åŸå­æ“ä½œ
+//Ô­×Ó²Ù×÷
 #if 0
 #include <atomic>
 #include <iostream>
@@ -95,7 +112,7 @@ int main()
 int main() {
     std::atomic<int> atomicInt;
 
-    // ä½¿ç”¨ store å°†å€¼åŸå­åœ°å­˜å‚¨åˆ° atomicInt å¯¹è±¡ä¸­
+    // Ê¹ÓÃ store ½«ÖµÔ­×ÓµØ´æ´¢µ½ atomicInt ¶ÔÏóÖĞ
     atomicInt.store(10);
 
     std::cout << "Value in atomicInt: " << atomicInt.load() << std::endl;
@@ -105,11 +122,11 @@ int main() {
 #endif
 
 
-//å¦‚æœä½ å°†åŒä¸€ä¸ªåŠ¨æ€åˆ†é…çš„å†…å­˜åœ°å€ä¼ é€’ç»™å¤šä¸ª shared_ptr å®ä¾‹æ¥ç®¡ç†ï¼Œ
-//ä¼šå¯¼è‡´ç¨‹åºå‡ºç°æœªå®šä¹‰çš„è¡Œä¸ºï¼Œ
-//è¿™æ˜¯å› ä¸ºå¤šä¸ª shared_ptr å®ä¾‹ä¼šå„è‡ªå°è¯•é‡Šæ”¾åŒä¸€ä¸ªå†…å­˜åœ°å€ï¼Œ
-//å¯èƒ½å¯¼è‡´é‡å¤é‡Šæ”¾å†…å­˜ï¼Œä»è€Œå¼•å‘é—®é¢˜
-//ä¸€ä¸ªåŠ¨æ€åˆ†é…çš„å†…å­˜ç©ºé—´åªèƒ½ç”±ã€ä¸€ç»„ã€‘shared_ptrç®¡ç†
+//Èç¹ûÄã½«Í¬Ò»¸ö¶¯Ì¬·ÖÅäµÄÄÚ´æµØÖ·´«µİ¸ø¶à¸ö shared_ptr ÊµÀıÀ´¹ÜÀí£¬
+//»áµ¼ÖÂ³ÌĞò³öÏÖÎ´¶¨ÒåµÄĞĞÎª£¬
+//ÕâÊÇÒòÎª¶à¸ö shared_ptr ÊµÀı»á¸÷×Ô³¢ÊÔÊÍ·ÅÍ¬Ò»¸öÄÚ´æµØÖ·£¬
+//¿ÉÄÜµ¼ÖÂÖØ¸´ÊÍ·ÅÄÚ´æ£¬´Ó¶øÒı·¢ÎÊÌâ
+//Ò»¸ö¶¯Ì¬·ÖÅäµÄÄÚ´æ¿Õ¼äÖ»ÄÜÓÉ¡¾Ò»×é¡¿shared_ptr¹ÜÀí
 #if 0
 #include <iostream>
 
@@ -117,12 +134,12 @@ using namespace std;
 
 int main()
 {
-    //æ­£ç¡®å†™æ³•
+    //ÕıÈ·Ğ´·¨
     //shared_ptr<int>sp1(new int);
     //shared_ptr<int>sp2(sp1);
 
-    //é”™è¯¯å†™æ³•ï¼š
-    //ä¸€ä¸ªåŠ¨æ€åˆ†é…çš„å†…å­˜ç©ºé—´ç”±ã€ä¸¤ç»„ã€‘shared_ptrç®¡ç†
+    //´íÎóĞ´·¨£º
+    //Ò»¸ö¶¯Ì¬·ÖÅäµÄÄÚ´æ¿Õ¼äÓÉ¡¾Á½×é¡¿shared_ptr¹ÜÀí
     int* p = new int;
     shared_ptr<int>sp1(p);
     shared_ptr<int>sp2(p);
@@ -135,7 +152,62 @@ int main()
 #endif
 
 
-//è®¡ç®—ç¨‹åºçš„æ‰§è¡Œæ—¶é—´
+//weak_ptr
+//ÓÃÓÚĞ­Öú¹ÜÀíshared_ptrËù¹ÜÀíµÄ¶ÔÏó£¬ÓÃÓÚ½â¾öshared_ptrµÄÑ­»·ÒıÓÃÎÊÌâ
+//weak_ptrÔÊĞíÄã¹Û²ìµ½Ò»¸ö¶ÔÏó£¬µ«²»Ôö¼ÓÆäÒıÓÃ¼ÆÊı£¬ËüÖ»ÊÇÖ¸Ïòshared_ptr
+//Ëù¹ÜÀíµÄ¶ÔÏóµÄÒıÓÃ£¬µ±ĞèÒªÊ¹ÓÃ¸Ã¶ÔÏóÊ±£¬¿ÉÍ¨¹ılock()·½·¨
+//Àí½âÎª¡¾¹²Ïíµ«²»ÓµÓĞ¡¿
+#if 0
+#include <iostream>
+#include <string>
+#include <vector>
+#include <memory>
+using namespace std;
+
+class Person {
+public:
+    string name;
+    shared_ptr<Person> mother;
+    shared_ptr<Person> father;
+    vector<weak_ptr<Person>> kids;  // weak pointer !!!
+
+    Person(const string& n,
+        shared_ptr<Person> m = nullptr,
+        shared_ptr<Person> f = nullptr)
+        : name(n), mother(m), father(f) {
+    }
+
+    ~Person() {
+        cout << "delete " << name << endl;
+    }
+};
+
+shared_ptr<Person> initFamily(const string& name)
+{
+    shared_ptr<Person> mom(new Person(name + "'s mom"));
+    shared_ptr<Person> dad(new Person(name + "'s dad"));
+    shared_ptr<Person> kid(new Person(name, mom, dad));
+    mom->kids.push_back(kid);
+    dad->kids.push_back(kid);
+    return kid;
+}
+
+int main()
+{
+    shared_ptr<Person> p = initFamily("nico");
+
+    cout << "nico's family exists" << endl;
+    cout << "- nico is shared " << p.use_count() << " times" << endl;
+    cout << "- name of 1st kid of nico's mom: "
+        << p->mother->kids[0].lock()->name << endl;
+
+    p = initFamily("jim");
+    cout << "jim's family exists" << endl;
+}
+#endif
+
+
+//¼ÆËã³ÌĞòµÄÖ´ĞĞÊ±¼ä
 #if 0
 #include <iostream>
 #include <chrono>
@@ -150,7 +222,7 @@ int main()
     Sleep(5000);
 
     auto diff = chrono::system_clock::now() - system_start;
-    //                                                               å¾®ç§’
+    //                                                               Î¢Ãë
     auto sec = chrono::duration_cast<chrono::microseconds>(diff);
 
     cout << sec.count() << endl;
@@ -160,7 +232,7 @@ int main()
 #endif
 
 
-//ä½¿ç”¨arrayä»£æ›¿ä¼ ç»Ÿæ•°ç»„
+//Ê¹ÓÃarray´úÌæ´«Í³Êı×é
 #if 0
 #include <iostream>
 #include <array>
@@ -182,10 +254,24 @@ void Print(const array<int, 5>& myarray)
         cout << x << " ";
 }
 #endif
+//²¹³ä£º
+/*
+ÓÃarrayÏà±ÈÓÚ³£¹æÊı×éµÄÓÅÊÆ£º
+1.°²È«ĞÔºÍÀàĞÍ¼ì²é
+array<int,5>myarray={};
+cout<<myarray.at(10);//±¨´í
+¶ø³£¹æÊı×é»áµ¼ÖÂ²»Ã÷È·ĞĞÎª
+2.±ã½İµÄ´«µİÓë¸´ÖÆ
+¶ø³£¹æÊı×éÔÚ´«µİ¸øº¯ÊıÊ±»áÍË»¯ÎªÖ¸Õë
+3.ÄÚÖÃ·½·¨ºÍ¹¦ÄÜ
+ÓĞsize()¡¢front()µÈ·½·¨
+4.ÓëÆäËûSTL¼æÈİ
+¿ÉÓÃsort()¡¢copy()µÈ
+*/
 
 
-//ä»æ ‡å‡†è¾“å…¥è¯»å–stringï¼Œæ’åºç„¶åæ‰“å°(å»æ‰é‡å¤çš„å­—ç¬¦ä¸²)
-//è‡ªå·±å†™çš„æ–¹æ³•ï¼š
+//´Ó±ê×¼ÊäÈë¶ÁÈ¡string£¬ÅÅĞòÈ»ºó´òÓ¡(È¥µôÖØ¸´µÄ×Ö·û´®)
+//×Ô¼ºĞ´µÄ·½·¨£º
 #if 0
 #include <iostream>
 #include <string>
@@ -204,7 +290,7 @@ int main()
         str[index++].append(tmp);
     }
 
-    //qsort(str,index,);//æ¯ä¸ªå…ƒç´ å¤§å°ä¸ä¸€ï¼Œä¸èƒ½ç”¨qsort()
+    //qsort(str,index,);//Ã¿¸öÔªËØ´óĞ¡²»Ò»£¬²»ÄÜÓÃqsort()
    /* sort(str,str+index);
 
     for (const auto& x : str)
@@ -223,7 +309,7 @@ int main()
     return 0;
 }
 #endif
-//æ³•ä¸€ï¼š
+//·¨Ò»£º
 #if 0
 #include <iterator>
 #include <algorithm>
@@ -236,7 +322,7 @@ int main()
 {
     vector<string> coll;
 
-    //ä½¿ç”¨ä¸²æµè¿­ä»£å™¨
+    //Ê¹ÓÃ´®Á÷µü´úÆ÷
     // read all words from the standard input
     // - source: all strings until end-of-file (or error)
     // - destination: coll (inserting)
@@ -245,17 +331,17 @@ int main()
         back_inserter(coll));             // destination
 
     //istream_iterator<string>(cin)
-    //ä¼šäº§ç”Ÿä¸€ä¸ªå¯ä»â€œæ ‡å‡†è¾“å…¥ä¸²æµ(standard input stream) cinâ€è¯»å–æ•°æ®çš„ stream iteratorã€‚
-    //å…¶ä¸­çš„ template å®å‚ stringè¡¨ç¤ºè¿™ä¸ª stream iteratorä¸“å¸è¯»å–è¯¥ç§ç±»å‹çš„å…ƒç´ (string ç±»
-    // å‹å°†åœ¨ç¬¬13ç« ä»‹ç»)ã€‚è¿™äº›å…ƒç´ é€šè¿‡ä¸€èˆ¬çš„ operator >>è¢«è¯»å–è¿›æ¥ã€‚å› æ­¤æ¯å½“ç®—æ³•ä¼å›¾
-    //å¤„ç†ä¸‹ä¸€å…ƒç´ æ—¶ï¼Œistream iterator å°±ä¼šå°†è¿™ç§ä¼å›¾è½¬åŒ–ä¸ºä»¥ä¸‹è¡ŒåŠ¨ï¼š
+    //»á²úÉúÒ»¸ö¿É´Ó¡°±ê×¼ÊäÈë´®Á÷(standard input stream) cin¡±¶ÁÈ¡Êı¾İµÄ stream iterator¡£
+    //ÆäÖĞµÄ template Êµ²Î string±íÊ¾Õâ¸ö stream iterator×¨Ë¾¶ÁÈ¡¸ÃÖÖÀàĞÍµÄÔªËØ(string Àà
+    // ĞÍ½«ÔÚµÚ13ÕÂ½éÉÜ)¡£ÕâĞ©ÔªËØÍ¨¹ıÒ»°ãµÄ operator >>±»¶ÁÈ¡½øÀ´¡£Òò´ËÃ¿µ±Ëã·¨ÆóÍ¼
+    //´¦ÀíÏÂÒ»ÔªËØÊ±£¬istream iterator ¾Í»á½«ÕâÖÖÆóÍ¼×ª»¯ÎªÒÔÏÂĞĞ¶¯£º
     //cin >> string
-    //é’ˆå¯¹ string è€Œæ‰§è¡Œçš„ inputæ“ä½œç¬¦é€šå¸¸è¯»å–ä»¥ç©ºç™½åˆ†éš”çš„æ–‡å­—(è§ 13.2.10 èŠ‚ç¬¬ 677é¡µ),
-    //å› æ­¤ä¸Šè¿°ç®—æ³•çš„è¡Œä¸ºå°†æ˜¯â€œé€å­—è¯»å–â€(word by word)ã€‚
+    //Õë¶Ô string ¶øÖ´ĞĞµÄ input²Ù×÷·ûÍ¨³£¶ÁÈ¡ÒÔ¿Õ°×·Ö¸ôµÄÎÄ×Ö(¼û 13.2.10 ½ÚµÚ 677Ò³),
+    //Òò´ËÉÏÊöËã·¨µÄĞĞÎª½«ÊÇ¡°Öğ×Ö¶ÁÈ¡¡±(word by word)¡£
 
     //istream_iterator<string>()
-    //ä¼šè°ƒç”¨istream iteratorçš„ default æ„é€ å‡½æ•°ï¼Œäº§ç”Ÿä¸€ä¸ªä»£è¡¨â€œä¸²æµç»“æŸç¬¦â€(end - of - stream)
-    //çš„è¿­ä»£å™¨ï¼Œè¿™ä¸ªä¸œè¥¿ä»£è¡¨çš„æ„ä¹‰æ˜¯ï¼šä½ ä¸èƒ½å†ä»ä¸­è¯»å–ä»»ä½•ä¸œè¥¿ã€‚
+    //»áµ÷ÓÃistream iteratorµÄ default ¹¹Ôìº¯Êı£¬²úÉúÒ»¸ö´ú±í¡°´®Á÷½áÊø·û¡±(end - of - stream)
+    //µÄµü´úÆ÷£¬Õâ¸ö¶«Î÷´ú±íµÄÒâÒåÊÇ£ºÄã²»ÄÜÔÙ´ÓÖĞ¶ÁÈ¡ÈÎºÎ¶«Î÷¡£
 
     // sort elements
     sort(coll.begin(), coll.end());
@@ -267,7 +353,7 @@ int main()
         ostream_iterator<string>(cout, "\n")); // destination
 }
 #endif
-//æ³•äºŒï¼š
+//·¨¶ş£º
 #if 0
 #include <iostream>
 #include <string>
@@ -288,7 +374,7 @@ int main()
         ostream_iterator<string>(cout, "\n"));
 }
 #endif
-//æ³•ä¸‰ï¼š
+//·¨Èı£º
 #if 0
 #include <iostream>
 #include <string>
@@ -312,16 +398,16 @@ int main()
         ostream_iterator<string>(cout, "\n"));
 }
 #endif
-//æ¯”è¾ƒ
-// 1. ä½¿ç”¨ copy() å’Œ ostream_iteratorä¸ 2. ä½¿ç”¨åŸºäºèŒƒå›´çš„forå¾ªç¯
-//ä¸¤ç§è¾“å‡ºæ–¹æ³•
-//1.éå¸¸ç®€æ´ï¼Œä¸€è¡Œä»£ç å³å¯å®Œæˆä»»åŠ¡ã€‚å¯ä»¥æ”¯æŒæ™®é€šæ•°ç»„å¦‚copy(flag,flag+10000,ostream_iterator<bool>(cout));
-// ä½†æ˜¯ï¼Œå®ƒæœ‰äº›å±€é™æ€§ï¼Œä¾‹å¦‚æ— æ³•è¿›è¡Œæ›´å¤æ‚çš„å¤„ç†æˆ–è½¬æ¢è¾“å‡ºã€‚
-//2.æ›´åŠ çµæ´»å’Œç›´è§‚ã€‚å®ƒä½¿ä»£ç æ›´æ˜“è¯»ï¼Œå°¤å…¶æ˜¯åœ¨éœ€è¦å¯¹è¾“å‡ºè¿›è¡Œæ›´å¤šæ§åˆ¶æˆ–è½¬æ¢æ—¶ã€‚
-// ä½ å¯ä»¥åœ¨å¾ªç¯å†…éƒ¨æ·»åŠ é€»è¾‘ï¼Œå¯¹è¾“å‡ºè¿›è¡Œæ ¼å¼åŒ–æˆ–æ·»åŠ å…¶ä»–æ“ä½œã€‚
+//±È½Ï
+// 1. Ê¹ÓÃ copy() ºÍ ostream_iteratorÓë 2. Ê¹ÓÃ»ùÓÚ·¶Î§µÄforÑ­»·
+//Á½ÖÖÊä³ö·½·¨
+//1.·Ç³£¼ò½à£¬Ò»ĞĞ´úÂë¼´¿ÉÍê³ÉÈÎÎñ¡£¿ÉÒÔÖ§³ÖÆÕÍ¨Êı×éÈçcopy(flag,flag+10000,ostream_iterator<bool>(cout));
+// µ«ÊÇ£¬ËüÓĞĞ©¾ÖÏŞĞÔ£¬ÀıÈçÎŞ·¨½øĞĞ¸ü¸´ÔÓµÄ´¦Àí»ò×ª»»Êä³ö¡£
+//2.¸ü¼ÓÁé»îºÍÖ±¹Û¡£ËüÊ¹´úÂë¸üÒ×¶Á£¬ÓÈÆäÊÇÔÚĞèÒª¶ÔÊä³ö½øĞĞ¸ü¶à¿ØÖÆ»ò×ª»»Ê±¡£
+// Äã¿ÉÒÔÔÚÑ­»·ÄÚ²¿Ìí¼ÓÂß¼­£¬¶ÔÊä³ö½øĞĞ¸ñÊ½»¯»òÌí¼ÓÆäËû²Ù×÷¡£
 
 
-//åˆ é™¤å®¹å™¨ä¸­çš„å…ƒç´ ï¼ˆè¦ä¿è¯â€œæ–©è‰é™¤æ ¹â€ï¼‰
+//É¾³ıÈİÆ÷ÖĞµÄÔªËØ£¨Òª±£Ö¤¡°Õ¶²İ³ı¸ù¡±£©
 #if 0
 #include <algorithm>
 #include <iterator>
@@ -359,7 +445,7 @@ int main()
 
     copy(coll.begin(), coll.end(), ostream_iterator<int>(cout, " "));
     cout << endl;
-    //â€œæ–©è‰é™¤æ ¹â€
+    //¡°Õ¶²İ³ı¸ù¡±
     // remove "removed" elements 
     coll.erase(end, coll.end());
 
@@ -369,26 +455,26 @@ int main()
 
     cout << endl;
 }
-//ç”¨å•ä¸€è¯­å¥æ¥åˆ é™¤å…ƒç´ 
+//ÓÃµ¥Ò»Óï¾äÀ´É¾³ıÔªËØ
 //coll.erase(remove(coll.begin(),coll.end(),3),coll.end());
 
-//***æ³¨***
-//å¯¹äºéå…³è”å¼å®¹å™¨å¯ä»¥ä½¿ç”¨removeæ–¹æ³•åˆ é™¤æŒ‡å®šçš„å…ƒç´ 
-//removeæ–¹æ³•ã€ä¸æ”¹å˜é›†åˆä¸­å…ƒç´ çš„ä¸ªæ•°ã€‘
-//é€»è¾‘ä¸Šæ˜¯è¦è¢«åˆ é™¤çš„å…ƒç´ è¢«å…¶åçš„å…ƒç´ è¦†ç›–ï¼Œè€Œæœ«å°¾é‚£äº›æœªè¢«è¦†ç›–çš„å…ƒç´ åŸå°ä¸åŠ¨
-//ä½†é€»è¾‘ä¸Šå·²ç»ä¸å±äºè¿™ä¸ªé›†åˆäº†
-//ç”¨remove()å‡½æ•°æ­é…erase()æ–¹æ³•å¯ä»¥æ–©è‰é™¤æ ¹
+//***×¢***
+//¶ÔÓÚ·Ç¹ØÁªÊ½ÈİÆ÷¿ÉÒÔÊ¹ÓÃremove·½·¨É¾³ıÖ¸¶¨µÄÔªËØ
+//remove·½·¨¡¾²»¸Ä±ä¼¯ºÏÖĞÔªËØµÄ¸öÊı¡¿
+//Âß¼­ÉÏÊÇÒª±»É¾³ıµÄÔªËØ±»ÆäºóµÄÔªËØ¸²¸Ç£¬¶øÄ©Î²ÄÇĞ©Î´±»¸²¸ÇµÄÔªËØÔ­·â²»¶¯
+//µ«Âß¼­ÉÏÒÑ¾­²»ÊôÓÚÕâ¸ö¼¯ºÏÁË
+//ÓÃremove()º¯Êı´îÅäerase()·½·¨¿ÉÒÔÕ¶²İ³ı¸ù
 
-//å¯¹äºå…³è”å¼å®¹å™¨å¯ä»¥ç›´æ¥ä½¿ç”¨eraseæ–¹æ³•åˆ é™¤å…ƒç´ 
+//¶ÔÓÚ¹ØÁªÊ½ÈİÆ÷¿ÉÒÔÖ±½ÓÊ¹ÓÃerase·½·¨É¾³ıÔªËØ
 
-//æœ€å
-//å¯¹äºlistå®¹å™¨ï¼Œå…¶ç±»ä¸­æœ‰ä¸“é—¨çš„ä¼˜åŒ–æ•ˆç‡çš„remove()ã€remove_if()æ–¹æ³•ï¼Œ
-//å› æ­¤å¯¹äºç®—æ³•vsæˆå‘˜å‡½æ•°
-//ä¼˜å…ˆé€‰ç”¨æˆå‘˜å‡½æ•°å³æ–¹æ³•
+//×îºó
+//¶ÔÓÚlistÈİÆ÷£¬ÆäÀàÖĞÓĞ×¨ÃÅµÄÓÅ»¯Ğ§ÂÊµÄremove()¡¢remove_if()·½·¨£¬
+//Òò´Ë¶ÔÓÚËã·¨vs³ÉÔ±º¯Êı
+//ÓÅÏÈÑ¡ÓÃ³ÉÔ±º¯Êı¼´·½·¨
 #endif
 
 
-//å®ç°åœ¨æ‰§è¡Œæ—¶ç¡®å®šå‡½æ•°
+//ÊµÏÖÔÚÖ´ĞĞÊ±È·¶¨º¯Êı
 #if 0
 #include <list>
 #include <algorithm>
@@ -461,7 +547,7 @@ int main()
 #endif
 
 
-//å‡½æ•°é€‚é…å™¨bind
+//º¯ÊıÊÊÅäÆ÷bind
 #if 0
 #include <set>
 #include <deque>
@@ -484,7 +570,7 @@ inline void PRINT_ELEMENTS(const T& coll, const std::string& optstr = "")
 }
 
 using namespace std;
-using namespace std::placeholders;//å¯ä»¥ä½¿ç”¨å ä½ç¬¦å¦‚_1
+using namespace std::placeholders;//¿ÉÒÔÊ¹ÓÃÕ¼Î»·ûÈç_1
 
 int main()
 {
@@ -544,7 +630,7 @@ int main()
 #endif
 
 
-//å¯¹äºarrayï¼Œä¸è¦ä»¥è¿­ä»£å™¨è¡¨ç°â€œç¬¬ä¸€å…ƒç´ çš„åœ°å€â€
+//¶ÔÓÚarray£¬²»ÒªÒÔµü´úÆ÷±íÏÖ¡°µÚÒ»ÔªËØµÄµØÖ·¡±
 #if 0
 #include <iostream>
 #include <array>
@@ -567,7 +653,7 @@ int main()
 #endif
 
 
-//ä½¿ç”¨tuple
+//Ê¹ÓÃtuple
 #if 0
 #include <iostream>
 #include <tuple>
@@ -582,7 +668,7 @@ int main()
     tuple1 = make_tuple(4, 5, 6);
     cout << get<1>(tuple1) << endl;
 
-    //arrayæä¾›äº†tupleæ¥å£
+    //arrayÌá¹©ÁËtuple½Ó¿Ú
     array<int, 5>a1{ 1,2,3 };
     cout << get<1>(a1) << endl;
 
@@ -591,9 +677,9 @@ int main()
 #endif
 
 
-//accumulate() æ±‚ç§¯ç´¯å€¼     è¿›é˜¶ç”¨æ³•
-//å¿«æ·æ‰“å°ï¼š
-// 1-2-3-4-5-6-7-8-9-10 å’Œ 10-9-8-7-6-5-4-3-2-1
+//accumulate() Çó»ıÀÛÖµ     ½ø½×ÓÃ·¨
+//¿ì½İ´òÓ¡£º
+// 1-2-3-4-5-6-7-8-9-10 ºÍ 10-9-8-7-6-5-4-3-2-1
 #if 0
 #include <iostream>
 #include <vector>
@@ -612,34 +698,34 @@ int main()
         return std::move(a) + '-' + std::to_string(b);
         };
 
-    //é”™è¯¯å†™æ³•ï¼š
+    //´íÎóĞ´·¨£º
     /*
     auto dash_fold = [](int a, int b) {
         return std::to_string(a) + '-' + std::to_string(b);
         };
     */
-    //åŸå› ï¼š
-    //accumulate()å®ç°æ–¹æ³•ï¼š
+    //Ô­Òò£º
+    //accumulate()ÊµÏÖ·½·¨£º
     /*
 template<class InputIt, class T, class BinaryOperation>
-constexpr // C++20 èµ·
+constexpr // C++20 Æğ
 T accumulate(InputIt first, InputIt last, T init,
              BinaryOperation op)
 {
     for (; first != last; ++first) {
-        init = op(std::move(init), *first); // C++20 èµ·æœ‰ std::move //å½“å‡½æ•°è¿”å›ä¸€ä¸ª unique_ptr å°±ä¸éœ€è¦move()
+        init = op(std::move(init), *first); // C++20 ÆğÓĞ std::move //µ±º¯Êı·µ»ØÒ»¸ö unique_ptr ¾Í²»ĞèÒªmove()
     }
     return init;
 }
     */
 
     std::string s = std::accumulate(std::next(v.begin(), 1), v.end(),
-        std::to_string(v[0]), // ç”¨é¦–å…ƒç´ å¼€å§‹
+        std::to_string(v[0]), // ÓÃÊ×ÔªËØ¿ªÊ¼
         dash_fold);
 
-    // ä½¿ç”¨é€†å‘è¿­ä»£å™¨å³æŠ˜å 
+    // Ê¹ÓÃÄæÏòµü´úÆ÷ÓÒÕÛµş
     std::string rs = std::accumulate(std::next(v.rbegin()), v.rend(),
-        std::to_string(v.back()), // ç”¨é¦–å…ƒç´ å¼€å§‹
+        std::to_string(v.back()), // ÓÃÊ×ÔªËØ¿ªÊ¼
         dash_fold);
 
     std::cout << "sum: " << sum << '\n'
@@ -648,7 +734,7 @@ T accumulate(InputIt first, InputIt last, T init,
         << "dash-separated string (right-folded): " << rs << '\n';
 }
 #endif
-//ä¹Ÿå¯ä»¥ç”¨transform()æ¥é…åˆaccumulate()å®ç°ç›¸åŒåŠŸèƒ½
+//Ò²¿ÉÒÔÓÃtransform()À´ÅäºÏaccumulate()ÊµÏÖÏàÍ¬¹¦ÄÜ
 #if 0
 #include <iostream>
 #include <vector>
@@ -663,16 +749,16 @@ int main()
 
     std::string firstElement = std::to_string(v[0]);
 
-    // ä½¿ç”¨ std::transform å°†æ•´æ•°è½¬æ¢ä¸ºå­—ç¬¦ä¸²
-    //***æ³¨***
-    //å› ä¸ºaccumulate()çš„åŸç†ä¸Š
-    //æ˜¯ä¼šç”¨åˆ°å®¹å™¨vçš„ç¬¬ä¸€ä¸ªå…ƒç´ ï¼Œå¹¶åœ¨å…¶åã€ç´¯ç§¯ã€‘
-    //æ‰€ä»¥ä¸å¦¨åªå¤„ç†å®¹å™¨vä¸­ç¬¬äºŒä¸ªå…ƒç´ åˆ°æœ«å°¾å…ƒç´ 
+    // Ê¹ÓÃ std::transform ½«ÕûÊı×ª»»Îª×Ö·û´®
+    //***×¢***
+    //ÒòÎªaccumulate()µÄÔ­ÀíÉÏ
+    //ÊÇ»áÓÃµ½ÈİÆ÷vµÄµÚÒ»¸öÔªËØ£¬²¢ÔÚÆäºó¡¾ÀÛ»ı¡¿
+    //ËùÒÔ²»·ÁÖ»´¦ÀíÈİÆ÷vÖĞµÚ¶ş¸öÔªËØµ½Ä©Î²ÔªËØ
     std::vector<std::string> stringValues(v.size() - 1);
     std::transform(std::next(v.begin(), 1), v.end(), stringValues.begin(),
         [](int value) { return std::to_string(value); });
 
-    // ä½¿ç”¨ std::accumulate å°†å­—ç¬¦ä¸²è¿æ¥èµ·æ¥
+    // Ê¹ÓÃ std::accumulate ½«×Ö·û´®Á¬½ÓÆğÀ´
     std::string s = std::accumulate(stringValues.begin(), stringValues.end(),
         firstElement,
         [](std::string a, std::string b)
@@ -680,7 +766,7 @@ int main()
             return std::move(a) + '-' + std::move(b);
         });
 
-    // ä½¿ç”¨é€†å‘è¿­ä»£å™¨å³æŠ˜å 
+    // Ê¹ÓÃÄæÏòµü´úÆ÷ÓÒÕÛµş
     std::vector<std::string> reversedStringValues(v.size() - 1);
     std::transform(std::next(v.rbegin()), v.rend(),
         reversedStringValues.begin(),
@@ -699,8 +785,8 @@ int main()
 #endif
 
 
-//swap()åï¼Œvectorçš„æ‰€æœ‰å¼•ç”¨ã€æŒ‡é’ˆã€è¿­ä»£å™¨éƒ½å¤±æ•ˆäº†
-//å› ä¸ºè¿™äº›ä¸œè¥¿éƒ½æŒ‡å‘åŸæœ¬ä½ç½®
+//swap()ºó£¬vectorµÄËùÓĞÒıÓÃ¡¢Ö¸Õë¡¢µü´úÆ÷¶¼Ê§Ğ§ÁË
+//ÒòÎªÕâĞ©¶«Î÷¶¼Ö¸ÏòÔ­±¾Î»ÖÃ
 #if 0
 #include <iostream>
 #include <vector>
@@ -719,7 +805,7 @@ int main()
 
     v1.swap(v2);
 
-    //äº¤æ¢åè¿­ä»£å™¨ä¸å¼•ç”¨ä¿æŒä¸å…¶åŸæ¥çš„å…ƒç´ å…³è”
+    //½»»»ºóµü´úÆ÷ÓëÒıÓÃ±£³ÖÓëÆäÔ­À´µÄÔªËØ¹ØÁª
     cout << *it1 << " " << *it2 << endl;
 
     return 0;
@@ -727,7 +813,7 @@ int main()
 #endif
 
 
-//dequeç”¨æ³•
+//dequeÓÃ·¨
 #if 0
 #include <iostream>
 #include <deque>
@@ -753,7 +839,7 @@ int main()
     // remove first and last element
     coll.pop_front();
     coll.pop_back();
-    //æœ€ç»ˆä½™ä¸‹3ä¸ªå…ƒç´ 
+    //×îÖÕÓàÏÂ3¸öÔªËØ
 
     // insert "another" into every element but the first
     for (unsigned i = 1; i < coll.size(); ++i) {
@@ -762,9 +848,9 @@ int main()
 
     // change size to four elements
     coll.resize(4, "resized string");
-    //ç¬¬ä¸€ä¸ªå‚æ•°æŒ‡å®šæ–°çš„å¤§å°
-    //ç¬¬äºŒä¸ªå‚æ•°æŒ‡å®šç”¨äºå¡«å……è°ƒæ•´å¤§å°æ“ä½œå¯èƒ½ä¼šåˆ›å»ºçš„ä»»ä½•æ–°å…ƒç´ çš„å€¼ï¼Œ
-    //å³å­—ç¬¦ä¸²â€œresized stringâ€ã€‚å¦‚æœå…ƒç´ è¶…è¿‡ 4 ä¸ªï¼Œå¤šä½™çš„å…ƒç´ å°†è¢«åˆ é™¤ä»¥ä½¿å¤§å°ä¸º 4ã€‚
+    //µÚÒ»¸ö²ÎÊıÖ¸¶¨ĞÂµÄ´óĞ¡
+    //µÚ¶ş¸ö²ÎÊıÖ¸¶¨ÓÃÓÚÌî³äµ÷Õû´óĞ¡²Ù×÷¿ÉÄÜ»á´´½¨µÄÈÎºÎĞÂÔªËØµÄÖµ£¬
+    //¼´×Ö·û´®¡°resized string¡±¡£Èç¹ûÔªËØ³¬¹ı 4 ¸ö£¬¶àÓàµÄÔªËØ½«±»É¾³ıÒÔÊ¹´óĞ¡Îª 4¡£
 
     // print elements separated by newlines
     copy(coll.cbegin(), coll.cend(),
@@ -773,7 +859,7 @@ int main()
 #endif
 
 
-//listç”¨æ³•
+//listÓÃ·¨
 #if 0
 #include <list>
 #include <iostream>
@@ -829,7 +915,7 @@ int main()
 #endif
 
 
-//forward_listç”¨æ³•
+//forward_listÓÃ·¨
 #if 0
 #include <forward_list>
 #include <iostream>
@@ -887,7 +973,7 @@ int main()
 #endif
 
 
-//lower_bound()ã€upper_bound()ã€equal_range()
+//lower_bound()¡¢upper_bound()¡¢equal_range()
 #if 0
 #include <iostream>
 #include <set>
@@ -903,16 +989,16 @@ int main()
     c.insert(5);
     c.insert(6);
 
-    //lower_bound(3) è¿”å›ä¸€ä¸ªè¿­ä»£å™¨ï¼ŒæŒ‡å‘ç¬¬ä¸€ä¸ª >= 3 çš„å…ƒç´ ã€‚
-    //åœ¨é›†åˆä¸­ï¼Œç¬¬ä¸€ä¸ª>= 3 çš„å…ƒç´ æ˜¯ 4ã€‚
+    //lower_bound(3) ·µ»ØÒ»¸öµü´úÆ÷£¬Ö¸ÏòµÚÒ»¸ö >= 3 µÄÔªËØ¡£
+    //ÔÚ¼¯ºÏÖĞ£¬µÚÒ»¸ö>= 3 µÄÔªËØÊÇ 4¡£
     cout << "lower_bound(3): " << *c.lower_bound(3) << endl;
-    //upper_bound(3) è¿”å›ç¬¬ä¸€ä¸ª > 3 çš„å…ƒç´ çš„è¿­ä»£å™¨ã€‚
-    // åœ¨é›†åˆä¸­ï¼Œç¬¬ä¸€ä¸ª > 3 çš„å…ƒç´ ä¹Ÿæ˜¯ 4ã€‚
+    //upper_bound(3) ·µ»ØµÚÒ»¸ö > 3 µÄÔªËØµÄµü´úÆ÷¡£
+    // ÔÚ¼¯ºÏÖĞ£¬µÚÒ»¸ö > 3 µÄÔªËØÒ²ÊÇ 4¡£
     cout << "upper_bound(3): " << *c.upper_bound(3) << endl;
-    //***ç†è§£***
-    //equal_range(3) è¿”å›ä¸€å¯¹è¿­ä»£å™¨ï¼Œè¡¨ç¤ºå€¼ä¸º 3 çš„å…ƒç´ èŒƒå›´ã€‚
-    //åœ¨æœ¬ä¾‹ä¸­ï¼Œç”±äºä¸å­˜åœ¨å€¼ä¸º 3 çš„å…ƒç´ ï¼Œ
-    //å› æ­¤ä¸¤ä¸ªè¿­ä»£å™¨éƒ½æŒ‡å‘ç¬¬ä¸€ä¸ªä¸å°äº 3 çš„å…ƒç´ ï¼Œå³ 4ã€‚
+    //***Àí½â***
+    //equal_range(3) ·µ»ØÒ»¶Ôµü´úÆ÷£¬±íÊ¾ÖµÎª 3 µÄÔªËØ·¶Î§¡£
+    //ÔÚ±¾ÀıÖĞ£¬ÓÉÓÚ²»´æÔÚÖµÎª 3 µÄÔªËØ£¬
+    //Òò´ËÁ½¸öµü´úÆ÷¶¼Ö¸ÏòµÚÒ»¸ö²»Ğ¡ÓÚ 3 µÄÔªËØ£¬¼´ 4¡£
     cout << "equal_range(3): " << *c.equal_range(3).first << " "
         << *c.equal_range(3).second << endl;
     cout << endl;
@@ -925,7 +1011,7 @@ int main()
 #endif
 
 
-//å¯¹äºå…³è”å®¹å™¨ï¼Œå®ç°è¿è¡ŒæœŸæŒ‡å®šæ’åºå‡†åˆ™
+//¶ÔÓÚ¹ØÁªÈİÆ÷£¬ÊµÏÖÔËĞĞÆÚÖ¸¶¨ÅÅĞò×¼Ôò
 #if 0
 #include <iostream>
 #include <set>
@@ -989,7 +1075,7 @@ int main()
     coll2 = { 4, 7, 5, 1, 6, 2, 5 };
 #endif
 
-    //æˆ–è€…å†™ä¸ºï¼š
+    //»òÕßĞ´Îª£º
 #if 1
     set<int, RuntimeCmp> coll2({ 4, 7, 5, 1, 6, 2, 5 }, reverse_order);
 #endif
@@ -1002,11 +1088,11 @@ int main()
     PRINT_ELEMENTS(coll1, "coll1: ");
 
     // just to make sure...
-    //å¯¹äºsetæ¥è¯´ï¼Œç”±äº std::set è¢«è®¾è®¡ä¸ºå…·æœ‰å”¯ä¸€çš„é”®ï¼Œé”®åŒæ—¶ä¹Ÿæ˜¯å€¼ã€‚
-    // å› æ­¤ï¼Œå¯¹äº std::set ï¼Œæ‚¨å¯ä»¥åœ¨å¤§å¤šæ•°æƒ…å†µä¸‹äº’æ¢ä½¿ç”¨ key_comp æˆ– value_comp ï¼Œ
-    // è€Œä¸ä¼šå‡ºç°æ˜æ˜¾å·®å¼‚
-    //key_comp æ–¹æ³•ï¼šè¿”å›ä¸€ä¸ªæ¯”è¾ƒå‡½æ•°ï¼Œè¯¥å‡½æ•°ä»…æ¯”è¾ƒé›†åˆä¸­å…ƒç´ çš„é”®
-    //value_comp æ–¹æ³•ï¼šè¿”å›ä¸€ä¸ªæ¯”è¾ƒå€¼çš„æ¯”è¾ƒå‡½æ•°
+    //¶ÔÓÚsetÀ´Ëµ£¬ÓÉÓÚ std::set ±»Éè¼ÆÎª¾ßÓĞÎ¨Ò»µÄ¼ü£¬¼üÍ¬Ê±Ò²ÊÇÖµ¡£
+    // Òò´Ë£¬¶ÔÓÚ std::set £¬Äú¿ÉÒÔÔÚ´ó¶àÊıÇé¿öÏÂ»¥»»Ê¹ÓÃ key_comp »ò value_comp £¬
+    // ¶ø²»»á³öÏÖÃ÷ÏÔ²îÒì
+    //key_comp ·½·¨£º·µ»ØÒ»¸ö±È½Ïº¯Êı£¬¸Ãº¯Êı½ö±È½Ï¼¯ºÏÖĞÔªËØµÄ¼ü
+    //value_comp ·½·¨£º·µ»ØÒ»¸ö±È½ÏÖµµÄ±È½Ïº¯Êı
     if (coll1.value_comp() == coll2.value_comp())
     {
         cout << "coll1 and coll2 have the same sorting criterion"
@@ -1021,8 +1107,8 @@ int main()
 #endif
 
 
-//ä½¿ç”¨ç®—æ³•å’Œlambdaæ¥æ“ä½œmapå…ƒç´ 
-//lambdaçš„å½¢å‚çš„æ–°å¼å†™æ³•
+//Ê¹ÓÃËã·¨ºÍlambdaÀ´²Ù×÷mapÔªËØ
+//lambdaµÄĞÎ²ÎµÄĞÂÊ½Ğ´·¨
 #if 0
 #include <iostream>
 #include <map>
@@ -1033,21 +1119,21 @@ int main()
 {
     map<string, float> strmap{ {"abc",1.1188},{"def",2.1} };
 
-    //å†™æ³•ä¸€ï¼š
+    //Ğ´·¨Ò»£º
     for_each(strmap.begin(), strmap.end(),
         [](const pair<const string, float>& pa)
         {
             cout << pa.first << " " << pa.second << endl;
         });
 
-    //å†™æ³•äºŒï¼š
+    //Ğ´·¨¶ş£º
     for_each(strmap.begin(), strmap.end(),
         [](const map<string, float>::value_type& pa)
         {
             cout << pa.first << " " << pa.second << endl;
         });
 
-    //å†™æ³•ä¸‰ï¼š
+    //Ğ´·¨Èı£º
     for_each(strmap.begin(), strmap.end(),
         [](const decltype(strmap)::value_type& pa)
         {
@@ -1059,7 +1145,7 @@ int main()
 #endif
 
 
-//å…­ç§æ–¹æ³•å‘mapæˆ–multimapå†…å®‰æ’å†…å®¹
+//ÁùÖÖ·½·¨Ïòmap»òmultimapÄÚ°²²åÄÚÈİ
 #if 0
 #include <iostream>
 #include <map>
@@ -1075,16 +1161,16 @@ int main()
     strmap.insert(decltype(strmap)::value_type("c", 3.3));
     strmap.insert(pair<const string, float>("d", 4.4));
     strmap.insert(make_pair("e", 5));
-    strmap["f"] = 6;//***æ³¨***
-    //è¿™ç§å…ƒç´ å®‰æ’æ–¹å¼æ¯”æƒ¯å¸¸çš„ mapå®‰æ’æ–¹å¼æ…¢ï¼Œ7.8.2èŠ‚ç¬¬340é¡µ
-    //æ›¾ç»è°ˆè¿‡ï¼ŒåŸå› æ˜¯æ–°å…ƒç´ å¿…é¡»å…ˆä½¿ç”¨default æ„é€ å‡½æ•°å°† value åˆå§‹åŒ–ï¼Œ
-    //è€Œè¯¥åˆå€¼é©¬ä¸Šåˆè¢«çœŸæ­£çš„ value è¦†ç›–ã€‚
+    strmap["f"] = 6;//***×¢***
+    //ÕâÖÖÔªËØ°²²å·½Ê½±È¹ß³£µÄ map°²²å·½Ê½Âı£¬7.8.2½ÚµÚ340Ò³
+    //Ôø¾­Ì¸¹ı£¬Ô­ÒòÊÇĞÂÔªËØ±ØĞëÏÈÊ¹ÓÃdefault ¹¹Ôìº¯Êı½« value ³õÊ¼»¯£¬
+    //¶ø¸Ã³õÖµÂíÉÏÓÖ±»ÕæÕıµÄ value ¸²¸Ç¡£
 
     strmap["g"];
-    //â€œoperator[]çš„ç´¢å¼•ç±»å‹ä¸å¿…æ˜¯æ•´æ•°â€å¹¶ä¸æ˜¯å®ƒå’Œå¯»å¸¸ array å”¯ä¸€ä¸åŒä¹‹å¤„ã€‚å¦‚æœä½ 
-    //é€‰æ‹©æŸ key ä½œä¸ºç´¢å¼•ï¼Œå®¹å™¨å†…å´æ²¡æœ‰ç›¸åº”å…ƒç´ ï¼Œé‚£ä¹ˆmapä¼šè‡ªåŠ¨å®‰æ’ä¸€ä¸ªæ–°å…ƒç´ ï¼Œå…¶value
-    //å°†è¢«å…¶ç±»å‹çš„ default æ„é€ å‡½æ•°åˆå§‹åŒ–ã€‚å› æ­¤ï¼Œä½ ä¸å¯ä»¥æŒ‡å®šä¸€ä¸ªâ€œä¸å…· default æ„é€ å‡½æ•°â€
-    //çš„value ç±»å‹ã€‚æ³¨æ„ï¼ŒåŸºç¡€ç±»å‹éƒ½æœ‰ä¸€ä¸ª default æ„é€ å‡½æ•°ï¼Œè®¾ç«‹åˆå€¼0(è§ 3.2.1 èŠ‚ç¬¬ 37é¡µ)ã€‚
+    //¡°operator[]µÄË÷ÒıÀàĞÍ²»±ØÊÇÕûÊı¡±²¢²»ÊÇËüºÍÑ°³£ array Î¨Ò»²»Í¬Ö®´¦¡£Èç¹ûÄã
+    //Ñ¡ÔñÄ³ key ×÷ÎªË÷Òı£¬ÈİÆ÷ÄÚÈ´Ã»ÓĞÏàÓ¦ÔªËØ£¬ÄÇÃ´map»á×Ô¶¯°²²åÒ»¸öĞÂÔªËØ£¬Æävalue
+    //½«±»ÆäÀàĞÍµÄ default ¹¹Ôìº¯Êı³õÊ¼»¯¡£Òò´Ë£¬Äã²»¿ÉÒÔÖ¸¶¨Ò»¸ö¡°²»¾ß default ¹¹Ôìº¯Êı¡±
+    //µÄvalue ÀàĞÍ¡£×¢Òâ£¬»ù´¡ÀàĞÍ¶¼ÓĞÒ»¸ö default ¹¹Ôìº¯Êı£¬ÉèÁ¢³õÖµ0(¼û 3.2.1 ½ÚµÚ 37Ò³)¡£
 
     for_each(strmap.begin(), strmap.end(),
         [](const decltype(strmap)::value_type& pa)
@@ -1097,12 +1183,12 @@ int main()
 #endif
 
 
-//ç§»é™¤å…ƒç´ ï¼Œå¹¶é¿å…ä½¿ç”¨ä¸€ä¸ªã€æš‚æ—¶ã€‘æ— æ•ˆçš„è¿­ä»£å™¨
-//(å› ä¸ºè¯¥è¿­ä»£å™¨æŒ‡å‘äº†ä¸€ä¸ªè¢«åˆ é™¤çš„å…ƒç´ çš„ä½ç½®)
-//***æ³¨***
-//å¦‚æœæŸå…ƒç´ è¢«åˆ é™¤ï¼Œæ‰€æœ‰å®¹å™¨(é™¤äº†vector å’Œ dequeï¼Œå› ä¸ºå¯èƒ½å¯¼è‡´å†…å­˜é‡æ–°åˆ†é…)
-//éƒ½ä¿è¯è¿­ä»£å™¨ä»¥åŠç”¨ä»¥æŒ‡å‘ã€æœªè¢«åˆ é™¤çš„å…ƒç´ ã€‘çš„referenceç»§ç»­ä¿æŒæœ‰æ•ˆã€‚
-//è€ŒæŒ‡å‘è¢«åˆ é™¤çš„å…ƒç´ çš„è¿­ä»£å™¨éƒ½è¦è¿›è¡Œè¯¥æ®µä»£ç å±•ç¤ºçš„æ“ä½œã€‚
+//ÒÆ³ıÔªËØ£¬²¢±ÜÃâÊ¹ÓÃÒ»¸ö¡¾ÔİÊ±¡¿ÎŞĞ§µÄµü´úÆ÷
+//(ÒòÎª¸Ãµü´úÆ÷Ö¸ÏòÁËÒ»¸ö±»É¾³ıµÄÔªËØµÄÎ»ÖÃ)
+//***×¢***
+//Èç¹ûÄ³ÔªËØ±»É¾³ı£¬ËùÓĞÈİÆ÷(³ıÁËvector ºÍ deque£¬ÒòÎª¿ÉÄÜµ¼ÖÂÄÚ´æÖØĞÂ·ÖÅä)
+//¶¼±£Ö¤µü´úÆ÷ÒÔ¼°ÓÃÒÔÖ¸Ïò¡¾Î´±»É¾³ıµÄÔªËØ¡¿µÄreference¼ÌĞø±£³ÖÓĞĞ§¡£
+//¶øÖ¸Ïò±»É¾³ıµÄÔªËØµÄµü´úÆ÷¶¼Òª½øĞĞ¸Ã¶Î´úÂëÕ¹Ê¾µÄ²Ù×÷¡£
 #if 0
 #include <iostream>
 #include <map>
@@ -1127,18 +1213,18 @@ int main()
         });
     cout << endl;
 
-    //é”™è¯¯çš„ç§»é™¤å…ƒç´ å†™æ³•ï¼š
+    //´íÎóµÄÒÆ³ıÔªËØĞ´·¨£º
 #if 0
     for (auto pos = strmap.begin(); pos != strmap.end(); ++pos)
     {
         if (pos->first == "a")
         {
-            strmap.erase(pos);//posä¼šä¸å†æˆä¸ºä¸€ä¸ªæœ‰æ•ˆçš„è¿­ä»£å™¨ï¼Œæ­¤åæœªå¯¹pos
-        }                                 //é‡æ–°è®¾å€¼å°±ç›´æ¥ä½¿ç”¨ï¼Œä¼šé€ æˆè¿è¡ŒæœŸé—´é”™è¯¯
+            strmap.erase(pos);//pos»á²»ÔÙ³ÉÎªÒ»¸öÓĞĞ§µÄµü´úÆ÷£¬´ËºóÎ´¶Ôpos
+        }                                 //ÖØĞÂÉèÖµ¾ÍÖ±½ÓÊ¹ÓÃ£¬»áÔì³ÉÔËĞĞÆÚ¼ä´íÎó
     }
 #endif
 
-    //é”™è¯¯çš„å¤„ç†å†™æ³•ï¼š
+    //´íÎóµÄ´¦ÀíĞ´·¨£º
 #if 0
     for (auto pos = strmap.begin(); pos != strmap.end(); ++pos)
     {
@@ -1152,27 +1238,27 @@ int main()
             pos = strmap.erase(pos);
         }
 
-        //***æ³¨***
-        //ä»¥ä¸‹ä»£ç è¿è¡Œæ—¶ä¼šæŠ¥é”™
+        //***×¢***
+        //ÒÔÏÂ´úÂëÔËĞĞÊ±»á±¨´í
         /*
         if (abs(pos->second - 5) <= 0.00001)
         {
-            //å› ä¸ºerase()ä½œç”¨åï¼Œposå€¼ä¸ºstrmap.end()ã€‚++posåæŒ‡å‘æ— æ•ˆä½ç½®ã€‚
+            //ÒòÎªerase()×÷ÓÃºó£¬posÖµÎªstrmap.end()¡£++posºóÖ¸ÏòÎŞĞ§Î»ÖÃ¡£
             pos = strmap.erase(pos);
         }
         */
     }
 #endif
 
-    //æ­£ç¡®å†™æ³•ï¼š
+    //ÕıÈ·Ğ´·¨£º
     for (auto pos = strmap.begin(); pos != strmap.end(); )
     {
         if (pos->first == "a" || abs(pos->second - 4.4) <= 0.00001)
         {
-            //***ç†è§£***
-            //æŒ‡å‘è¢«æ“¦é™¤å…ƒç´ çš„å¼•ç”¨å’Œè¿­ä»£å™¨è¢«éæ³•åŒ–ã€‚å…¶ä»–å¼•ç”¨å’Œè¿­ä»£å™¨ä¸å—å½±å“ã€‚
-            //erase()è¿”å›ä¸€ä¸ªè¿­ä»£å™¨æŒ‡å‘ã€å…¶åç»§çš„ã€‘å…ƒç´ 
-            //posç”±æ­¤å¾—åˆ°æ›´æ–°
+            //***Àí½â***
+            //Ö¸Ïò±»²Á³ıÔªËØµÄÒıÓÃºÍµü´úÆ÷±»·Ç·¨»¯¡£ÆäËûÒıÓÃºÍµü´úÆ÷²»ÊÜÓ°Ïì¡£
+            //erase()·µ»ØÒ»¸öµü´úÆ÷Ö¸Ïò¡¾Æäºó¼ÌµÄ¡¿ÔªËØ
+            //posÓÉ´ËµÃµ½¸üĞÂ
             pos = strmap.erase(pos);
         }
         else
@@ -1212,7 +1298,7 @@ int main()
             ++i;
     }
 
-    //é”™è¯¯å†™æ³•ï¼š
+    //´íÎóĞ´·¨£º
     // for (auto i = vec.begin(); i != vec.end();++i)
     // {
     //     if (*i == 3 || *i == 8)
@@ -1227,7 +1313,7 @@ int main()
 #endif
 
 
-//multimapå½“åšå­—å…¸
+//multimapµ±×ö×Öµä
 #if 0
 #include <map>
 #include <string>
@@ -1262,7 +1348,7 @@ int main()
     cout << endl;
 
     // print all values for key "smart"
-    //æŸ¥æ‰¾keyå¯¹åº”çš„æ‰€æœ‰valueå€¼ï¼ˆå‰ææ˜¯æœ‰è¿™ä¸ªkeyï¼Œè‹¥æ²¡æœ‰åˆ™ä¸åˆé€‚ï¼ˆè¯¦è§ï¼š//lower_bound()ã€upper_bound()ã€equal_range()ï¼‰ï¼‰
+    //²éÕÒkey¶ÔÓ¦µÄËùÓĞvalueÖµ£¨Ç°ÌáÊÇÓĞÕâ¸ökey£¬ÈôÃ»ÓĞÔò²»ºÏÊÊ£¨Ïê¼û£º//lower_bound()¡¢upper_bound()¡¢equal_range()£©£©
     string word("smart");
     cout << word << ": " << endl;
     for (auto pos = dict.lower_bound(word); pos != dict.upper_bound(word);
@@ -1272,7 +1358,7 @@ int main()
     }
 
     // print all keys for value "raffiniert"
-    //æŸ¥æ‰¾valueå¯¹åº”çš„æ‰€æœ‰keyå€¼
+    //²éÕÒvalue¶ÔÓ¦µÄËùÓĞkeyÖµ
     word = ("raffiniert");
     cout << word << ": " << endl;
     for (const auto& elem : dict)
@@ -1286,7 +1372,7 @@ int main()
 #endif
 
 
-//ä½¿ç”¨mapã€stringå¹¶äºè¿è¡ŒæœŸæŒ‡å®šæ’åºå‡†åˆ™
+//Ê¹ÓÃmap¡¢string²¢ÓÚÔËĞĞÆÚÖ¸¶¨ÅÅĞò×¼Ôò
 #if 0
 #include <iostream>
 #include <iomanip>
@@ -1303,7 +1389,7 @@ class RuntimeStringCmp
 {
 public:
     // constants for the comparison criterion
-    //                        æ™®é€šæ¨¡å¼    å¤§å°å†™æ— å…³æ¨¡å¼
+    //                        ÆÕÍ¨Ä£Ê½    ´óĞ¡Ğ´ÎŞ¹ØÄ£Ê½
     enum cmp_mode { normal, nocase };
 private:
     // actual comparison mode
@@ -1328,7 +1414,7 @@ public:
         }
         else
         {
-            //lexicographical_compare() å­—å…¸åºæ¯”è¾ƒ
+            //lexicographical_compare() ×ÖµäĞò±È½Ï
             return lexicographical_compare(s1.begin(), s1.end(),
                 s2.begin(), s2.end(), nocase_compare);
         }
@@ -1348,17 +1434,17 @@ void fillAndPrint(StringStringMap& coll);
 int main()
 {
     // create a container with the default comparison criterion
-    StringStringMap coll1;//ä½¿ç”¨ä¸€ä¸ªRuntimeStringCmpçš„å‡½æ•°å¯¹è±¡ï¼Œä»¥é»˜è®¤çš„normalä¸ºåˆå€¼
+    StringStringMap coll1;//Ê¹ÓÃÒ»¸öRuntimeStringCmpµÄº¯Êı¶ÔÏó£¬ÒÔÄ¬ÈÏµÄnormalÎª³õÖµ
     fillAndPrint(coll1);
 
     // create an object for case-insensitive comparisons
     RuntimeStringCmp ignorecase(RuntimeStringCmp::nocase);
     // create a container with the case-insensitive comparisons criterion
     StringStringMap coll2(ignorecase);
-    //***ç†è§£***
-    //ä½¿ç”¨çš„æ˜¯   explicit map(const Compare & comp, const Allocator & alloc = Allocator());
-    //ä½¿ç”¨ä¸€ä¸ªç±»å‹ä¸ºRuntimeStringCmpçš„å‡½æ•°å¯¹è±¡ï¼Œå¹¶ä»¥nocaseä¸ºåˆå€¼ã€‚nocaseä¼šä»¤
-    //è¿™ä¸ªå‡½æ•°å¯¹è±¡ä»¥â€œå¤§å°å†™æ— å…³â€æ¨¡å¼å®Œæˆå­—ç¬¦ä¸²çš„æ¯”è¾ƒå’Œæ’åºã€‚
+    //***Àí½â***
+    //Ê¹ÓÃµÄÊÇ   explicit map(const Compare & comp, const Allocator & alloc = Allocator());
+    //Ê¹ÓÃÒ»¸öÀàĞÍÎªRuntimeStringCmpµÄº¯Êı¶ÔÏó£¬²¢ÒÔnocaseÎª³õÖµ¡£nocase»áÁî
+    //Õâ¸öº¯Êı¶ÔÏóÒÔ¡°´óĞ¡Ğ´ÎŞ¹Ø¡±Ä£Ê½Íê³É×Ö·û´®µÄ±È½ÏºÍÅÅĞò¡£
 
     fillAndPrint(coll2);
 }
@@ -1389,7 +1475,7 @@ void fillAndPrint(StringStringMap& coll)
 #endif
 
 
-//æ— åºå…³è”å®¹å™¨çš„å¸ƒå±€æ“ä½œ
+//ÎŞĞò¹ØÁªÈİÆ÷µÄ²¼¾Ö²Ù×÷
 #if 0
 #include <iostream>
 #include <unordered_set>
@@ -1400,12 +1486,12 @@ int main()
 {
     unordered_multiset<int>unset;
 
-    //æœ€å¤§è´Ÿè½½å› å­ï¼ˆå› å­â†‘ï¼Œå“ˆå¸Œè¡¨ç©ºé—´åˆ©ç”¨ç‡â†‘ï¼Œæ€§èƒ½å¯èƒ½â†“ï¼‰
+    //×î´ó¸ºÔØÒò×Ó£¨Òò×Ó¡ü£¬¹şÏ£±í¿Õ¼äÀûÓÃÂÊ¡ü£¬ĞÔÄÜ¿ÉÄÜ¡ı£©
     unset.max_load_factor(0.7);
 
-    //å‡†å¤‡100/æœ€å¤§è´Ÿè½½å› å­ä¸ªå…ƒç´ çš„å¤§å°çš„bucketï¼Œä»¥é¿å…åœ¨æ²¡è¶…è¿‡100ä¸ªå…ƒç´ å°±rehash()
+    //×¼±¸100/×î´ó¸ºÔØÒò×Ó¸öÔªËØµÄ´óĞ¡µÄbucket£¬ÒÔ±ÜÃâÔÚÃ»³¬¹ı100¸öÔªËØ¾Írehash()
     unset.rehash(100 / 0.7);
-    //å‡†å¤‡100ä¸ªå…ƒç´ å¤§å°çš„bucket
+    //×¼±¸100¸öÔªËØ´óĞ¡µÄbucket
     unset.reserve(100);
 
     return 0;
@@ -1413,7 +1499,7 @@ int main()
 #endif
 
 
-//æ— åºå…³è”å®¹å™¨ï¼Œæä¾›è‡ªå·±çš„Hashå‡½æ•°å’Œç­‰ä»·å‡†åˆ™
+//ÎŞĞò¹ØÁªÈİÆ÷£¬Ìá¹©×Ô¼ºµÄHashº¯ÊıºÍµÈ¼Û×¼Ôò
 #if 0
 #include <unordered_set>
 #include <string>
@@ -1517,7 +1603,7 @@ int main()
 #endif
 
 
-//ä½¿ç”¨Lambdaä½œä¸ºHashå‡½æ•°å’Œç­‰ä»·å‡†åˆ™
+//Ê¹ÓÃLambda×÷ÎªHashº¯ÊıºÍµÈ¼Û×¼Ôò
 #if 0
 #include <string>
 #include <iostream>
@@ -1616,13 +1702,13 @@ int main()
     // create unordered set with user-defined behavior
     unordered_set<Customer, decltype(hash), decltype(eq)>
         custset(10, hash, eq);
-    //***ç†è§£***
-    //å¿…é¡»ä½¿ç”¨decltypeäº§ç”Ÿ lambdaç±»å‹ï¼Œä½¿å¾—ä»¥ä¼ é€’å®ƒä½œä¸º unordered å®¹å™¨å£°æ˜å¼çš„
-    //template å®å‚ã€‚
-    //è€Œ lambdaå¹¶ä¸å­˜åœ¨ default æ„é€ å‡½æ•°å’Œ assignment æ“ä½œç¬¦ã€‚
-    //å› æ­¤ï¼Œä½ ä¹Ÿå¿…é¡»å°†lambdaä¼ ç»™æ„é€ å‡½æ•°ã€‚
-    //è€Œç”±äºå®ƒä»¬è¢«è®¾è®¡ä¸ºç¬¬äºŒå’Œç¬¬ä¸‰å®å‚ï¼Œå› æ­¤è¿™ç§æƒ…å†µä¸‹ä½ å¿…é¡»æŒ‡æ˜æœ€åˆçš„ bucket å¤§å°ï¼Œ
-    //æœ¬ä¾‹ä¸º10ã€‚
+    //***Àí½â***
+    //±ØĞëÊ¹ÓÃdecltype²úÉú lambdaÀàĞÍ£¬Ê¹µÃÒÔ´«µİËü×÷Îª unordered ÈİÆ÷ÉùÃ÷Ê½µÄ
+    //template Êµ²Î¡£
+    //¶ø lambda²¢²»´æÔÚ default ¹¹Ôìº¯ÊıºÍ assignment ²Ù×÷·û¡£
+    //Òò´Ë£¬ÄãÒ²±ØĞë½«lambda´«¸ø¹¹Ôìº¯Êı¡£
+    //¶øÓÉÓÚËüÃÇ±»Éè¼ÆÎªµÚ¶şºÍµÚÈıÊµ²Î£¬Òò´ËÕâÖÖÇé¿öÏÂÄã±ØĞëÖ¸Ã÷×î³õµÄ bucket ´óĞ¡£¬
+    //±¾ÀıÎª10¡£
 
     custset.insert(Customer("nico", "josuttis", 42));
     PRINT_ELEMENTS(custset);
@@ -1631,17 +1717,17 @@ int main()
 #endif
 
 
-//ä½¿ç”¨Bucketæ¥å£
-//å¯ä»¥è®¿é—®å†…éƒ¨çš„æ¡¶ï¼ˆbucketsï¼‰ã€‚
-//æ¯ä¸ªæ¡¶æ˜¯ä¸€ä¸ªå­˜å‚¨å…ƒç´ çš„å®¹å™¨ï¼Œå¯ä»¥å°†å…·æœ‰ã€ç›¸åŒå“ˆå¸Œå€¼çš„å…ƒç´ ã€‘å­˜å‚¨åœ¨åŒä¸€ä¸ªæ¡¶ä¸­ã€‚
-//***æ³¨***
-// ç›¸åŒå“ˆå¸Œå€¼çš„å…ƒç´ ã€ä¹Ÿå¯èƒ½æ˜¯ä¸åŒçš„é”®ã€‘ï¼Œå®ƒä»¬åªæ˜¯å‘ç”Ÿäº†å“ˆå¸Œå†²çªï¼Œ
-// è€Œå“ˆå¸Œè¡¨çš„å†…éƒ¨æœºåˆ¶ç¡®ä¿å®ƒä»¬åœ¨åŒä¸€ä¸ªæ¡¶ä¸­å¾—åˆ°å­˜å‚¨ã€‚åœ¨æŸ¥æ‰¾å…ƒç´ æ—¶ï¼Œ
-// å“ˆå¸Œè¡¨ä¼šæ ¹æ®é”®çš„ç›¸ç­‰æ€§æ¥ç¡®å®šå…·ä½“æ˜¯å“ªä¸ªå…ƒç´ ã€‚
+//Ê¹ÓÃBucket½Ó¿Ú
+//¿ÉÒÔ·ÃÎÊÄÚ²¿µÄÍ°£¨buckets£©¡£
+//Ã¿¸öÍ°ÊÇÒ»¸ö´æ´¢ÔªËØµÄÈİÆ÷£¬¿ÉÒÔ½«¾ßÓĞ¡¾ÏàÍ¬¹şÏ£ÖµµÄÔªËØ¡¿´æ´¢ÔÚÍ¬Ò»¸öÍ°ÖĞ¡£
+//***×¢***
+// ÏàÍ¬¹şÏ£ÖµµÄÔªËØ¡¾Ò²¿ÉÄÜÊÇ²»Í¬µÄ¼ü¡¿£¬ËüÃÇÖ»ÊÇ·¢ÉúÁË¹şÏ£³åÍ»£¬
+// ¶ø¹şÏ£±íµÄÄÚ²¿»úÖÆÈ·±£ËüÃÇÔÚÍ¬Ò»¸öÍ°ÖĞµÃµ½´æ´¢¡£ÔÚ²éÕÒÔªËØÊ±£¬
+// ¹şÏ£±í»á¸ù¾İ¼üµÄÏàµÈĞÔÀ´È·¶¨¾ßÌåÊÇÄÄ¸öÔªËØ¡£
 // 
-// åœ¨ std::unordered_multimap ä¸­ï¼Œ
-// ç›¸åŒå“ˆå¸Œå€¼çš„å…ƒç´ è¢«å­˜å‚¨åœ¨åŒä¸€ä¸ªæ¡¶ä¸­ï¼Œè€ŒåŒä¸€ä¸ªæ¡¶ä¸­çš„å…ƒç´ å¯èƒ½å…·æœ‰ä¸åŒçš„é”®ã€‚
-// å› æ­¤ï¼ŒåŒä¸€ä¸ªæ¡¶ä¸­å­˜å‚¨çš„å…ƒç´ çš„é”®ä¸ä¸€å®šç›¸åŒï¼Œä½†å®ƒä»¬å…·æœ‰ç›¸åŒçš„å“ˆå¸Œå€¼ã€‚
+// ÔÚ std::unordered_multimap ÖĞ£¬
+// ÏàÍ¬¹şÏ£ÖµµÄÔªËØ±»´æ´¢ÔÚÍ¬Ò»¸öÍ°ÖĞ£¬¶øÍ¬Ò»¸öÍ°ÖĞµÄÔªËØ¿ÉÄÜ¾ßÓĞ²»Í¬µÄ¼ü¡£
+// Òò´Ë£¬Í¬Ò»¸öÍ°ÖĞ´æ´¢µÄÔªËØµÄ¼ü²»Ò»¶¨ÏàÍ¬£¬µ«ËüÃÇ¾ßÓĞÏàÍ¬µÄ¹şÏ£Öµ¡£
 #if 0
 #include <iostream>
 #include <iomanip>
@@ -1731,7 +1817,7 @@ int main()
 #endif
 
 
-//éå…¥ä¾µå¼æˆ–åŒ…è£¹æ³•ä½¿C-Style Arrayä½œä¸ºä¸€ç§STLå®¹å™¨
+//·ÇÈëÇÖÊ½»ò°ü¹ü·¨Ê¹C-Style Array×÷ÎªÒ»ÖÖSTLÈİÆ÷
 #if 0
 #include <iterator>
 #include <vector>
@@ -1744,7 +1830,7 @@ int main()
     // use begin() and end() for ordinary C arrays
     std::vector<int> v(std::begin(vals), std::end(vals));
 
-    //ç­‰ä»·äºä»¥ä¸‹å†™æ³• ï¼ˆé€‚ç”¨äºC++11ä¹‹å‰ï¼‰
+    //µÈ¼ÛÓÚÒÔÏÂĞ´·¨ £¨ÊÊÓÃÓÚC++11Ö®Ç°£©
     //std::vector<int> v(vals, vals+sizeof(vals)/sizeof(vals[0]));
 
     // use global begin() and end() for containers:
@@ -1755,9 +1841,9 @@ int main()
 #endif
 
 
-//é€šå¸¸STLå®¹å™¨æä¾›çš„æ˜¯valueè¯­ä¹‰ï¼Œè€Œä¸æ˜¯referenceè¯­ä¹‰
-//STLå®¹å™¨è¦å®ç°Referenceè¯­ä¹‰
-//æ–¹æ³•ä¸€ï¼šé‡‡ç”¨ã€æ™ºèƒ½æŒ‡é’ˆã€‘
+//Í¨³£STLÈİÆ÷Ìá¹©µÄÊÇvalueÓïÒå£¬¶ø²»ÊÇreferenceÓïÒå
+//STLÈİÆ÷ÒªÊµÏÖReferenceÓïÒå
+//·½·¨Ò»£º²ÉÓÃ¡¾ÖÇÄÜÖ¸Õë¡¿
 #if 0
 #include <iostream>
 #include <string>
@@ -1856,11 +1942,11 @@ int main()
             return elem->getName() == "Pizza";
         }));
 
-    //***æ³¨***
-    //ä½¿ç”¨shared_ptr<>ä¼šè®©äº‹æƒ…å˜å¤æ‚ã€‚ä¾‹å¦‚ï¼Œé¢å¯¹set ä½¿ç”¨find(),ä¼šæ‰¾å‡ºæ‹¥æœ‰ç›¸ç­‰
-    //value çš„å…ƒç´ ï¼Œç°åœ¨æ¯”è¾ƒçš„å´æ˜¯å†…éƒ¨(ç”±newè¿”å›)çš„ pointer 
+    //***×¢***
+    //Ê¹ÓÃshared_ptr<>»áÈÃÊÂÇé±ä¸´ÔÓ¡£ÀıÈç£¬Ãæ¶Ôset Ê¹ÓÃfind(),»áÕÒ³öÓµÓĞÏàµÈ
+    //value µÄÔªËØ£¬ÏÖÔÚ±È½ÏµÄÈ´ÊÇÄÚ²¿(ÓÉnew·µ»Ø)µÄ pointer 
     // allItems.find(ItemPtr(new Item("Pizza",2.22)))   //can'tbe successful
-    //ä»¥ä¸‹å†™æ³•ä¹Ÿä¸é€‚ç”¨
+    //ÒÔÏÂĞ´·¨Ò²²»ÊÊÓÃ
     //bestsellers[1] = find(allItems.begin(), allItems.end(),string("Pizza"));
 
     // set price of first bestseller
@@ -1873,12 +1959,12 @@ int main()
 #endif
 
 
-//Reference Wrapper ï¼ˆå¼•ç”¨å¤–è¦†å™¨ï¼‰
-//å£°æ˜äº<functional>ä¸­çš„ class std::reference_wrapper<>ä¸»è¦ç”¨æ¥
-//â€œå–‚â€ reference ç»™function template, åè€…åŸæœ¬ä»¥by valueæ–¹å¼æ¥å—å‚æ•°ã€‚
-// å¯¹äºä¸€ä¸ªç»™å®šç±»å‹T, è¿™ä¸ª classæä¾›ref()ç”¨ä»¥éšå¼è½¬æ¢ä¸ºT&, 
-// ä¸€ä¸ª cref()ç”¨ä»¥éšå¼è½¬æ¢ä¸º const T&, è¿™å¾€å¾€å…è®¸ 
-// function template å¾—ä»¥æ“ä½œ reference è€Œä¸éœ€è¦å¦å†™ç‰¹åŒ–ç‰ˆæœ¬ã€‚
+//Reference Wrapper £¨ÒıÓÃÍâ¸²Æ÷£©
+//ÉùÃ÷ÓÚ<functional>ÖĞµÄ class std::reference_wrapper<>Ö÷ÒªÓÃÀ´
+//¡°Î¹¡± reference ¸øfunction template, ºóÕßÔ­±¾ÒÔby value·½Ê½½ÓÊÜ²ÎÊı¡£
+// ¶ÔÓÚÒ»¸ö¸ø¶¨ÀàĞÍT, Õâ¸ö classÌá¹©ref()ÓÃÒÔÒşÊ½×ª»»ÎªT&, 
+// Ò»¸ö cref()ÓÃÒÔÒşÊ½×ª»»Îª const T&, ÕâÍùÍùÔÊĞí 
+// function template µÃÒÔ²Ù×÷ reference ¶ø²»ĞèÒªÁíĞ´ÌØ»¯°æ±¾¡£
 #if 0
 #include <iostream>
 
@@ -1908,9 +1994,9 @@ void f1(T val)
 #endif
 
 
-//å®ç°Referenceè¯­ä¹‰
-//æ–¹æ³•äºŒï¼šä½¿ç”¨ class reference_wrapper<> 
-//ä¼˜ç‚¹ï¼šä¸éœ€è¦æ™ºèƒ½æŒ‡é’ˆ
+//ÊµÏÖReferenceÓïÒå
+//·½·¨¶ş£ºÊ¹ÓÃ class reference_wrapper<> 
+//ÓÅµã£º²»ĞèÒªÖÇÄÜÖ¸Õë
 #if 0
 #include <iostream>
 #include <string>
@@ -1956,7 +2042,7 @@ void printItems(const std::string& msg, const Coll& coll)
 
     for (const auto& elem : coll)
     {
-        //éœ€è¦ä½¿ç”¨get()æ–¹æ³•ï¼Œè®¿é—®å­˜å‚¨çš„å¼•ç”¨
+        //ĞèÒªÊ¹ÓÃget()·½·¨£¬·ÃÎÊ´æ´¢µÄÒıÓÃ
         std::cout << ' ' << elem.get().getName() << ": "
             << elem.get().getPrice() << std::endl;
     }
@@ -1966,27 +2052,27 @@ int main()
 {
     using namespace std;
 
-    //reference_wrapper<Item>: è¿™æ˜¯ä¸€ä¸ªæ¨¡æ¿ç±»ï¼Œå®ƒåŒ…è£…äº†å¯¹ Item ç±»å‹å¯¹è±¡çš„å¼•ç”¨ã€‚
-    // reference_wrapper å…è®¸å°†å¼•ç”¨ä½œä¸ºå¯¹è±¡è¿›è¡Œä¼ é€’ï¼Œ
-    // è€Œä¸æ˜¯ä¼ é€’å¼•ç”¨æ—¶ä¼šè‡ªåŠ¨å‘ç”Ÿçš„è§£å¼•ç”¨ã€‚
-    // è¿™å¯¹äºåœ¨å®¹å™¨ä¸­å­˜å‚¨å¼•ç”¨æ˜¯å¾ˆæœ‰ç”¨çš„ï¼Œå› ä¸ºå®¹å™¨é€šå¸¸è¦æ±‚å…ƒç´ æ˜¯å¯å¤åˆ¶çš„ï¼Œ
-    // è€Œå¼•ç”¨åˆ™é€šå¸¸ä¸æ˜¯å¯å¤åˆ¶çš„ã€‚
-    //è¿™ç§è®¾è®¡å¸¸å¸¸ç”¨äºéœ€è¦åœ¨å®¹å™¨ä¸­å­˜å‚¨å¼•ç”¨è€Œä¸æ˜¯å¤åˆ¶å¯¹è±¡çš„æƒ…å†µï¼Œ
-    // ä¾‹å¦‚ï¼Œå½“ä½ æƒ³è¦åœ¨å®¹å™¨ä¸­ä¿å­˜å¯¹è±¡çš„å¼•ç”¨ï¼Œå¹¶ä¸”å¸Œæœ›é€šè¿‡å¼•ç”¨ä¿®æ”¹åŸå§‹å¯¹è±¡æ—¶ã€‚
+    //reference_wrapper<Item>: ÕâÊÇÒ»¸öÄ£°åÀà£¬Ëü°ü×°ÁË¶Ô Item ÀàĞÍ¶ÔÏóµÄÒıÓÃ¡£
+    // reference_wrapper ÔÊĞí½«ÒıÓÃ×÷Îª¶ÔÏó½øĞĞ´«µİ£¬
+    // ¶ø²»ÊÇ´«µİÒıÓÃÊ±»á×Ô¶¯·¢ÉúµÄ½âÒıÓÃ¡£
+    // Õâ¶ÔÓÚÔÚÈİÆ÷ÖĞ´æ´¢ÒıÓÃÊÇºÜÓĞÓÃµÄ£¬ÒòÎªÈİÆ÷Í¨³£ÒªÇóÔªËØÊÇ¿É¸´ÖÆµÄ£¬
+    // ¶øÒıÓÃÔòÍ¨³£²»ÊÇ¿É¸´ÖÆµÄ¡£
+    //ÕâÖÖÉè¼Æ³£³£ÓÃÓÚĞèÒªÔÚÈİÆ÷ÖĞ´æ´¢ÒıÓÃ¶ø²»ÊÇ¸´ÖÆ¶ÔÏóµÄÇé¿ö£¬
+    // ÀıÈç£¬µ±ÄãÏëÒªÔÚÈİÆ÷ÖĞ±£´æ¶ÔÏóµÄÒıÓÃ£¬²¢ÇÒÏ£ÍûÍ¨¹ıÒıÓÃĞŞ¸ÄÔ­Ê¼¶ÔÏóÊ±¡£
     vector<reference_wrapper<Item>>books;
 
     Item book1("bookname", 12.99);
-    //å‘å®¹å™¨å®‰æ’å…ƒç´ ï¼Œä½†æ˜¯å®‰æ’çš„æ˜¯ä¸ªå¼•ç”¨
+    //ÏòÈİÆ÷°²²åÔªËØ£¬µ«ÊÇ°²²åµÄÊÇ¸öÒıÓÃ
     books.push_back(book1);
 
     printItems("books:", books);
     cout << endl;
 
-    //***æ³¨***
-    //ç›´æ¥ä¿®æ”¹book1å¯¹è±¡çš„å†…å®¹ï¼Œ
-    //è‹¥vectorå®¹å™¨ä¸­å­˜çš„ä¸æ˜¯è¯¥å¯¹è±¡çš„å¼•ç”¨ï¼Œé»˜è®¤å­˜çš„æ˜¯æ‹·è´çš„valueå³æ‹·è´çš„å¯¹è±¡
-    //é‚£å°±ä¸ä¼šå½±å“vectorå®¹å™¨ä¸­çš„è¯¥å¯¹è±¡ä¸­å­˜çš„å†…å®¹ã€‚
-    //è€Œè¯¥ä¾‹å­˜çš„æ˜¯è¯¥å¯¹è±¡çš„å¼•ç”¨ï¼Œé‚£å°±ä¼šå½±å“vectorå®¹å™¨ä¸­çš„è¯¥å¯¹è±¡ä¸­å­˜çš„å†…å®¹ã€‚
+    //***×¢***
+    //Ö±½ÓĞŞ¸Äbook1¶ÔÏóµÄÄÚÈİ£¬
+    //ÈôvectorÈİÆ÷ÖĞ´æµÄ²»ÊÇ¸Ã¶ÔÏóµÄÒıÓÃ£¬Ä¬ÈÏ´æµÄÊÇ¿½±´µÄvalue¼´¿½±´µÄ¶ÔÏó
+    //ÄÇ¾Í²»»áÓ°ÏìvectorÈİÆ÷ÖĞµÄ¸Ã¶ÔÏóÖĞ´æµÄÄÚÈİ¡£
+    //¶ø¸ÃÀı´æµÄÊÇ¸Ã¶ÔÏóµÄÒıÓÃ£¬ÄÇ¾Í»áÓ°ÏìvectorÈİÆ÷ÖĞµÄ¸Ã¶ÔÏóÖĞ´æµÄÄÚÈİ¡£
     book1.setPrice(9.99);
 
     cout << books[0].get().getPrice() << endl;
@@ -1994,8 +2080,8 @@ int main()
     printItems("books:", books);
     cout << endl;
 
-    //***æ³¨***
-    //åˆ›å»ºä»¥ä¸‹vectorçš„å°è¯•ï¼Œæ— æ³•é€šè¿‡ç¼–è¯‘
+    //***×¢***
+    //´´½¨ÒÔÏÂvectorµÄ³¢ÊÔ£¬ÎŞ·¨Í¨¹ı±àÒë
     //vector<Item&>books_test;
     //books_test.push_back(book1);
     //book1.setPrice(10.5);
@@ -2004,35 +2090,35 @@ int main()
 #endif
 
 
-//å°ç»“ï¼š
-//å„ç§å®¹å™¨çš„ä½¿ç”¨æ—¶æœº
+//Ğ¡½á£º
+//¸÷ÖÖÈİÆ÷µÄÊ¹ÓÃÊ±»ú
 
-//é»˜è®¤æƒ…å†µä¸‹åº”è¯¥ä½¿ç”¨ vectorã€‚Vectorçš„å†…éƒ¨ç»“æ„æœ€ç®€å•ï¼Œå¹¶å…è®¸éšæœºè®¿é—®ï¼Œ
-//æ‰€ä»¥æ•°æ®çš„è®¿é—®ååˆ†æ–¹ä¾¿çµæ´»ï¼Œæ•°æ®çš„å¤„ç†ä¹Ÿå¤Ÿå¿«ã€‚
+//Ä¬ÈÏÇé¿öÏÂÓ¦¸ÃÊ¹ÓÃ vector¡£VectorµÄÄÚ²¿½á¹¹×î¼òµ¥£¬²¢ÔÊĞíËæ»ú·ÃÎÊ£¬
+//ËùÒÔÊı¾İµÄ·ÃÎÊÊ®·Ö·½±ãÁé»î£¬Êı¾İµÄ´¦ÀíÒ²¹»¿ì¡£
 
-//å¦‚æœç»å¸¸è¦åœ¨åºåˆ—å¤´éƒ¨å’Œå°¾éƒ¨å®‰æ’å’Œç§»é™¤å…ƒç´ ï¼Œåº”è¯¥é‡‡ç”¨dequeã€‚å¦‚æœä½ å¸Œæœ›å…ƒç´ 
-//è¢«ç§»é™¤æ—¶ï¼Œå®¹å™¨èƒ½å¤Ÿè‡ªåŠ¨ç¼©å‡å†…éƒ¨å†…å­˜ç”¨é‡ï¼Œé‚£ä¹ˆä¹Ÿè¯¥é‡‡ç”¨dequeã€‚
+//Èç¹û¾­³£ÒªÔÚĞòÁĞÍ·²¿ºÍÎ²²¿°²²åºÍÒÆ³ıÔªËØ£¬Ó¦¸Ã²ÉÓÃdeque¡£Èç¹ûÄãÏ£ÍûÔªËØ
+//±»ÒÆ³ıÊ±£¬ÈİÆ÷ÄÜ¹»×Ô¶¯Ëõ¼õÄÚ²¿ÄÚ´æÓÃÁ¿£¬ÄÇÃ´Ò²¸Ã²ÉÓÃdeque¡£
 
-//å¦‚æœéœ€è¦ç»å¸¸åœ¨å®¹å™¨ä¸­æ®µæ‰§è¡Œå…ƒç´ çš„å®‰æ’ã€ç§»é™¤å’Œç§»åŠ¨ï¼Œå¯è€ƒè™‘ä½¿ç”¨listã€‚
+//Èç¹ûĞèÒª¾­³£ÔÚÈİÆ÷ÖĞ¶ÎÖ´ĞĞÔªËØµÄ°²²å¡¢ÒÆ³ıºÍÒÆ¶¯£¬¿É¿¼ÂÇÊ¹ÓÃlist¡£
 
-//å¦‚æœä½ ç»å¸¸éœ€è¦æ ¹æ®æŸä¸ªå‡†åˆ™æŸ¥æ‰¾å…ƒç´ ï¼Œåº”å½“ä½¿ç”¨â€œä¾æ®è¯¥å‡†åˆ™è¿›è¡Œhashâ€çš„
-//unordered set æˆ– multiset
+//Èç¹ûÄã¾­³£ĞèÒª¸ù¾İÄ³¸ö×¼Ôò²éÕÒÔªËØ£¬Ó¦µ±Ê¹ÓÃ¡°ÒÀ¾İ¸Ã×¼Ôò½øĞĞhash¡±µÄ
+//unordered set »ò multiset
 
-//å¦‚æœæƒ³å¤„ç† key/value pair,è¯·é‡‡ç”¨unordered(multi)mapã€‚å¦‚æœå…ƒç´ æ¬¡åºå¾ˆé‡è¦ï¼Œå¯é‡‡ç”¨
+//Èç¹ûÏë´¦Àí key/value pair,Çë²ÉÓÃunordered(multi)map¡£Èç¹ûÔªËØ´ÎĞòºÜÖØÒª£¬¿É²ÉÓÃ
 //(multi)map
 
-//è¡¥å……ï¼š
-//map ä½¿ç”¨çº¢é»‘æ ‘ï¼ˆRed-Black Treeï¼‰ä½œä¸ºåº•å±‚æ•°æ®ç»“æ„ï¼Œ
-// å®ƒä¿æŒå…ƒç´ çš„æœ‰åºçŠ¶æ€ï¼Œå› æ­¤åœ¨æŸ¥æ‰¾æ“ä½œæ—¶å…·æœ‰ O(log n) çš„æ—¶é—´å¤æ‚åº¦ã€‚
-//unordered_map ä½¿ç”¨å“ˆå¸Œè¡¨ä½œä¸ºåº•å±‚æ•°æ®ç»“æ„ï¼Œå®ƒé€šè¿‡å“ˆå¸Œå‡½æ•°å°†é”®æ˜ å°„åˆ°æ¡¶ï¼ˆbucketsï¼‰ï¼Œ
-//å¹¶åœ¨æ¡¶ä¸­è¿›è¡Œæœç´¢ã€‚åœ¨ç†æƒ³æƒ…å†µä¸‹ï¼ˆå“ˆå¸Œå‡½æ•°å‡åŒ€åˆ†å¸ƒï¼‰ï¼Œ
-// æŸ¥è¯¢æ“ä½œçš„å¹³å‡æ—¶é—´å¤æ‚åº¦ä¸º O(1)ã€‚ä½†åœ¨æœ€åæƒ…å†µä¸‹ï¼Œ
-// å¯èƒ½éœ€è¦ O(n) çš„æ—¶é—´å¤æ‚åº¦ï¼Œä¾‹å¦‚å½“å“ˆå¸Œå†²çªä¸¥é‡æ—¶ã€‚
-//å› æ­¤ï¼Œåœ¨å¤§å¤šæ•°æƒ…å†µä¸‹ï¼Œunordered_map æä¾›äº†æ¯” map æ›´å¿«çš„æŸ¥è¯¢é€Ÿåº¦ï¼Œ
-//ä½†æ˜¯åœ¨ä¿æŒå…ƒç´ é¡ºåºæˆ–è€…éœ€è¦æœ‰åºéå†æ—¶ï¼Œmap ä¼šæ›´é€‚åˆã€‚
+//²¹³ä£º
+//map Ê¹ÓÃºìºÚÊ÷£¨Red-Black Tree£©×÷Îªµ×²ãÊı¾İ½á¹¹£¬
+// Ëü±£³ÖÔªËØµÄÓĞĞò×´Ì¬£¬Òò´ËÔÚ²éÕÒ²Ù×÷Ê±¾ßÓĞ O(log n) µÄÊ±¼ä¸´ÔÓ¶È¡£
+//unordered_map Ê¹ÓÃ¹şÏ£±í×÷Îªµ×²ãÊı¾İ½á¹¹£¬ËüÍ¨¹ı¹şÏ£º¯Êı½«¼üÓ³Éäµ½Í°£¨buckets£©£¬
+//²¢ÔÚÍ°ÖĞ½øĞĞËÑË÷¡£ÔÚÀíÏëÇé¿öÏÂ£¨¹şÏ£º¯Êı¾ùÔÈ·Ö²¼£©£¬
+// ²éÑ¯²Ù×÷µÄÆ½¾ùÊ±¼ä¸´ÔÓ¶ÈÎª O(1)¡£µ«ÔÚ×î»µÇé¿öÏÂ£¬
+// ¿ÉÄÜĞèÒª O(n) µÄÊ±¼ä¸´ÔÓ¶È£¬ÀıÈçµ±¹şÏ£³åÍ»ÑÏÖØÊ±¡£
+//Òò´Ë£¬ÔÚ´ó¶àÊıÇé¿öÏÂ£¬unordered_map Ìá¹©ÁË±È map ¸ü¿ìµÄ²éÑ¯ËÙ¶È£¬
+//µ«ÊÇÔÚ±£³ÖÔªËØË³Ğò»òÕßĞèÒªÓĞĞò±éÀúÊ±£¬map »á¸üÊÊºÏ¡£
 
 
-//éšæœºè®¿é—®è¿­ä»£å™¨çš„ç‰¹æ®Šèƒ½åŠ›
+//Ëæ»ú·ÃÎÊµü´úÆ÷µÄÌØÊâÄÜÁ¦
 #if 0
 #include <vector>
 #include <iostream>
@@ -2076,25 +2162,25 @@ int main()
         cout << *pos << ' ';
     }
     cout << endl;
-    //***æ³¨***
-    //ä»¥2ä¸ªå•ä½ä¸ºè·¨åº¦æ¥å‘å‰å¢åŠ è¿­ä»£å™¨çš„ä½ç½®æ—¶è¦æ³¨æ„
-    //è‹¥å†™ä¸º
+    //***×¢***
+    //ÒÔ2¸öµ¥Î»Îª¿ç¶ÈÀ´ÏòÇ°Ôö¼Óµü´úÆ÷µÄÎ»ÖÃÊ±Òª×¢Òâ
+    //ÈôĞ´Îª
     //for(pos= coll.begin();pos< coll.end(); pos += 2)
-    //è€Œå®¹å™¨ä¸­å«å¥‡æ•°ä¸ªå…ƒç´ ï¼Œä¼šæœ‰ä¸æ˜ç¡®è¡Œä¸º
-    //åŸå› ï¼š
-    //å°†è¿­ä»£å™¨ç§»è‡³â€œèµ·ç‚¹æ›´å‰é¢â€ä¼šå¯¼è‡´ä¸æ˜ç¡®è¡Œä¸ºã€‚åŒæ ·é“ç†ï¼Œ
-    //å¦‚æœè¡¨è¾¾å¼pos += 2å°†è¿­ä»£å™¨ç§»è‡³end()ä¹‹åï¼Œä¹Ÿä¼šå¯¼è‡´ä¸æ˜ç¡®è¡Œä¸ºã€‚
+    //¶øÈİÆ÷ÖĞº¬ÆæÊı¸öÔªËØ£¬»áÓĞ²»Ã÷È·ĞĞÎª
+    //Ô­Òò£º
+    //½«µü´úÆ÷ÒÆÖÁ¡°Æğµã¸üÇ°Ãæ¡±»áµ¼ÖÂ²»Ã÷È·ĞĞÎª¡£Í¬ÑùµÀÀí£¬
+    //Èç¹û±í´ïÊ½pos += 2½«µü´úÆ÷ÒÆÖÁend()Ö®ºó£¬Ò²»áµ¼ÖÂ²»Ã÷È·ĞĞÎª¡£
 }
 #endif
 
 
-//è¿­ä»£å™¨çš„ç›¸å…³è¾…åŠ©å‡½æ•°
-//ç”±äºvectorã€arrayã€stringçš„è¿­ä»£å™¨
-//é€šå¸¸è¢«å®ç°ä¸ºå¯»å¸¸pointer, è€Œ C++å¹¶ä¸å…è®¸ä½ ä¿®æ”¹ä»»ä½•åŸºç¡€ç±»å‹
-//(åŒ…æ‹¬ pointer)çš„ä¸´æ—¶å€¼ï¼Œä½†å¯¹äº struct å’Œclass åˆ™å…è®¸ã€‚
-//å› æ­¤ï¼Œå¦‚æœè¿­ä»£å™¨è¢«å®ç°ä¸ºå¯»å¸¸ pointer, åˆ™ç¼–è¯‘å¤±è´¥ï¼›å¦‚æœè¢«å®ç°ä¸º class, åˆ™ç¼–è¯‘æˆåŠŸã€‚
-//ä¸ºäº†ä¿è¯ç§»æ¤ï¼Œå¯ä»¥ä½¿ç”¨C++11æä¾›çš„next()
-//next()å¥½å¤„ä¹‹ä¸€ï¼š
+//µü´úÆ÷µÄÏà¹Ø¸¨Öúº¯Êı
+//ÓÉÓÚvector¡¢array¡¢stringµÄµü´úÆ÷
+//Í¨³£±»ÊµÏÖÎªÑ°³£pointer, ¶ø C++²¢²»ÔÊĞíÄãĞŞ¸ÄÈÎºÎ»ù´¡ÀàĞÍ
+//(°üÀ¨ pointer)µÄÁÙÊ±Öµ£¬µ«¶ÔÓÚ struct ºÍclass ÔòÔÊĞí¡£
+//Òò´Ë£¬Èç¹ûµü´úÆ÷±»ÊµÏÖÎªÑ°³£ pointer, Ôò±àÒëÊ§°Ü£»Èç¹û±»ÊµÏÖÎª class, Ôò±àÒë³É¹¦¡£
+//ÎªÁË±£Ö¤ÒÆÖ²£¬¿ÉÒÔÊ¹ÓÃC++11Ìá¹©µÄnext()
+//next()ºÃ´¦Ö®Ò»£º
 #if 0
 #include <iostream>
 #include <algorithm>
@@ -2112,20 +2198,20 @@ int main()
     for (auto x : v)
         std::cout << x << ' ';
 
-    //***æ³¨***
-    // å°½ç®¡è¡¨è¾¾å¼ ++c.begin() é€šå¸¸èƒ½ç¼–è¯‘ï¼Œç„¶è€Œä¸ä¿è¯ä¼šè¿™ä¹ˆåšï¼š 
-    // c.begin() æ˜¯å³å€¼è¡¨è¾¾å¼ï¼Œè€Œæ— è€å¼è¾“å…¥è¿­ä»£å™¨ (LegacyInputIterator) 
-    // è¦æ±‚æŒ‡å®šå³å€¼çš„è‡ªå¢ä¿è¯è¿›è¡Œã€‚
-    // å°¤å…¶æ˜¯è¿­ä»£å™¨ä»¥æŒ‡é’ˆå®ç°æˆ–å…¶ operator++ ä¸ºã€å·¦å€¼å¼•ç”¨é™å®šã€‘æ—¶ï¼Œ
-    //  ++c.begin() ä¸èƒ½ç¼–è¯‘ï¼Œè€Œ std::next(c.begin()) å¯ä»¥ã€‚
+    //***×¢***
+    // ¾¡¹Ü±í´ïÊ½ ++c.begin() Í¨³£ÄÜ±àÒë£¬È»¶ø²»±£Ö¤»áÕâÃ´×ö£º 
+    // c.begin() ÊÇÓÒÖµ±í´ïÊ½£¬¶øÎŞÀÏÊ½ÊäÈëµü´úÆ÷ (LegacyInputIterator) 
+    // ÒªÇóÖ¸¶¨ÓÒÖµµÄ×ÔÔö±£Ö¤½øĞĞ¡£
+    // ÓÈÆäÊÇµü´úÆ÷ÒÔÖ¸ÕëÊµÏÖ»òÆä operator++ Îª¡¾×óÖµÒıÓÃÏŞ¶¨¡¿Ê±£¬
+    //  ++c.begin() ²»ÄÜ±àÒë£¬¶ø std::next(c.begin()) ¿ÉÒÔ¡£
 }
 #endif
 
 
-//æ ¹æ®è¿­ä»£å™¨ç§ç±»ï¼Œé€‰æ‹©æœ€ä½³çš„å‰è¿›/åé€€æ–¹æ¡ˆï¼šadvance()
-//***æ³¨***
-//å‰è¿›ï¼šnext()    åé€€ï¼šprev()       å‡½æ•°
-//å†…éƒ¨å°†å¯¹ä¸€ä¸ªä¸´æ—¶å¯¹è±¡è°ƒç”¨advance()
+//¸ù¾İµü´úÆ÷ÖÖÀà£¬Ñ¡Ôñ×î¼ÑµÄÇ°½ø/ºóÍË·½°¸£ºadvance()
+//***×¢***
+//Ç°½ø£ºnext()    ºóÍË£ºprev()       º¯Êı
+//ÄÚ²¿½«¶ÔÒ»¸öÁÙÊ±¶ÔÏóµ÷ÓÃadvance()
 #if 0
 #include <iterator>
 #include <iostream>
@@ -2162,9 +2248,9 @@ int main()
 #endif
 
 
-//next()å¥½å¤„ä¹‹äºŒï¼š
-//å¯¹äºæ²¡æœ‰operator +å’Œoperator -  çš„è¿™äº›å®¹å™¨
-//å¯ä»¥ç”¨next()æ¥ç¡®å®šéå†åˆ°æŸä¸ªä½ç½®æ—¶åœæ­¢
+//next()ºÃ´¦Ö®¶ş£º
+//¶ÔÓÚÃ»ÓĞoperator +ºÍoperator -  µÄÕâĞ©ÈİÆ÷
+//¿ÉÒÔÓÃnext()À´È·¶¨±éÀúµ½Ä³¸öÎ»ÖÃÊ±Í£Ö¹
 #if 0
 #include <iterator>
 #include <iostream>
@@ -2174,7 +2260,7 @@ using namespace std;
 
 int main()
 {
-    list<int> coll;//ä»…æœ‰åŒå‘è¿­ä»£å™¨
+    list<int> coll;//½öÓĞË«Ïòµü´úÆ÷
 
     // insert elements from 1 to 9
     for (int i = 1; i <= 9; ++i)
@@ -2191,8 +2277,8 @@ int main()
     }
     cout << endl;
 
-    //forward å’Œ bidirectional è¿­ä»£å™¨ä¸æä¾› operator +å’Œ -
-    //å¦‚æœä¸ç”¨next()ï¼Œä½ å°±éœ€è¦åˆ›å»ºä¸€ä¸ªä¸´æ—¶å¯¹è±¡çš„ååŠ©æ¥åˆ¤æ–­
+    //forward ºÍ bidirectional µü´úÆ÷²»Ìá¹© operator +ºÍ -
+    //Èç¹û²»ÓÃnext()£¬Äã¾ÍĞèÒª´´½¨Ò»¸öÁÙÊ±¶ÔÏóµÄĞ­ÖúÀ´ÅĞ¶Ï
     auto pos_1 = coll.begin();
     auto nextPos = pos_1;
     ++nextPos;
@@ -2208,10 +2294,10 @@ int main()
 #endif
 
 
-//æ ¹æ®è¿­ä»£å™¨ç§ç±»ï¼Œé€‰æ‹©æœ€ä½³çš„è®¡ç®—è·ç¦»çš„æ–¹æ¡ˆï¼šdistance()
+//¸ù¾İµü´úÆ÷ÖÖÀà£¬Ñ¡Ôñ×î¼ÑµÄ¼ÆËã¾àÀëµÄ·½°¸£ºdistance()
 
 
-//äº¤æ¢ä¸¤ä¸ªè¿­ä»£å™¨æ‰€æŒ‡çš„å…ƒç´ çš„å€¼
+//½»»»Á½¸öµü´úÆ÷ËùÖ¸µÄÔªËØµÄÖµ
 #if 0
 #include <iostream>
 #include <algorithm>
@@ -2257,8 +2343,8 @@ int main()
 #endif
 
 
-//è¿­ä»£å™¨é€‚é…å™¨(iterator adapter)
-//å°†æ­£å¸¸çš„è¿­ä»£å™¨è½¬åŒ–æˆåå‘è¿­ä»£å™¨
+//µü´úÆ÷ÊÊÅäÆ÷(iterator adapter)
+//½«Õı³£µÄµü´úÆ÷×ª»¯³É·´Ïòµü´úÆ÷
 #if 0
 #include <iterator>
 #include <iostream>
@@ -2284,29 +2370,29 @@ int main()
     // print value to which reverse iterator rpos refers
     cout << "rpos: " << *rpos << endl << endl;
 
-    //***æ³¨***
-    //è½¬æ¢å‰åè¿­ä»£å™¨é€»è¾‘ä½ç½®å‘ç”Ÿäº†å˜åŒ–
-    //å½“æˆ‘ä»¬æŠŠpos è½¬æ¢ä¸ºrpos,å®ƒä»¬çš„ç‰©ç†ä½ç½®æŒ‡å‘åŒä¸€ç‚¹ï¼Œä½†å®ƒä»¬æ‰€ä»£è¡¨çš„æ„ä¹‰
-    //(æˆ–è¯´å®ƒä»¬æ‰€ä»£è¡¨çš„é€»è¾‘ä½ç½®)ä¸åŒäº†
+    //***×¢***
+    //×ª»»Ç°ºóµü´úÆ÷Âß¼­Î»ÖÃ·¢ÉúÁË±ä»¯
+    //µ±ÎÒÃÇ°Ñpos ×ª»»Îªrpos,ËüÃÇµÄÎïÀíÎ»ÖÃÖ¸ÏòÍ¬Ò»µã£¬µ«ËüÃÇËù´ú±íµÄÒâÒå
+    //(»òËµËüÃÇËù´ú±íµÄÂß¼­Î»ÖÃ)²»Í¬ÁË
 
-    //***ç†è§£***
-    //rbegin()æŒ‡å‘å®¹å™¨çš„æœ€æœ«å…ƒç´ çš„ä¸‹ä¸€ä¸ªä½ç½®ï¼Œè€Œå¯¹å…¶è§£å¼•ç”¨åå€¼ä¸ºæœ€æœ«å…ƒç´ çš„å€¼
-    //rend()æŒ‡å‘å®¹å™¨çš„ç¬¬ä¸€ä¸ªå…ƒç´ çš„ä½ç½®ï¼Œè€Œå¯¹å…¶è§£å¼•ç”¨åå€¼ä¸ºç¬¬ä¸€ä¸ªå…ƒç´ å‰çš„ä¸€ä¸ªä½ç½®
+    //***Àí½â***
+    //rbegin()Ö¸ÏòÈİÆ÷µÄ×îÄ©ÔªËØµÄÏÂÒ»¸öÎ»ÖÃ£¬¶ø¶ÔÆä½âÒıÓÃºóÖµÎª×îÄ©ÔªËØµÄÖµ
+    //rend()Ö¸ÏòÈİÆ÷µÄµÚÒ»¸öÔªËØµÄÎ»ÖÃ£¬¶ø¶ÔÆä½âÒıÓÃºóÖµÎªµÚÒ»¸öÔªËØÇ°µÄÒ»¸öÎ»ÖÃ
 
-    //ä¸ºä»€ä¹ˆrend()æŒ‡å‘å®¹å™¨çš„ç¬¬ä¸€ä¸ªå…ƒç´ çš„ä½ç½®ï¼Ÿ
-    //å› ä¸ºéå†å®¹å™¨ï¼Œä¸€èˆ¬æˆ‘ä»¬éœ€è¦é‡‡ç”¨â€œæœ€æœ«å…ƒç´ çš„ä¸‹ä¸€ä½ç½®â€ã€‚
-    // ç„¶è€Œå¯¹ reverse è¿­ä»£å™¨è€Œè¨€ï¼Œè¿™ä¸ªä½ç½®ä½äºç¬¬ä¸€å…ƒç´ ä¹‹å‰ã€‚
-    // ç³Ÿç³•çš„æ˜¯ï¼Œè¿™ä¸ªä½ç½®å¯èƒ½å¹¶ä¸å­˜åœ¨ï¼Œå› ä¸ºå®¹å™¨å¹¶ä¸è¦æ±‚å…¶ç¬¬ä¸€å…ƒç´ ä¹‹å‰çš„ä½ç½®åˆæ³•
-    //æ‰€ä»¥å¯¹äºåå‘è¿­ä»£å™¨ï¼Œç‰©ç†ä¸Šrend()æŒ‡å‘å®¹å™¨çš„ç¬¬ä¸€ä¸ªå…ƒç´ çš„ä½ç½®(è¯¥ä½ç½®ä¸€å®šåˆæ³•)ï¼Œ
-    //ä½†æ˜¯é€»è¾‘ä¸Šè§£é‡Šä¸ºç¬¬ä¸€ä¸ªå…ƒç´ å‰çš„ä¸€ä¸ªä½ç½®ã€‚
-    //ç”±äºç‰©ç†æ„ä¹‰å’Œé€»è¾‘æ„ä¹‰ä¸åŒï¼Œè€Œè§£å¼•ç”¨è§£çš„æ˜¯é€»è¾‘æ„ä¹‰ï¼Œ
-    //å› æ­¤é€»è¾‘ä¸Šå…¶ value(ä¹Ÿå°±æ˜¯å…¶æ‰€æŒ‡å…ƒç´ å€¼)ä¹Ÿå°±ç§»åˆ°äº†å‰ä¸€ä¸ªå…ƒç´ èº«ä¸Šã€‚
+    //ÎªÊ²Ã´rend()Ö¸ÏòÈİÆ÷µÄµÚÒ»¸öÔªËØµÄÎ»ÖÃ£¿
+    //ÒòÎª±éÀúÈİÆ÷£¬Ò»°ãÎÒÃÇĞèÒª²ÉÓÃ¡°×îÄ©ÔªËØµÄÏÂÒ»Î»ÖÃ¡±¡£
+    // È»¶ø¶Ô reverse µü´úÆ÷¶øÑÔ£¬Õâ¸öÎ»ÖÃÎ»ÓÚµÚÒ»ÔªËØÖ®Ç°¡£
+    // Ôã¸âµÄÊÇ£¬Õâ¸öÎ»ÖÃ¿ÉÄÜ²¢²»´æÔÚ£¬ÒòÎªÈİÆ÷²¢²»ÒªÇóÆäµÚÒ»ÔªËØÖ®Ç°µÄÎ»ÖÃºÏ·¨
+    //ËùÒÔ¶ÔÓÚ·´Ïòµü´úÆ÷£¬ÎïÀíÉÏrend()Ö¸ÏòÈİÆ÷µÄµÚÒ»¸öÔªËØµÄÎ»ÖÃ(¸ÃÎ»ÖÃÒ»¶¨ºÏ·¨)£¬
+    //µ«ÊÇÂß¼­ÉÏ½âÊÍÎªµÚÒ»¸öÔªËØÇ°µÄÒ»¸öÎ»ÖÃ¡£
+    //ÓÉÓÚÎïÀíÒâÒåºÍÂß¼­ÒâÒå²»Í¬£¬¶ø½âÒıÓÃ½âµÄÊÇÂß¼­ÒâÒå£¬
+    //Òò´ËÂß¼­ÉÏÆä value(Ò²¾ÍÊÇÆäËùÖ¸ÔªËØÖµ)Ò²¾ÍÒÆµ½ÁËÇ°Ò»¸öÔªËØÉíÉÏ¡£
 }
 #endif
 
 
-//åå‘è¿­ä»£å™¨çš„åº”ç”¨
-//ä½¿ç”¨ä¸€å¯¹è¿­ä»£å™¨ï¼Œæ­£å‘å’Œé€†å‘æ‰“å°æ‰¾å‡ºçš„å…ƒç´ 
+//·´Ïòµü´úÆ÷µÄÓ¦ÓÃ
+//Ê¹ÓÃÒ»¶Ôµü´úÆ÷£¬ÕıÏòºÍÄæÏò´òÓ¡ÕÒ³öµÄÔªËØ
 #if 0
 #include <iterator>
 #include <iostream>
@@ -2349,10 +2435,10 @@ int main()
     for_each(rpos2, rpos1,   // range
         print);         // operation
     cout << endl;
-    //***ç†è§£***
-    //ç‰©ç†ä½ç½®ä¸å˜ï¼Œä½†æ˜¯é€»è¾‘ä½ç½®æ”¹å˜ï¼Œæ‰“å°å‡ºçš„å†…å®¹æ­£å¥½ç¬¦åˆé¢„æœŸã€‚
+    //***Àí½â***
+    //ÎïÀíÎ»ÖÃ²»±ä£¬µ«ÊÇÂß¼­Î»ÖÃ¸Ä±ä£¬´òÓ¡³öµÄÄÚÈİÕıºÃ·ûºÏÔ¤ÆÚ¡£
 
-    //ä½¿ç”¨base()å°†åå‘è¿­ä»£å™¨è½¬åŒ–ä¸ºæ­£å¸¸è¿­ä»£å™¨
+    //Ê¹ÓÃbase()½«·´Ïòµü´úÆ÷×ª»¯ÎªÕı³£µü´úÆ÷
     deque<int>::const_iterator rrpos1(rpos1.base());
 
     cout << "*rrpos1=" << *rrpos1 << endl;
@@ -2360,8 +2446,8 @@ int main()
 #endif
 
 
-//back_insert_iteratorã€back_inserter()çš„åº”ç”¨
-//åªèƒ½ç”¨åœ¨vectorã€dequeã€listã€stringä¸Š
+//back_insert_iterator¡¢back_inserter()µÄÓ¦ÓÃ
+//Ö»ÄÜÓÃÔÚvector¡¢deque¡¢list¡¢stringÉÏ
 #if 0
 #include <vector>
 #include <algorithm>
@@ -2406,11 +2492,11 @@ int main()
 
     // use back inserter to append all elements again
     // - reserve enough memory to avoid reallocation
-    //***æ³¨***
-    //å®‰æ’å‹è¿­ä»£å™¨ç¡®å®èƒ½å®‰æ’å…ƒç´ åˆ°å®¹å™¨ä¸­ï¼Œ
-    //ä½†æ˜¯ã€å¯¹äºvectorç­‰å†…å­˜å¯èƒ½éœ€è¦é‡æ–°åˆ†é…çš„å®¹å™¨ã€‘
-    //back inserter åœ¨å®‰æ’å…ƒç´ æ—¶ï¼Œå¯èƒ½ä¼šé€ æˆæŒ‡å‘è¯¥ vectorçš„å…¶ä»–è¿­ä»£å™¨å¤±æ•ˆã€‚
-    //å› æ­¤ï¼Œå¦‚æœæå‰ä¸ç”³è¯·è¶³å¤Ÿç©ºé—´ï¼Œè¿™ä¸ªç®—æ³•å¯èƒ½ä¼šå½¢æˆâ€œæºç«¯è¿­ä»£å™¨å¤±æ•ˆâ€çŠ¶æ€ã€‚
+    //***×¢***
+    //°²²åĞÍµü´úÆ÷È·ÊµÄÜ°²²åÔªËØµ½ÈİÆ÷ÖĞ£¬
+    //µ«ÊÇ¡¾¶ÔÓÚvectorµÈÄÚ´æ¿ÉÄÜĞèÒªÖØĞÂ·ÖÅäµÄÈİÆ÷¡¿
+    //back inserter ÔÚ°²²åÔªËØÊ±£¬¿ÉÄÜ»áÔì³ÉÖ¸Ïò¸Ã vectorµÄÆäËûµü´úÆ÷Ê§Ğ§¡£
+    //Òò´Ë£¬Èç¹ûÌáÇ°²»ÉêÇë×ã¹»¿Õ¼ä£¬Õâ¸öËã·¨¿ÉÄÜ»áĞÎ³É¡°Ô´¶Ëµü´úÆ÷Ê§Ğ§¡±×´Ì¬¡£
     coll.reserve(2 * coll.size());
 
     copy(coll.begin(), coll.end(), back_insert_iterator<vector<int>>(coll));
@@ -2421,14 +2507,14 @@ int main()
     copy(coll.begin(), coll.end(), back_inserter(coll));
     PRINT_ELEMENTS(coll);
 
-    //è¿˜å¯ä»¥ä½¿ç”¨vectorå®¹å™¨è‡ªå·±çš„insertæ–¹æ³•
-    //ï¼ˆä¼ å…¥çš„æ˜¯ä¸ªæŒ‡å‘è‡ªèº«çš„æŸä¸ªå…ƒç´ çš„è¿­ä»£å™¨æ—¶ï¼Œä¹Ÿè¦æ³¨æ„æ“ä½œåè¿­ä»£å™¨å¯èƒ½ä¼šå¤±æ•ˆï¼‰
+    //»¹¿ÉÒÔÊ¹ÓÃvectorÈİÆ÷×Ô¼ºµÄinsert·½·¨
+    //£¨´«ÈëµÄÊÇ¸öÖ¸Ïò×ÔÉíµÄÄ³¸öÔªËØµÄµü´úÆ÷Ê±£¬Ò²Òª×¢Òâ²Ù×÷ºóµü´úÆ÷¿ÉÄÜ»áÊ§Ğ§£©
 }
 #endif
 
 
-//front_insert_iteratorã€front_inserter()çš„åº”ç”¨
-//åªèƒ½ç”¨åœ¨dequeã€listã€forward list
+//front_insert_iterator¡¢front_inserter()µÄÓ¦ÓÃ
+//Ö»ÄÜÓÃÔÚdeque¡¢list¡¢forward list
 #if 0
 #include <list>
 #include <algorithm>
@@ -2481,11 +2567,11 @@ int main()
 #endif
 
 
-//insert_iteratorã€inserter()åº”ç”¨
-//general inserter ã€å¯¹æ‰€æœ‰æ ‡å‡†å®¹å™¨å‡é€‚ç”¨ã€‘(åªæœ‰ array å’Œ forward list é™¤å¤–),
-// å› ä¸ºé‚£äº›å®¹å™¨éƒ½æä¾›æœ‰insert()æˆå‘˜å‡½æ•°(è§8.7.1èŠ‚ç¬¬413é¡µ)ã€‚
-// ç„¶è€Œå¯¹ associative å’Œ unordered å®¹å™¨è€Œè¨€ï¼Œå®‰æ’ä½ç½®åªæ˜¯ä¸ªæç¤ºï¼Œ
-// å› ä¸ºåœ¨è¿™ä¸¤ç§å®¹å™¨ä¸­å…ƒç´ çš„çœŸæ­£ä½ç½®è§†å…¶valueè€Œå®šã€‚
+//insert_iterator¡¢inserter()Ó¦ÓÃ
+//general inserter ¡¾¶ÔËùÓĞ±ê×¼ÈİÆ÷¾ùÊÊÓÃ¡¿(Ö»ÓĞ array ºÍ forward list ³ıÍâ),
+// ÒòÎªÄÇĞ©ÈİÆ÷¶¼Ìá¹©ÓĞinsert()³ÉÔ±º¯Êı(¼û8.7.1½ÚµÚ413Ò³)¡£
+// È»¶ø¶Ô associative ºÍ unordered ÈİÆ÷¶øÑÔ£¬°²²åÎ»ÖÃÖ»ÊÇ¸öÌáÊ¾£¬
+// ÒòÎªÔÚÕâÁ½ÖÖÈİÆ÷ÖĞÔªËØµÄÕæÕıÎ»ÖÃÊÓÆävalue¶ø¶¨¡£
 #if 0
 #include <set>
 #include <list>
@@ -2550,28 +2636,28 @@ int main()
     auto pos = coll2.end();
     for (int i = 1; i < 9; ++i)
     {
-        //é”™è¯¯å†™æ³•ï¼š
+        //´íÎóĞ´·¨£º
         //coll2.insert(pos,i);
-        //æ­£ç¡®å†™æ³•ï¼š
+        //ÕıÈ·Ğ´·¨£º
         pos = coll2.insert(pos, i);
         ++pos;
     }
 
-    //***æ³¨***
-    //å®‰æ’åŠ¨ä½œå®Œæˆåï¼Œgeneral inserter è·å¾—åˆšè¢«å®‰æ’çš„é‚£ä¸ªå…ƒç´ çš„ä½ç½®ï¼Œç›¸å½“äº
+    //***×¢***
+    //°²²å¶¯×÷Íê³Éºó£¬general inserter »ñµÃ¸Õ±»°²²åµÄÄÇ¸öÔªËØµÄÎ»ÖÃ£¬Ïàµ±ÓÚ
     //pos = container.insert(pos,value);
     //++pos;
-    //è¿™æ ·ä½¿ä¸ºäº†ç¡®ä¿è¯¥è¿­ä»£å™¨çš„ä½ç½®å§‹ç»ˆæœ‰æ•ˆã€‚å¦‚æœ
-    //æ²¡æœ‰è¿™ä¸€èµ‹å€¼åŠ¨ä½œï¼Œåœ¨ dequeã€vector å’Œ stringä¸­ï¼Œ
-    //è¯¥ general inserteræœ¬èº«å¯èƒ½ä¼šå¤±æ•ˆã€‚å› ä¸ºæ¯ä¸€æ¬¡å®‰æ’åŠ¨ä½œéƒ½ä¼š
-    //(æˆ–è‡³å°‘å¯èƒ½ä¼š)ä½¿æŒ‡å‘å®¹å™¨çš„æ‰€æœ‰è¿­ä»£å™¨å¤±æ•ˆã€‚
+    //ÕâÑùÊ¹ÎªÁËÈ·±£¸Ãµü´úÆ÷µÄÎ»ÖÃÊ¼ÖÕÓĞĞ§¡£Èç¹û
+    //Ã»ÓĞÕâÒ»¸³Öµ¶¯×÷£¬ÔÚ deque¡¢vector ºÍ stringÖĞ£¬
+    //¸Ã general inserter±¾Éí¿ÉÄÜ»áÊ§Ğ§¡£ÒòÎªÃ¿Ò»´Î°²²å¶¯×÷¶¼»á
+    //(»òÖÁÉÙ¿ÉÄÜ»á)Ê¹Ö¸ÏòÈİÆ÷µÄËùÓĞµü´úÆ÷Ê§Ğ§¡£
 
     PRINT_ELEMENTS(coll2, "list: ");
 }
 #endif
 
 
-//ä½¿ç”¨ostream_iterator
+//Ê¹ÓÃostream_iterator
 #if 0
 #include <iostream>
 #include <vector>
@@ -2608,7 +2694,7 @@ int main()
 #endif
 
 
-//ä½¿ç”¨istream_iterator
+//Ê¹ÓÃistream_iterator
 #if 0
 #include <iostream>
 #include <iterator>
@@ -2631,15 +2717,15 @@ int main()
         ++intReader;
     }
 
-    //***æ³¨***
-    // è‹¥è¾“å…¥å­—ç¬¦aå°†å¯¼è‡´ç¨‹åºç»“æŸã€‚ç”±äºæ ¼å¼é”™è¯¯ï¼Œstreamä¸å†å¤„äº good çŠ¶æ€ï¼Œ
-    // äºæ˜¯ istreamè¿­ä»£å™¨ intReader å°±å’Œ end - of - stream è¿­ä»£å™¨ intReaderEOF ç›¸åŒï¼Œ
-    // ä½¿å¾—å¾ªç¯æ¡ä»¶ä¸º false, è¿›è€Œç»“æŸå¾ªç¯ã€‚
+    //***×¢***
+    // ÈôÊäÈë×Ö·ûa½«µ¼ÖÂ³ÌĞò½áÊø¡£ÓÉÓÚ¸ñÊ½´íÎó£¬stream²»ÔÙ´¦ÓÚ good ×´Ì¬£¬
+    // ÓÚÊÇ istreamµü´úÆ÷ intReader ¾ÍºÍ end - of - stream µü´úÆ÷ intReaderEOF ÏàÍ¬£¬
+    // Ê¹µÃÑ­»·Ìõ¼şÎª false, ½ø¶ø½áÊøÑ­»·¡£
 }
 #endif
 
 
-//åˆ©ç”¨advance()å’Œistream_iteratoræ¥è·³è¿‡æŒ‡å®šä¸ªæ•°çš„è¾“å…¥å†…å®¹
+//ÀûÓÃadvance()ºÍistream_iteratorÀ´Ìø¹ıÖ¸¶¨¸öÊıµÄÊäÈëÄÚÈİ
 #if 0
 #include <iterator>
 #include <iostream>
@@ -2658,8 +2744,8 @@ int main()
     {
         // ignore the following two strings
         advance(cinPos, 2);
-        //***æ³¨***
-        //è‹¥æŒ‡å‘EOFçš„åä¸€ä¸ªä½ç½®ï¼Œç¨‹åºä¼šå´©æºƒ
+        //***×¢***
+        //ÈôÖ¸ÏòEOFµÄºóÒ»¸öÎ»ÖÃ£¬³ÌĞò»á±ÀÀ£
 
         // read and write the third string
         if (cinPos != istream_iterator<string>())
@@ -2669,7 +2755,7 @@ int main()
     }
     cout << endl;
 
-    //***æ³¨***  è‹¥è¾“å…¥ï¼š
+    //***×¢***  ÈôÊäÈë£º
 /*
 a
 b
@@ -2680,23 +2766,23 @@ f
 g
 h
 */
-//ç¨‹åºä¼šåœ¨è¾“å…¥åˆ°dæ—¶ï¼Œç«‹å³è¾“å‡ºc
-//åˆ†æï¼š
-//while å¾ªç¯å¼€å§‹ï¼Œä»è¾“å…¥ä¸­ã€è¯»å–äº†ã€‘ a ä½†è¢«å¿½ç•¥ï¼ŒåŒç†bä¹Ÿè¢«å¿½ç•¥
-//è¯»å–åˆ°cï¼Œé€šè¿‡è¾“å‡ºè¿­ä»£å™¨è¾“å‡ºåˆ°å±å¹•ï¼Œä½†ç”±äºè¾“å…¥è¿­ä»£å™¨ä»å°†æ£€æµ‹è¾“å…¥çš„å†…å®¹
-//å› æ­¤ä¸ä¼šé©¬ä¸Šè¾“å‡ºcã€‚ç­‰åˆ°è¾“å…¥è¿­ä»£å™¨å†è¯»å–ä¸€ä¸ªstringæ ¼å¼çš„å†…å®¹åï¼Œæ‰è¾“å‡ºc
-//æˆ–è€…ç›´æ¥é”®å…¥^Zåï¼Œè¾“å‡ºc
+//³ÌĞò»áÔÚÊäÈëµ½dÊ±£¬Á¢¼´Êä³öc
+//·ÖÎö£º
+//while Ñ­»·¿ªÊ¼£¬´ÓÊäÈëÖĞ¡¾¶ÁÈ¡ÁË¡¿ a µ«±»ºöÂÔ£¬Í¬ÀíbÒ²±»ºöÂÔ
+//¶ÁÈ¡µ½c£¬Í¨¹ıÊä³öµü´úÆ÷Êä³öµ½ÆÁÄ»£¬µ«ÓÉÓÚÊäÈëµü´úÆ÷ÈÔ½«¼ì²âÊäÈëµÄÄÚÈİ
+//Òò´Ë²»»áÂíÉÏÊä³öc¡£µÈµ½ÊäÈëµü´úÆ÷ÔÙ¶ÁÈ¡Ò»¸östring¸ñÊ½µÄÄÚÈİºó£¬²ÅÊä³öc
+//»òÕßÖ±½Ó¼üÈë^Zºó£¬Êä³öc
 
-//è‹¥è¾“å…¥ï¼š
+//ÈôÊäÈë£º
 /*
 a b c d e f g h
 */
-//åˆ™è¾“å‡ºc f
+//ÔòÊä³öc f
 }
 #endif
 
 
-//ä»¥å‡½æ•°å¯¹è±¡ä¸ºæ’åºå‡†åˆ™
+//ÒÔº¯Êı¶ÔÏóÎªÅÅĞò×¼Ôò
 #if 0
 #include <iostream>
 #include <string>
@@ -2768,16 +2854,16 @@ int main()
 
     // create such a collection
     PersonSet coll;
-    //***ç†è§£***
-    //collæ„é€ å‡½æ•°ä¼šè‡ªåŠ¨äº§ç”Ÿ class PersonSortCriterionçš„ä¸€ä¸ªå®ä¾‹(instance),
-    // æ‰€æœ‰å…ƒç´ éƒ½å°†ä»¥æ­¤ä¸ºæ’åºå‡†åˆ™è¿›è¡Œæ’åº
+    //***Àí½â***
+    //coll¹¹Ôìº¯Êı»á×Ô¶¯²úÉú class PersonSortCriterionµÄÒ»¸öÊµÀı(instance),
+    // ËùÓĞÔªËØ¶¼½«ÒÔ´ËÎªÅÅĞò×¼Ôò½øĞĞÅÅĞò
 
-    //å†™æ³•äºŒï¼š
+    //Ğ´·¨¶ş£º
     /*
     PersonSortCriterion PSC;
     set<Person, PersonSortCriterion> coll(PSC);
     */
-    //è¯¦ç»†è§//å¯¹äºå…³è”å®¹å™¨ï¼Œå®ç°è¿è¡ŒæœŸæŒ‡å®šæ’åºå‡†åˆ™
+    //ÏêÏ¸¼û//¶ÔÓÚ¹ØÁªÈİÆ÷£¬ÊµÏÖÔËĞĞÆÚÖ¸¶¨ÅÅĞò×¼Ôò
 
     coll.insert(p1);
     coll.insert(p2);
@@ -2799,7 +2885,7 @@ int main()
 #endif
 
 
-//å‡½æ•°å¯¹è±¡æ‹¥æœ‰å†…éƒ¨çŠ¶æ€(Internal State)
+//º¯Êı¶ÔÏóÓµÓĞÄÚ²¿×´Ì¬(Internal State)
 #if 0
 #include <iostream>
 #include <list>
@@ -2856,7 +2942,7 @@ int main()
 #endif
 
 
-//for_each()ç‹¬é—¨ç»æŠ€ï¼šå¯ä»¥ä¼ å›å…¶å‡½æ•°å¯¹è±¡
+//for_each()¶ÀÃÅ¾ø¼¼£º¿ÉÒÔ´«»ØÆäº¯Êı¶ÔÏó
 #if 0
 #include <iostream>
 #include <vector>
@@ -2901,8 +2987,8 @@ int main()
 
     cout << "mean value: " << mv.value() << endl;
 
-    //***ç†è§£***
-    //for_each()çš„å®ç°ï¼š
+    //***Àí½â***
+    //for_each()µÄÊµÏÖ£º
     /*
     template<class InputIt, class UnaryFunction>
     UnaryFunction for_each(InputIt first, InputIt last, UnaryFunction f)
@@ -2910,14 +2996,14 @@ int main()
         for (; first != last; ++first) {
             f(*first);
         }
-        return f; // C++11 èµ·éšå¼ç§»åŠ¨
-    }               // (æ­¤ä¾‹ä¸­è°ƒç”¨MeanValueçš„è‡ªåŠ¨æä¾›çš„å¤åˆ¶æ„é€ å‡½æ•°)
+        return f; // C++11 ÆğÒşÊ½ÒÆ¶¯
+    }               // (´ËÀıÖĞµ÷ÓÃMeanValueµÄ×Ô¶¯Ìá¹©µÄ¸´ÖÆ¹¹Ôìº¯Êı)
     */
 }
 #endif
 
 
-//remove_if()ç¢°ä¸Šå‡½æ•°å¯¹è±¡ä½œä¸ºè°“è¯ (Predicate)ä¼šå‡ºç°çš„é—®é¢˜
+//remove_if()ÅöÉÏº¯Êı¶ÔÏó×÷ÎªÎ½´Ê (Predicate)»á³öÏÖµÄÎÊÌâ
 #if 0
 #include <iostream>
 #include <list>
@@ -2963,9 +3049,9 @@ int main()
 
     PRINT_ELEMENTS(coll, "3rd removed: ");
 
-    //ç»“æœä¸ºï¼š1 2 4 5 7 8 9 10
-    //ç†è§£ï¼š
-    //remove_if()çš„å®ç°
+    //½á¹ûÎª£º1 2 4 5 7 8 9 10
+    //Àí½â£º
+    //remove_if()µÄÊµÏÖ
     /*
     template <typename ForwIter,typename Predicate>
     ForwIter std::remove_if(ForwIter beg,ForwIter end,
@@ -2978,23 +3064,23 @@ int main()
         }
         else {
         ForwIter next = beg;
-        return remove_copy_if(++next,end,beg,op);//æé«˜ä»£ç çš„å¤ç”¨æ€§å’Œéµå¾ªå•ä¸€è´£ä»»åŸåˆ™
+        return remove_copy_if(++next,end,beg,op);//Ìá¸ß´úÂëµÄ¸´ÓÃĞÔºÍ×ñÑ­µ¥Ò»ÔğÈÎÔ­Ôò
         }
     }
     */
-    // ä½¿ç”¨find_if()æŸ¥æ‰¾åº”è¢«ç§»é™¤çš„ç¬¬ä¸€ä¸ªå…ƒç´ ã€‚ç„¶è€Œï¼Œ
-    // æ¥ä¸‹æ¥remove_copy_if()ä½¿ç”¨ä¼ å…¥çš„ predicate opçš„æ‹·è´å»å¤„ç†å‰©ä½™å…ƒç´ ï¼Œ
-    // è¿™æ—¶åŸå§‹çŠ¶æ€ä¸‹çš„Nthå†æ¬¡è¢«ä½¿ç”¨ï¼Œå› è€Œ
-    // ä¼šç§»é™¤å‰©ä½™å…ƒç´ ä¸­çš„ç¬¬3ä¸ªå…ƒç´ ï¼Œä¹Ÿå°±æ˜¯æ•´ä½“çš„ç¬¬6ä¸ªå…ƒç´ ã€‚
+    // Ê¹ÓÃfind_if()²éÕÒÓ¦±»ÒÆ³ıµÄµÚÒ»¸öÔªËØ¡£È»¶ø£¬
+    // ½ÓÏÂÀ´remove_copy_if()Ê¹ÓÃ´«ÈëµÄ predicate opµÄ¿½±´È¥´¦ÀíÊ£ÓàÔªËØ£¬
+    // ÕâÊ±Ô­Ê¼×´Ì¬ÏÂµÄNthÔÙ´Î±»Ê¹ÓÃ£¬Òò¶ø
+    // »áÒÆ³ıÊ£ÓàÔªËØÖĞµÄµÚ3¸öÔªËØ£¬Ò²¾ÍÊÇÕûÌåµÄµÚ6¸öÔªËØ¡£
 
-    //è§£å†³æ–¹æ³•ï¼šä½¿ç”¨remove_copy_if()
+    //½â¾ö·½·¨£ºÊ¹ÓÃremove_copy_if()
     pos = remove_copy_if(coll.begin(), coll.end(),  // range
         coll.begin(), Nth(3));                  // remove criterion
     coll.erase(pos, coll.end());
 
     PRINT_ELEMENTS(coll, "3rd removed: ");
 
-    //ä½¿ç”¨lambdaæ›´ç›´è§‚ï¼š
+    //Ê¹ÓÃlambda¸üÖ±¹Û£º
     int cnt = 0;
     pos = remove_if(coll.begin(), coll.end(), [&cnt](int)
         {
@@ -3005,7 +3091,7 @@ int main()
     PRINT_ELEMENTS(coll, "3rd removed: ");
 }
 /*
-remove_copy_ifçš„å®ç°ï¼š
+remove_copy_ifµÄÊµÏÖ£º
 template<class InputIt, class OutputIt, class UnaryPredicate>
 OutputIt remove_copy_if
 (InputIt first, InputIt last, OutputIt d_first, UnaryPredicate p)
@@ -3019,13 +3105,13 @@ OutputIt remove_copy_if
 }
 */
 #endif
-//åŒºåˆ«ï¼š
-//remove_if ç”¨äºä»å®¹å™¨ä¸­ç§»é™¤å…ƒç´ ï¼Œè€Œ remove_copy_if åˆ™æ˜¯å°†ä¸æ»¡è¶³æ¡ä»¶çš„å…ƒç´ 
-//å¤åˆ¶åˆ°å¦ä¸€ä¸ªå®¹å™¨ä¸­ã€‚éœ€è¦æ³¨æ„çš„æ˜¯ï¼Œremove_if ä¸ä¼šçœŸæ­£åˆ é™¤å…ƒç´ ï¼Œ
-//è€Œæ˜¯å°†å®ƒä»¬ç§»åˆ°å®¹å™¨æœ«å°¾ï¼Œéœ€è¦ç»“åˆ erase æ“ä½œæ¥çœŸæ­£åˆ é™¤ã€‚
+//Çø±ğ£º
+//remove_if ÓÃÓÚ´ÓÈİÆ÷ÖĞÒÆ³ıÔªËØ£¬¶ø remove_copy_if ÔòÊÇ½«²»Âú×ãÌõ¼şµÄÔªËØ
+//¸´ÖÆµ½ÁíÒ»¸öÈİÆ÷ÖĞ¡£ĞèÒª×¢ÒâµÄÊÇ£¬remove_if ²»»áÕæÕıÉ¾³ıÔªËØ£¬
+//¶øÊÇ½«ËüÃÇÒÆµ½ÈİÆ÷Ä©Î²£¬ĞèÒª½áºÏ erase ²Ù×÷À´ÕæÕıÉ¾³ı¡£
 
 
-//bind()åµŒå¥—åˆæˆæ›´å¤æ‚çš„å‡½æ•°å¯¹è±¡
+//bind()Ç¶Ì×ºÏ³É¸ü¸´ÔÓµÄº¯Êı¶ÔÏó
 #if 0
 #include <functional>
 #include <iostream>
@@ -3057,7 +3143,7 @@ int main()
     std::cout << "invdiv: " << inversDivide(49, 7) << std::endl;
 }
 #endif
-//æ”¹ç”¨Lambdaæ¥å®ç°æ›´å¤æ‚çš„è®¡ç®—
+//¸ÄÓÃLambdaÀ´ÊµÏÖ¸ü¸´ÔÓµÄ¼ÆËã
 #if 0
 #include <iostream>
 
@@ -3086,11 +3172,11 @@ int main()
 #endif
 
 
-//bind()è°ƒç”¨å…¨å±€å‡½æ•°
-//ä½¿ç”¨search()å‡½æ•°æ£€éªŒä¸€ä¸ªå­—ç¬¦ä¸²æ˜¯å¦æ˜¯å¦ä¸€ä¸ªå­—ç¬¦ä¸²çš„å­ä¸²ï¼Œ
-//å³æŸ¥æ‰¾ç¬¬ä¸€ä¸ªå­åŒºé—´
-//***æ³¨***
-//search() å¼ºè°ƒçš„æ˜¯æŸ¥æ‰¾ç¬¬ä¸€ä¸ªåŒ¹é…ï¼Œè€Œ find_end() å¼ºè°ƒçš„æ˜¯æŸ¥æ‰¾æœ€åä¸€ä¸ªåŒ¹é…
+//bind()µ÷ÓÃÈ«¾Öº¯Êı
+//Ê¹ÓÃsearch()º¯Êı¼ìÑéÒ»¸ö×Ö·û´®ÊÇ·ñÊÇÁíÒ»¸ö×Ö·û´®µÄ×Ó´®£¬
+//¼´²éÕÒµÚÒ»¸ö×ÓÇø¼ä
+//***×¢***
+//search() Ç¿µ÷µÄÊÇ²éÕÒµÚÒ»¸öÆ¥Åä£¬¶ø find_end() Ç¿µ÷µÄÊÇ²éÕÒ×îºóÒ»¸öÆ¥Åä
 #if 0
 #include <iostream>
 #include <algorithm>
@@ -3127,7 +3213,7 @@ int main()
     }
 }
 #endif
-//ç”¨lambdaæ¥å®ç°è°ƒç”¨å…¨å±€å‡½æ•°
+//ÓÃlambdaÀ´ÊµÏÖµ÷ÓÃÈ«¾Öº¯Êı
 #if 0
 #include <iostream>
 #include <algorithm>
@@ -3158,7 +3244,7 @@ int main()
             << endl;
     }
 
-    //find_first_of   â€ä¼¼ä¹â€œä¹Ÿå¯ä»¥ï¼Ÿ
+    //find_first_of   ¡±ËÆºõ¡°Ò²¿ÉÒÔ£¿
     pos = find_first_of(s.begin(), s.end(),           // string to search in
         sub.begin(), sub.end(),       // substring to search
         [](char c1, char c2) {      // compar. criterion
@@ -3174,7 +3260,7 @@ int main()
 #endif
 
 
-//search()å’Œfind_first_of()çš„åŒºåˆ«
+//search()ºÍfind_first_of()µÄÇø±ğ
 #if 0
 #include <iostream>
 #include <string>
@@ -3183,8 +3269,8 @@ int main() {
     std::string str = "Hello world";
     std::string sub_str = "world";
 
-    // ä½¿ç”¨ find_first_of() 
-    //å¯»æ‰¾ç­‰äº str ä¸­å­—ç¬¦ä¹‹ä¸€çš„é¦–ä¸ªå­—ç¬¦ã€‚
+    // Ê¹ÓÃ find_first_of() 
+    //Ñ°ÕÒµÈÓÚ str ÖĞ×Ö·ûÖ®Ò»µÄÊ×¸ö×Ö·û¡£
     size_t pos = str.find_first_of(sub_str);
     if (pos != std::string::npos) {
         std::cout << "Substring found at position: " << pos << std::endl;
@@ -3193,18 +3279,18 @@ int main() {
         std::cout << "Substring not found" << std::endl;
     }
 
-    //***æ³¨***
-    //æ²¡æœ‰find_last_of()å‡½æ•°ï¼Œä»…stringæœ‰è¯¥æ–¹æ³•
-    //æƒ³è¦å®ç°å¯»æ‰¾æœ€åä¸€ä¸ªç­‰äº str ä¸­å­—ç¬¦ä¹‹ä¸€çš„é¦–ä¸ªå­—ç¬¦çš„å…ƒç´ ä½ç½®
-    //å¯¹äºéstringå¯¹è±¡ï¼Œå¯ä»¥ç”¨STLå‡½æ•°
+    //***×¢***
+    //Ã»ÓĞfind_last_of()º¯Êı£¬½östringÓĞ¸Ã·½·¨
+    //ÏëÒªÊµÏÖÑ°ÕÒ×îºóÒ»¸öµÈÓÚ str ÖĞ×Ö·ûÖ®Ò»µÄÊ×¸ö×Ö·ûµÄÔªËØÎ»ÖÃ
+    //¶ÔÓÚ·Çstring¶ÔÏó£¬¿ÉÒÔÓÃSTLº¯Êı
     /*
     find_first_of(s.rbegin(), s.rend(),           // string to search in
         sub.begin(), sub.end(),       // substring to search
     */
-    //ï¼ˆåå‘è¿­ä»£å™¨ï¼‰
+    //£¨·´Ïòµü´úÆ÷£©
 
-    // ä½¿ç”¨ find()æ–¹æ³•ç›¸å½“äºä½¿ç”¨search() 
-    //  åœ¨å­—ç¬¦ä¸²ä¸­æŸ¥æ‰¾å®Œå…¨åŒ¹é…æŒ‡å®šå­ä¸²çš„ç¬¬ä¸€ä¸ªä½ç½®
+    // Ê¹ÓÃ find()·½·¨Ïàµ±ÓÚÊ¹ÓÃsearch() 
+    //  ÔÚ×Ö·û´®ÖĞ²éÕÒÍêÈ«Æ¥ÅäÖ¸¶¨×Ó´®µÄµÚÒ»¸öÎ»ÖÃ
     pos = str.find(sub_str);
     if (pos != std::string::npos) {
         std::cout << "Substring found at position: " << pos << std::endl;
@@ -3218,8 +3304,8 @@ int main() {
 #endif
 
 
-//bind()è°ƒç”¨æˆå‘˜å‡½æ•°
-//ä¸ç›´è§‚ï¼Œä¸ªäººæ›´å–œæ¬¢ç”¨lambda
+//bind()µ÷ÓÃ³ÉÔ±º¯Êı
+//²»Ö±¹Û£¬¸öÈË¸üÏ²»¶ÓÃlambda
 #if 0
 #include <functional>
 #include <algorithm>
@@ -3263,7 +3349,7 @@ int main()
     bind(&Person::print2, _1, "This is: ")(Person("nico"));
 }
 #endif
-//ç”¨lambdaå®ç°è°ƒç”¨æˆå‘˜å‡½æ•°
+//ÓÃlambdaÊµÏÖµ÷ÓÃ³ÉÔ±º¯Êı
 #if 0
 #include <algorithm>
 #include <vector>
@@ -3324,10 +3410,10 @@ int main()
     //auto pos=find_if(link_list.begin(),link_list.end(),check);
     auto pos=find_if(link_list.begin(),link_list.end(),
         function<bool (int)>(check));
-    //å¯ä»¥ä¸ä½¿ç”¨function<>
-    //å½“éœ€è¦å­˜å‚¨ä¸åŒç±»å‹çš„å¯è°ƒç”¨å¯¹è±¡ã€
-    // å°†å®ƒä»¬ä½œä¸ºå‚æ•°ä¼ é€’ç»™å‡½æ•°æˆ–é€šè¿‡ä¼ é€’å¯è°ƒç”¨å¯¹è±¡ä¸º
-    // ç”¨æˆ·æä¾›è‡ªå®šä¹‰è¡Œä¸ºçš„çµæ´»æ€§æ—¶ï¼Œ std::function çš„ä½¿ç”¨å˜å¾—æ›´åŠ ç›¸å…³
+    //¿ÉÒÔ²»Ê¹ÓÃfunction<>
+    //µ±ĞèÒª´æ´¢²»Í¬ÀàĞÍµÄ¿Éµ÷ÓÃ¶ÔÏó¡¢
+    // ½«ËüÃÇ×÷Îª²ÎÊı´«µİ¸øº¯Êı»òÍ¨¹ı´«µİ¿Éµ÷ÓÃ¶ÔÏóÎª
+    // ÓÃ»§Ìá¹©×Ô¶¨ÒåĞĞÎªµÄÁé»îĞÔÊ±£¬ std::function µÄÊ¹ÓÃ±äµÃ¸ü¼ÓÏà¹Ø
 
     cout << *pos << endl;
 
@@ -3344,8 +3430,8 @@ bool check(int elem)
 
 
 //search_n()
-//åœ¨èŒƒå›´ [first, last) ä¸­æœç´¢ count ä¸ªç­‰åŒå…ƒç´ çš„åºåˆ—ï¼Œ
-//æ¯ä¸ªéƒ½ç­‰äºç»™å®šçš„å€¼ value æˆ–è€… æ»¡è¶³äºŒå…ƒè°“è¯
+//ÔÚ·¶Î§ [first, last) ÖĞËÑË÷ count ¸öµÈÍ¬ÔªËØµÄĞòÁĞ£¬
+//Ã¿¸ö¶¼µÈÓÚ¸ø¶¨µÄÖµ value »òÕß Âú×ã¶şÔªÎ½´Ê
 #if 0
 #include <iostream>
 #include <deque>
@@ -3395,13 +3481,13 @@ int main()
     pos = search_n(coll.begin(), coll.end(),    // range
         4,                           // count
         0,                           // value
-        [](int elem, int value) // criterion   ***æ³¨***
+        [](int elem, int value) // criterion   ***×¢***
         {     
             return elem % 2 == 1;
         });
-    //***æ³¨***
-    // å¿…é¡»å†™æˆäºŒå…ƒè°“è¯
-    //ä¸èƒ½å†™æˆ
+    //***×¢***
+    // ±ØĞëĞ´³É¶şÔªÎ½´Ê
+    //²»ÄÜĞ´³É
     /*
     pos = search_n(coll.begin(), coll.end(),    // range
         4,                           // count
@@ -3412,13 +3498,13 @@ int main()
         });
         */
     
-    //å› ä¸ºæœ‰å¦‚ä¸‹å†™æ³•ï¼š
-    //æ‰¾å‡ºå››ä¸ªå€¼å¤§äº3çš„è¿ç»­å…ƒç´ 
+    //ÒòÎªÓĞÈçÏÂĞ´·¨£º
+    //ÕÒ³öËÄ¸öÖµ´óÓÚ3µÄÁ¬ĞøÔªËØ
 #if 0
     pos = search_n(coll.begin(), coll.end(), // range
         4, // count
         3, // value
-        greater<int>()); // criterion   äºŒå…ƒè°“è¯
+        greater<int>()); // criterion   ¶şÔªÎ½´Ê
 #endif
 
     // print result
@@ -3439,7 +3525,7 @@ int main()
 #endif
 
 
-//search()ä»¥æ›´å¤æ‚çš„å‡†åˆ™æŸ¥æ‰¾æŸä¸ªå­åºåˆ—
+//search()ÒÔ¸ü¸´ÔÓµÄ×¼Ôò²éÕÒÄ³¸ö×ÓĞòÁĞ
 #if 0
 #include <iostream>
 #include <vector>
@@ -3510,7 +3596,7 @@ int main()
 #endif
 
 
-//æŸ¥æ‰¾æœ€åä¸€ä¸ªå­åŒºé—´ï¼ˆsearch()æŸ¥çš„æ˜¯ç¬¬ä¸€ä¸ªå­åŒºé—´ï¼‰ï¼šfind_end() 
+//²éÕÒ×îºóÒ»¸ö×ÓÇø¼ä£¨search()²éµÄÊÇµÚÒ»¸ö×ÓÇø¼ä£©£ºfind_end() 
 #if 0
 #include <iostream>
 #include <deque>
@@ -3564,7 +3650,7 @@ int main()
             << distance(coll.begin(), pos) + 1
             << endl;
 
-        //æ‰¾å€’æ•°ç¬¬äºŒä¸ªç¬¦åˆçš„å­å­—ç¬¦ä¸²ä½ç½®
+        //ÕÒµ¹ÊıµÚ¶ş¸ö·ûºÏµÄ×Ó×Ö·û´®Î»ÖÃ
         // search next occurrence of subcoll
         end = pos;
         pos = find_end(coll.begin(), end,               // range
@@ -3574,7 +3660,7 @@ int main()
 #endif
 
 
-//é¡ºåºæ— æ‰€è°“æƒ…å†µä¸‹ï¼Œä¸¤åŒºé—´çš„å…ƒç´ æ˜¯å¦ç›¸ç­‰ï¼šis_permutation() 
+//Ë³ĞòÎŞËùÎ½Çé¿öÏÂ£¬Á½Çø¼äµÄÔªËØÊÇ·ñÏàµÈ£ºis_permutation() 
 #if 0
 #include <iostream>
 #include <vector>
@@ -3644,7 +3730,7 @@ int main()
 #endif
 
 
-//æ£€éªŒç±»çš„ç®—æ³•ï¼šall_of()ã€any_of()ã€none_of()
+//¼ìÑéÀàµÄËã·¨£ºall_of()¡¢any_of()¡¢none_of()
 #if 0
 #include <iostream>
 #include <vector>
@@ -3696,8 +3782,8 @@ int main()
 #endif
 
 
-//ä½¿ç”¨copy()ä½œä¸ºæ ‡å‡†è¾“å…¥è®¾å¤‡å’Œæ ‡å‡†è¾“å‡ºè®¾å¤‡ä¹‹é—´çš„æ•°æ®ç­›æ£€ç¨‹åºã€‚
-//ç¨‹åºè¯»å– string, å¹¶ä»¥ä¸€è¡Œä¸€ä¸ªçš„æ–¹å¼æ‰“å°å®ƒä»¬
+//Ê¹ÓÃcopy()×÷Îª±ê×¼ÊäÈëÉè±¸ºÍ±ê×¼Êä³öÉè±¸Ö®¼äµÄÊı¾İÉ¸¼ì³ÌĞò¡£
+//³ÌĞò¶ÁÈ¡ string, ²¢ÒÔÒ»ĞĞÒ»¸öµÄ·½Ê½´òÓ¡ËüÃÇ
 #if 0
 #include <iostream>
 #include <algorithm>
@@ -3714,8 +3800,8 @@ int main()
 #endif
 
 
-//unique_ptrçš„å¤åˆ¶æ„é€ å‡½æ•°ã€èµ‹å€¼è¿ç®—ç¬¦é‡è½½å‡½æ•°çš„å®å‚éœ€è¦ä½¿ç”¨move()
-// move() æ¥ä½“ç°ç§»åŠ¨è¯­ä¹‰çš„ç»†èŠ‚
+//unique_ptrµÄ¸´ÖÆ¹¹Ôìº¯Êı¡¢¸³ÖµÔËËã·ûÖØÔØº¯ÊıµÄÊµ²ÎĞèÒªÊ¹ÓÃmove()
+// move() À´ÌåÏÖÒÆ¶¯ÓïÒåµÄÏ¸½Ú
 #if 0
 #include <iostream>
 #include <vector>
@@ -3756,30 +3842,30 @@ int main()
     // print elements of coll2
     // - copy elements to cout using an ostream iterator
     // - use move() because these elements in coll2 are not used again
-    //ä½¿ç”¨move()ï¼Œå› ä¸ºcoll2ä¸­çš„è¿™äº›å…ƒç´ ä¸ä¼šå†æ¬¡ä½¿ç”¨
+    //Ê¹ÓÃmove()£¬ÒòÎªcoll2ÖĞµÄÕâĞ©ÔªËØ²»»áÔÙ´ÎÊ¹ÓÃ
     move(coll2.cbegin(), coll2.cend(),         // source range
         ostream_iterator<string>(cout, " "));  // destination range
     cout << endl;
-    //***æ³¨***
-    //coll2çš„å…ƒç´ åœ¨å®ƒä»¬åˆæ¬¡è¢«è¾“å‡ºåï¼ŒçŠ¶æ€å°±å˜å¾—ã€ä¸ç¡®å®šã€‘ï¼Œ
-    // å› ä¸ºè¿™é‡Œç”¨çš„æ˜¯move()ã€‚
-    //ç„¶è€Œå¹¶ä¸æ„å‘³ç€coll2å®¹å™¨ä¸èƒ½å†å‡ºç°åœ¨ä»¥åçš„ä»£ç ä¸­ï¼Œ
-    //coll2çš„å¤§å°ä»ç„¶æ˜¯5, æ‰€ä»¥æˆ‘ä»¬å¯ä»¥å†æ¬¡è°ƒç”¨move()è¦†ç›–(overwrite)è¿™äº›å…ƒç´ ã€‚
+    //***×¢***
+    //coll2µÄÔªËØÔÚËüÃÇ³õ´Î±»Êä³öºó£¬×´Ì¬¾Í±äµÃ¡¾²»È·¶¨¡¿£¬
+    // ÒòÎªÕâÀïÓÃµÄÊÇmove()¡£
+    //È»¶ø²¢²»ÒâÎ¶×Åcoll2ÈİÆ÷²»ÄÜÔÙ³öÏÖÔÚÒÔºóµÄ´úÂëÖĞ£¬
+    //coll2µÄ´óĞ¡ÈÔÈ»ÊÇ5, ËùÒÔÎÒÃÇ¿ÉÒÔÔÙ´Îµ÷ÓÃmove()¸²¸Ç(overwrite)ÕâĞ©ÔªËØ¡£
 
-    //éªŒè¯è¾“å‡ºï¼š
+    //ÑéÖ¤Êä³ö£º
     copy(coll2.cbegin(), coll2.cend(),        
         ostream_iterator<string>(cout, " "));
     cout << endl;
-    //è¾“å‡ºå†…å®¹æ­£å¸¸ï¼Œç»“æœè¡¨æ˜ï¼š
-    //move() å¹¶ä¸æ€»æ˜¯ä¼šç§»åŠ¨å…ƒç´ ã€‚
-    // å®ƒåªæ˜¯å‘Šè¯‰ç¼–è¯‘å™¨ï¼Œã€å¦‚æœå¯èƒ½çš„è¯ï¼Œå¯ä»¥ä½¿ç”¨ç§»åŠ¨è¯­ä¹‰æ¥å¤„ç†ã€‚ã€‘
-    // ä½†åœ¨è¿™ç§æƒ…å†µä¸‹ï¼Œostream_iterator å¯¹å…ƒç´ è¿›è¡Œè¾“å‡ºï¼Œ
-    // å¹¶æ²¡æœ‰çœŸæ­£çš„ç§»åŠ¨å…ƒç´ ã€‚
-    //å› æ­¤ï¼Œè™½ç„¶ä½¿ç”¨äº† move()ï¼Œä½†å…ƒç´ ä»ç„¶ä¿ç•™åœ¨ coll2 ä¸­ï¼Œ
-    // æ‰€ä»¥ç¬¬äºŒä¸ª copy() è°ƒç”¨è¾“å‡ºäº† coll2 ä¸­çš„å…ƒç´ ã€‚
+    //Êä³öÄÚÈİÕı³££¬½á¹û±íÃ÷£º
+    //move() ²¢²»×ÜÊÇ»áÒÆ¶¯ÔªËØ¡£
+    // ËüÖ»ÊÇ¸æËß±àÒëÆ÷£¬¡¾Èç¹û¿ÉÄÜµÄ»°£¬¿ÉÒÔÊ¹ÓÃÒÆ¶¯ÓïÒåÀ´´¦Àí¡£¡¿
+    // µ«ÔÚÕâÖÖÇé¿öÏÂ£¬ostream_iterator ¶ÔÔªËØ½øĞĞÊä³ö£¬
+    // ²¢Ã»ÓĞÕæÕıµÄÒÆ¶¯ÔªËØ¡£
+    //Òò´Ë£¬ËäÈ»Ê¹ÓÃÁË move()£¬µ«ÔªËØÈÔÈ»±£ÁôÔÚ coll2 ÖĞ£¬
+    // ËùÒÔµÚ¶ş¸ö copy() µ÷ÓÃÊä³öÁË coll2 ÖĞµÄÔªËØ¡£
 
     // copy elements of coll1 into coll2 in reverse order
-    // - now overwriting (coll2.size() still fits)  å…ˆè¦ä¿è¯ç§»å…¥çš„å®¹å™¨çš„å®¹é‡è¶³å¤Ÿ
+    // - now overwriting (coll2.size() still fits)  ÏÈÒª±£Ö¤ÒÆÈëµÄÈİÆ÷µÄÈİÁ¿×ã¹»
     // - use move() because the elements in coll1 are not used again
     move(coll1.crbegin(), coll1.crend(),       // source range
         coll2.begin());                       // destination range
@@ -3793,8 +3879,8 @@ int main()
 #endif
 
 
-//äº’æ¢æŸä¸¤ä¸ªåŒºé—´çš„å…ƒç´  swap_ranges
-//(å¦‚æœè¦å°†ç›¸åŒç±»å‹çš„ä¸¤ä¸ªå®¹å™¨å†…çš„æ‰€æœ‰å…ƒç´ éƒ½äº’æ¢ï¼Œåº”ä½¿ç”¨swap()æˆå‘˜å‡½æ•°)
+//»¥»»Ä³Á½¸öÇø¼äµÄÔªËØ swap_ranges
+//(Èç¹ûÒª½«ÏàÍ¬ÀàĞÍµÄÁ½¸öÈİÆ÷ÄÚµÄËùÓĞÔªËØ¶¼»¥»»£¬Ó¦Ê¹ÓÃswap()³ÉÔ±º¯Êı)
 #if 0
 #include <iostream>
 #include <vector>
@@ -3839,11 +3925,11 @@ int main()
     pos = swap_ranges(coll1.begin(), coll1.end(),  // first range
         coll2.begin());              // second range
 
-    //***æ³¨***
-    //å°†coll1çš„å…ƒç´ å’Œcoll2çš„å¯¹åº”å…ƒç´ äº¤æ¢ã€‚ 
-    // å…ƒç´ ä¸ªæ•°ä¸ºdistance(coll1.begin(), coll1.end())
-    // coll2 ä¹‹å†…çš„å…¶ä½™å…ƒç´ ä¸å˜åŠ¨ã€‚ 
-    // swap_ranges()ç®—æ³•è¿”å›ç¬¬ä¸€ä¸ªæœªè¢«æ”¹åŠ¨çš„å…ƒç´ ã€‚
+    //***×¢***
+    //½«coll1µÄÔªËØºÍcoll2µÄ¶ÔÓ¦ÔªËØ½»»»¡£ 
+    // ÔªËØ¸öÊıÎªdistance(coll1.begin(), coll1.end())
+    // coll2 Ö®ÄÚµÄÆäÓàÔªËØ²»±ä¶¯¡£ 
+    // swap_ranges()Ëã·¨·µ»ØµÚÒ»¸öÎ´±»¸Ä¶¯µÄÔªËØ¡£
 
     PRINT_ELEMENTS(coll1, "\ncoll1: ");
     PRINT_ELEMENTS(coll2, "coll2: ");
@@ -3861,18 +3947,18 @@ int main()
 #endif
 
 
-//fill()å’Œgenerate()çš„åŒºåˆ«
+//fill()ºÍgenerate()µÄÇø±ğ
 //std::fill(myVector.begin(), myVector.end(), 5);
 
-//ä½¿ç”¨ lambda å‡½æ•°ä½œä¸ºç”Ÿæˆå™¨å‡½æ•°ï¼Œä¾æ¬¡å¡«å……å‘é‡çš„æ¯ä¸ªå…ƒç´ 
+//Ê¹ÓÃ lambda º¯Êı×÷ÎªÉú³ÉÆ÷º¯Êı£¬ÒÀ´ÎÌî³äÏòÁ¿µÄÃ¿¸öÔªËØ
 //int value = 0;
 //std::generate(myVector.begin(), myVector.end(), [&value]() { return value++; });
 
-//fill() ç”¨äºå°†èŒƒå›´å†…çš„å…ƒç´ è®¾ç½®ä¸ºç»™å®šå€¼ï¼Œ
-//è€Œ generate() åˆ™ç”¨äºä½¿ç”¨ç”Ÿæˆå™¨å‡½æ•°æ¥å¡«å……èŒƒå›´å†…çš„å…ƒç´ 
+//fill() ÓÃÓÚ½«·¶Î§ÄÚµÄÔªËØÉèÖÃÎª¸ø¶¨Öµ£¬
+//¶ø generate() ÔòÓÃÓÚÊ¹ÓÃÉú³ÉÆ÷º¯ÊıÀ´Ìî³ä·¶Î§ÄÚµÄÔªËØ
 
 
-//æ—‹è½¬å…ƒç´ rotate()
+//Ğı×ªÔªËØrotate()
 #if 0
 #include <iostream>
 #include <vector>
@@ -3930,7 +4016,7 @@ int main()
 #endif
 
 
-//å¯¹å…ƒç´ é‡æ–°æ´—ç‰Œ random_shuffle()
+//¶ÔÔªËØÖØĞÂÏ´ÅÆ random_shuffle()
 #if 0
 #include <iostream>
 #include <vector>
@@ -3985,7 +4071,7 @@ int main()
 #endif
 
 
-//å°†å…ƒç´ å‘å‰æ¬ partition()ã€stable_partition()
+//½«ÔªËØÏòÇ°°á partition()¡¢stable_partition()
 #if 0
 #include <iostream>
 #include <vector>
@@ -4036,11 +4122,11 @@ int main()
             return elem % 2 == 0;
         });
 
-    //partition()å’Œstable_partition()éƒ½å°†å…ƒç´ åˆ†ä¸ºä¸¤ç»„
-    //è¿”å›å€¼æŒ‡å‘ç¬¬äºŒç»„å…ƒç´ é¦–å…ƒç´ çš„è¿­ä»£å™¨ã€‚
+    //partition()ºÍstable_partition()¶¼½«ÔªËØ·ÖÎªÁ½×é
+    //·µ»ØÖµÖ¸ÏòµÚ¶ş×éÔªËØÊ×ÔªËØµÄµü´úÆ÷¡£
 
-    //stable_partition()ä¿æŒäº†å¥‡æ•°å…ƒç´ å’Œå¶æ•°å…ƒç´ çš„ç›¸å¯¹æ¬¡åºï¼Œ
-    // è¿™ä¸€ç‚¹å’Œpartition()ä¸åŒã€‚
+    //stable_partition()±£³ÖÁËÆæÊıÔªËØºÍÅ¼ÊıÔªËØµÄÏà¶Ô´ÎĞò£¬
+    // ÕâÒ»µãºÍpartition()²»Í¬¡£
 
     // print collections and first odd element
     PRINT_ELEMENTS(coll1, "coll1: ");
@@ -4051,7 +4137,7 @@ int main()
 #endif
 
 
-//æ ¹æ®è°“è¯å‡½æ•°ï¼Œåˆ’åˆ†ä¸¤ä¸ªå­åŒºé—´ partition_copy()
+//¸ù¾İÎ½´Êº¯Êı£¬»®·ÖÁ½¸ö×ÓÇø¼ä partition_copy()
 #if 0
 #include <iostream>
 #include <vector>
@@ -4103,7 +4189,7 @@ int main()
 #endif
 
 
-//sort()å’Œstable_sort()çš„åŒºåˆ«
+//sort()ºÍstable_sort()µÄÇø±ğ
 #if 0
 #include <iostream>
 #include <vector>
@@ -4157,7 +4243,7 @@ int main()
     stable_sort(coll2.begin(), coll2.end(),    // range
         lessLength);                   // criterion
 
-    //stable_sort()åœ¨æ’åºåä¿æŒäº†å…ƒç´ çš„ç›¸å¯¹ä½ç½®
+    //stable_sort()ÔÚÅÅĞòºó±£³ÖÁËÔªËØµÄÏà¶ÔÎ»ÖÃ
 
     PRINT_ELEMENTS(coll1, "\nwith sort():\n ");
     PRINT_ELEMENTS(coll2, "\nwith stable_sort():\n ");
@@ -4165,7 +4251,7 @@ int main()
 #endif
 
 
-//éƒ¨åˆ†æ’åºpartial_sort()ã€partial_sort_copy()
+//²¿·ÖÅÅĞòpartial_sort()¡¢partial_sort_copy()
 #if 0
 #include <iostream>
 #include <vector>
@@ -4212,13 +4298,13 @@ int main()
         coll.end());       // end of full range
     PRINT_ELEMENTS(coll);
 
-    //***æ³¨***
+    //***×¢***
     //partial_sort(coll.begin(), coll.begin() + 5, coll.end())
-    //ä¸ç­‰äº
+    //²»µÈÓÚ
     //sort(coll.begin(), coll.begin() + 5)
-    //è€Œåº”ç†è§£ä¸ºï¼š
-    //å…¨éƒ¨æ’å¥½åºçš„åºåˆ—å–å…¶å‰5ä¸ªå…ƒç´ ï¼Œå…¶ä½™å…ƒç´ æ’åºæŒ‰ä¸€å®šæ–¹å¼æ’åˆ—ï¼Œ
-    // ä¸ä¸€å®šæœ‰åº
+    //¶øÓ¦Àí½âÎª£º
+    //È«²¿ÅÅºÃĞòµÄĞòÁĞÈ¡ÆäÇ°5¸öÔªËØ£¬ÆäÓàÔªËØÅÅĞò°´Ò»¶¨·½Ê½ÅÅÁĞ£¬
+    // ²»Ò»¶¨ÓĞĞò
 
     // sort inversely until the first five elements are sorted
     partial_sort(coll.begin(),      // beginning of the range
@@ -4236,8 +4322,8 @@ int main()
 #endif
 
 
-//åªéœ€è¦nä¸ªæœ€å¤§æˆ–æœ€å°å…ƒç´ ï¼Œä½†ä¸è¦æ±‚å®ƒä»¬å¿…é¡»å¤„äºæ’åºçŠ¶æ€(sorted), 
-//ä½¿ç”¨nth_element()
+//Ö»ĞèÒªn¸ö×î´ó»ò×îĞ¡ÔªËØ£¬µ«²»ÒªÇóËüÃÇ±ØĞë´¦ÓÚÅÅĞò×´Ì¬(sorted), 
+//Ê¹ÓÃnth_element()
 #if 0
 #include <iostream>
 #include <deque>
@@ -4280,15 +4366,15 @@ int main()
         coll.begin() + 3,   // element that should be sorted correctly
         coll.end());      // end of range
 
-    //***ç†è§£***
-    //ç¬¬äºŒä¸ªå®å‚nth æ‰€æŒ‡å‘çš„å…ƒç´ è¢«æ›´æ”¹ä¸ºå‡å¦‚ [first, last) å·²æ’åº
-    //åˆ™è¯¥ä½ç½®ä¼šå‡ºç°çš„å…ƒç´ ã€‚
-    //è¿™ä¸ªæ–°çš„ nth å…ƒç´ å‰çš„æ‰€æœ‰å…ƒç´ å°äºæˆ–ç­‰äºæ–°çš„ nth å…ƒç´ åçš„æ‰€æœ‰å…ƒç´ ã€‚
+    //***Àí½â***
+    //µÚ¶ş¸öÊµ²Înth ËùÖ¸ÏòµÄÔªËØ±»¸ü¸ÄÎª¼ÙÈç [first, last) ÒÑÅÅĞò
+    //Ôò¸ÃÎ»ÖÃ»á³öÏÖµÄÔªËØ¡£
+    //Õâ¸öĞÂµÄ nth ÔªËØÇ°µÄËùÓĞÔªËØĞ¡ÓÚ»òµÈÓÚĞÂµÄ nth ÔªËØºóµÄËùÓĞÔªËØ¡£
 
-    // ä½¿ç¬¬4ä¸ªä½ç½®ä¸Šçš„å…ƒç´ å°±ä½ï¼Œä¹Ÿå°±æ˜¯è¯´æ‰€æœ‰åœ¨ä½ç½®4ä¹‹å‰çš„å…ƒç´ 
-    // éƒ½å°äºç­‰äºå®ƒï¼Œæ‰€æœ‰åœ¨ä½ç½®nä¹‹åçš„å…ƒç´ éƒ½å¤§äºç­‰äºå®ƒã€‚
-    // è¿™æ ·ï¼Œå°±å¾—åˆ°äº†â€œæ ¹æ®nä½ç½®ä¸Šçš„å…ƒç´ â€åˆ†å‰²å¼€æ¥çš„ä¸¤ä¸ªå­åºåˆ—ï¼Œ
-    // ç¬¬ä¸€å­åºåˆ—çš„å…ƒç´ ç»Ÿç»Ÿå°äºç¬¬äºŒå­åºåˆ—çš„å…ƒç´ ã€‚
+    // Ê¹µÚ4¸öÎ»ÖÃÉÏµÄÔªËØ¾ÍÎ»£¬Ò²¾ÍÊÇËµËùÓĞÔÚÎ»ÖÃ4Ö®Ç°µÄÔªËØ
+    // ¶¼Ğ¡ÓÚµÈÓÚËü£¬ËùÓĞÔÚÎ»ÖÃnÖ®ºóµÄÔªËØ¶¼´óÓÚµÈÓÚËü¡£
+    // ÕâÑù£¬¾ÍµÃµ½ÁË¡°¸ù¾İnÎ»ÖÃÉÏµÄÔªËØ¡±·Ö¸î¿ªÀ´µÄÁ½¸ö×ÓĞòÁĞ£¬
+    // µÚÒ»×ÓĞòÁĞµÄÔªËØÍ³Í³Ğ¡ÓÚµÚ¶ş×ÓĞòÁĞµÄÔªËØ¡£
 
     // print them
     cout << "the four lowest elements are:  ";
@@ -4322,7 +4408,7 @@ int main()
 #endif
 
 
-//ä½¿ç”¨heapç›¸å…³ç®—æ³•
+//Ê¹ÓÃheapÏà¹ØËã·¨
 #if 0
 #include <iostream>
 #include <vector>
@@ -4389,13 +4475,13 @@ int main()
 #endif
 
 
-//å·²æ’åºåŒºé—´çš„æœç´¢ç®—æ³•
-//æ£€æŸ¥æŸä¸ªå…ƒç´ æ˜¯å¦å­˜åœ¨ï¼šbinary_search()
-//***æ³¨***
-//binary_search()çš„å®ç°ä¸­è¦è°ƒç”¨std::lower_bound()
-//è€Œstd::lower_bound()çš„å®ç°æ˜¯ä½¿ç”¨äºŒåˆ†æœç´¢ç®—æ³•æ¥æŸ¥æ‰¾ç»™å®šå€¼
-//åœ¨å·²æ’åºåºåˆ—ä¸­çš„æ’å…¥ä½ç½®ã€‚
-//å› æ­¤å¯ä»¥å°†binary_search()ä½œä¸ºæ™®é€šäºŒåˆ†æœç´¢ç®—æ³•çš„ä»£æ›¿
+//ÒÑÅÅĞòÇø¼äµÄËÑË÷Ëã·¨
+//¼ì²éÄ³¸öÔªËØÊÇ·ñ´æÔÚ£ºbinary_search()
+//***×¢***
+//binary_search()µÄÊµÏÖÖĞÒªµ÷ÓÃstd::lower_bound()
+//¶østd::lower_bound()µÄÊµÏÖÊÇÊ¹ÓÃ¶ş·ÖËÑË÷Ëã·¨À´²éÕÒ¸ø¶¨Öµ
+//ÔÚÒÑÅÅĞòĞòÁĞÖĞµÄ²åÈëÎ»ÖÃ¡£
+//Òò´Ë¿ÉÒÔ½«binary_search()×÷ÎªÆÕÍ¨¶ş·ÖËÑË÷Ëã·¨µÄ´úÌæ
 #if 0
 #include "algostuff.hpp"
 using namespace std;
@@ -4407,8 +4493,8 @@ int main()
     INSERT_ELEMENTS(coll, 1, 9);
     PRINT_ELEMENTS(coll);
 
-    //***æ³¨***
-    //ä½¿ç”¨binary_search()å‰åŒºé—´å¿…é¡»å·²ç»æ’åºï¼
+    //***×¢***
+    //Ê¹ÓÃbinary_search()Ç°Çø¼ä±ØĞëÒÑ¾­ÅÅĞò£¡
 
     // check existence of element with value 5
     if (binary_search(coll.cbegin(), coll.cend(), 5))
@@ -4433,11 +4519,11 @@ int main()
 #endif
 
 
-//å·²æ’åºçš„åŒºé—´
-//æ£€æŸ¥æ•°ä¸ªå…ƒç´ æ˜¯å¦å­˜åœ¨ï¼ˆåŒºé—´2æ˜¯å¦ä¸ºåŒºé—´1çš„å­é›†ï¼‰ï¼šincludes()
-//è‹¥å·²æ’åºèŒƒå›´ [first2, last2) æ˜¯å·²æ’åºèŒƒå›´ [first1, last1) çš„å­åºåˆ—åˆ™è¿”å› true
-//***æ³¨***
-//è¦ä¸search()åŒºåˆ†
+//ÒÑÅÅĞòµÄÇø¼ä
+//¼ì²éÊı¸öÔªËØÊÇ·ñ´æÔÚ£¨Çø¼ä2ÊÇ·ñÎªÇø¼ä1µÄ×Ó¼¯£©£ºincludes()
+//ÈôÒÑÅÅĞò·¶Î§ [first2, last2) ÊÇÒÑÅÅĞò·¶Î§ [first1, last1) µÄ×ÓĞòÁĞÔò·µ»Ø true
+//***×¢***
+//ÒªÓësearch()Çø·Ö
 #if 0
 #include "algostuff.hpp"
 using namespace std;
@@ -4456,8 +4542,8 @@ int main()
     PRINT_ELEMENTS(search, "search: ");
 
     // check whether all elements in search are also in coll
-    if (includes(coll.cbegin(), coll.cend(),  //åŒºé—´1
-        search.cbegin(), search.cend()))      //åŒºé—´2
+    if (includes(coll.cbegin(), coll.cend(),  //Çø¼ä1
+        search.cbegin(), search.cend()))      //Çø¼ä2
     {
         cout << "all elements of search are also in coll"
             << endl;
@@ -4478,17 +4564,17 @@ int main()
         << endl;
 }
 #endif
-//***å°ç»“***
-//å·²æ’åºåŒºé—´ï¼ŒåŒºé—´2ä¸­æ‰€æœ‰å…ƒç´ å½¢æˆçš„åºåˆ—æ˜¯å¦åœ¨åŒºé—´1ä¸­éƒ½æœ‰
-// (å­åºåˆ—ä¸å¿…ç›¸æ¥(è¿ç»­))ï¼šincludes()
-//åŒºé—´2ä¸­æ‰€æœ‰å…ƒç´ å½¢æˆçš„åºåˆ—æ˜¯å¦åœ¨åŒºé—´1ä¸­æœ‰
-// (å­åºåˆ—éœ€è¦ç›¸æ¥(è¿ç»­))ï¼šsearch()
-//åŒºé—´2ä¸­æŸä¸ªå…ƒç´ æ˜¯å¦åœ¨åŒºé—´1ä¸­æœ‰ï¼šfind_first_of()
+//***Ğ¡½á***
+//ÒÑÅÅĞòÇø¼ä£¬Çø¼ä2ÖĞËùÓĞÔªËØĞÎ³ÉµÄĞòÁĞÊÇ·ñÔÚÇø¼ä1ÖĞ¶¼ÓĞ
+// (×ÓĞòÁĞ²»±ØÏà½Ó(Á¬Ğø))£ºincludes()
+//Çø¼ä2ÖĞËùÓĞÔªËØĞÎ³ÉµÄĞòÁĞÊÇ·ñÔÚÇø¼ä1ÖĞÓĞ
+// (×ÓĞòÁĞĞèÒªÏà½Ó(Á¬Ğø))£ºsearch()
+//Çø¼ä2ÖĞÄ³¸öÔªËØÊÇ·ñÔÚÇø¼ä1ÖĞÓĞ£ºfind_first_of()
 
 
-//å·²æ’åºçš„åŒºé—´
-//æŸ¥æ‰¾ç¬¬ä¸€ä¸ªæˆ–æœ€åä¸€ä¸ªå¯èƒ½çš„ä½ç½®ï¼šlower_bound()ã€upper_bound()
-//å¯ä»¥é…åˆinsert()æ–¹æ³•ä½¿ç”¨ï¼Œå®ç°åœ¨æŒ‡å®šä½ç½®æ’å…¥å…ƒç´ è€Œä¸ç ´åå·²æ’åºçš„çŠ¶æ€
+//ÒÑÅÅĞòµÄÇø¼ä
+//²éÕÒµÚÒ»¸ö»ò×îºóÒ»¸ö¿ÉÄÜµÄÎ»ÖÃ£ºlower_bound()¡¢upper_bound()
+//¿ÉÒÔÅäºÏinsert()·½·¨Ê¹ÓÃ£¬ÊµÏÖÔÚÖ¸¶¨Î»ÖÃ²åÈëÔªËØ¶ø²»ÆÆ»µÒÑÅÅĞòµÄ×´Ì¬
 #if 0
 #include "algostuff.hpp"
 using namespace std;
@@ -4529,7 +4615,7 @@ int main()
     PRINT_ELEMENTS(coll);
 }
 #endif
-//ä¸€æ¬¡æ€§æŸ¥å‡ºç¬¬ä¸€ä¸ªæˆ–æœ€åä¸€ä¸ªå¯èƒ½çš„ä½ç½®ï¼šequal_range()
+//Ò»´ÎĞÔ²é³öµÚÒ»¸ö»ò×îºóÒ»¸ö¿ÉÄÜµÄÎ»ÖÃ£ºequal_range()
 #if 0
 #include "algostuff.hpp"
 using namespace std;
@@ -4557,9 +4643,9 @@ int main()
 #endif
 
 
-//å·²æ’åºçš„å®¹å™¨
-//åˆå¹¶ç®—æ³•ï¼šmerge()ã€set_union()ã€set_intersection()ã€
-// set_difference()ã€set_symmetric_difference()
+//ÒÑÅÅĞòµÄÈİÆ÷
+//ºÏ²¢Ëã·¨£ºmerge()¡¢set_union()¡¢set_intersection()¡¢
+// set_difference()¡¢set_symmetric_difference()
 #if 0
 #include "algostuff.hpp"
 using namespace std;
@@ -4586,7 +4672,7 @@ int main()
         ostream_iterator<int>(cout, " "));
     cout << endl;
 
-    //æ±‚å¹¶é›†
+    //Çó²¢¼¯
     // unite the ranges by using set_union()
     cout << "set_union():                ";
     set_union(c1.cbegin(), c1.cend(),
@@ -4594,7 +4680,7 @@ int main()
         ostream_iterator<int>(cout, " "));
     cout << endl;
 
-    //æ±‚äº¤é›†
+    //Çó½»¼¯
     // intersect the ranges by using set_intersection()
     cout << "set_intersection():         ";
     set_intersection(c1.cbegin(), c1.cend(),
@@ -4602,7 +4688,7 @@ int main()
         ostream_iterator<int>(cout, " "));
     cout << endl;
 
-    //æ±‚å·®é›†
+    //Çó²î¼¯
     // determine elements of first range without elements of second range
     // by using set_difference()
     cout << "set_difference():           ";
@@ -4610,30 +4696,30 @@ int main()
         c2.cbegin(), c2.cend(),
         ostream_iterator<int>(cout, " "));
     cout << endl;
-    //æ±‚å‡ºåœ¨ç¬¬ä¸€ä¸ªåˆ—è¡¨ä¸­è€Œä¸åœ¨ç¬¬äºŒä¸ªåˆ—è¡¨ä¸­å­˜åœ¨çš„å…ƒç´ 
+    //Çó³öÔÚµÚÒ»¸öÁĞ±íÖĞ¶ø²»ÔÚµÚ¶ş¸öÁĞ±íÖĞ´æÔÚµÄÔªËØ
 
-    //æ±‚åŒºé—´S1,S2çš„å¯¹ç§°å·®é›†
+    //ÇóÇø¼äS1,S2µÄ¶Ô³Æ²î¼¯
     // determine difference the ranges with set_symmetric_difference()
     cout << "set_symmetric_difference(): ";
     set_symmetric_difference(c1.cbegin(), c1.cend(),
         c2.cbegin(), c2.cend(),
         ostream_iterator<int>(cout, " "));
     cout << endl;
-    //è¾“å‡ºï¼š
+    //Êä³ö£º
     // 1 2 3 4 6 7 7 8
 
-    //å¯¹ç§°å·®é›†æŒ‡çš„æ˜¯åªå±äºS1æˆ–S2,ä½†ä¸åŒæ—¶å±äºS1å’ŒS2çš„
+    //¶Ô³Æ²î¼¯Ö¸µÄÊÇÖ»ÊôÓÚS1»òS2,µ«²»Í¬Ê±ÊôÓÚS1ºÍS2µÄ
 
-    //***æ³¨***
-    //è¾“å‡ºä¸­ 2 å‡ºç°çš„åŸå› å¯èƒ½æ˜¯é›†åˆ c1 ä¸­æœ‰ä¸¤ä¸ªå€¼ä¸º 2 çš„å…ƒç´ ï¼Œ
-    // è€Œé›†åˆ c2 ä¸­åªæœ‰ä¸€ä¸ªå€¼ä¸º 2 çš„å…ƒç´ 
-    //è¿™æ ·çš„è¯ 2 ä¹Ÿä¼šè¢«è§†ä¸ºå±äºå¯¹ç§°å·®é›†
-    //åŒç†å¯¹ç§°å·®é›†ä¸­ä¹Ÿæœ‰6è¿™ä¸ªæ•°å­—
+    //***×¢***
+    //Êä³öÖĞ 2 ³öÏÖµÄÔ­Òò¿ÉÄÜÊÇ¼¯ºÏ c1 ÖĞÓĞÁ½¸öÖµÎª 2 µÄÔªËØ£¬
+    // ¶ø¼¯ºÏ c2 ÖĞÖ»ÓĞÒ»¸öÖµÎª 2 µÄÔªËØ
+    //ÕâÑùµÄ»° 2 Ò²»á±»ÊÓÎªÊôÓÚ¶Ô³Æ²î¼¯
+    //Í¬Àí¶Ô³Æ²î¼¯ÖĞÒ²ÓĞ6Õâ¸öÊı×Ö
 }
 #endif
 
 
-//å¯¹å·²æ’åºçš„åŒºé—´ï¼Œå°±åœ°ä¸€åˆ†ä¸ºäºŒè¿›è¡Œåˆå¹¶ï¼šinplace_merge()
+//¶ÔÒÑÅÅĞòµÄÇø¼ä£¬¾ÍµØÒ»·ÖÎª¶ş½øĞĞºÏ²¢£ºinplace_merge()
 #if 0
 #include "algostuff.hpp"
 using namespace std;
@@ -4656,12 +4742,12 @@ int main()
 
     // merge into one sorted range
     inplace_merge(coll.begin(), pos, coll.end());
-    //å·²æ’åºæºåŒºé—´ [beg1,end1beg2) å’Œ[end1beg2,end2)çš„å…ƒç´ åˆå¹¶ï¼Œ
-    // ä½¿åŒºé—´    [beg1,end2)    æˆä¸ºä¸¤è€…ä¹‹æ€»å’Œ(ä¸”å½¢æˆå·²æ’åºçŠ¶æ€)ã€‚
+    //ÒÑÅÅĞòÔ´Çø¼ä [beg1,end1beg2) ºÍ[end1beg2,end2)µÄÔªËØºÏ²¢£¬
+    // Ê¹Çø¼ä    [beg1,end2)    ³ÉÎªÁ½ÕßÖ®×ÜºÍ(ÇÒĞÎ³ÉÒÑÅÅĞò×´Ì¬)¡£
 
     PRINT_ELEMENTS(coll);
 }
-//è¾“å‡ºï¼š
+//Êä³ö£º
 /*
 1 2 3 4 5 6 7 1 2 3 4 5 6 7 8
 1 1 2 2 3 3 4 4 5 5 6 6 7 7 8
@@ -4669,7 +4755,7 @@ int main()
 #endif
 
 
-//ä¸€ä¸ªç”¨æˆ·è‡ªå®šä¹‰çš„Stackç±»
+//Ò»¸öÓÃ»§×Ô¶¨ÒåµÄStackÀà
 #if 0
 #ifndef STACK_HPP
 #define STACK_HPP
@@ -4684,14 +4770,14 @@ protected:
     std::deque<T> c;        // container for the elements
 
 public:
-    //***æ³¨***
-    // //åˆ›å»ºåµŒå¥—ç±»
+    //***×¢***
+    // //´´½¨Ç¶Ì×Àà
     // exception class for pop() and top() with empty stack
     class ReadEmptyStack : public std::exception
     {
     public:
-        //***æ³¨***
-        //æœ€åå†™ throw() è¡¨ç¤ºè¯¥å‡½æ•°ä¸ä¼šæŠ›å‡ºä»»ä½•å¼‚å¸¸
+        //***×¢***
+        //×îºóĞ´ throw() ±íÊ¾¸Ãº¯Êı²»»áÅ×³öÈÎºÎÒì³£
         virtual const char* what() const throw() 
         {
             return "read empty stack";
@@ -4746,7 +4832,7 @@ public:
 #endif
 
 
-//ä¸€ä¸ªç”¨æˆ·è‡ªå®šä¹‰çš„Queueç±»
+//Ò»¸öÓÃ»§×Ô¶¨ÒåµÄQueueÀà
 #if 0
 #ifndef QUEUE_HPP
 #define QUEUE_HPP
@@ -4819,7 +4905,7 @@ public:
 #endif
 
 
-//å°†bitsetå½“ä½œä¸€ç»„æ ‡å¿—
+//½«bitsetµ±×÷Ò»×é±êÖ¾
 #if 0
 #include <bitset>
 #include <iostream>
@@ -4835,29 +4921,29 @@ int main()
     };
 
     // create bitset for all bits/colors
-    bitset<numColors> usedColors;//åˆ›å»ºbitsetç±»å¯¹è±¡ï¼Œé»˜è®¤æ¯ä¸€ä½éƒ½ä¸º0
+    bitset<numColors> usedColors;//´´½¨bitsetÀà¶ÔÏó£¬Ä¬ÈÏÃ¿Ò»Î»¶¼Îª0
 
     // set bits for two colors
     usedColors.set(red);
     usedColors.set(blue);
-    //***ç†è§£***
-    //bitsetç±»ä¸­çš„æ–¹æ³•å£°æ˜ï¼šbitset& set( std::size_t pos, bool value = true );
-    // å½¢å‚posç›¸å½“äºindex
-    //usedColors.set(red);è¡¨ç¤ºbitsetç±»å¯¹è±¡çš„ç¬¬1ä¸ªå…ƒç´ å€¼è®¾ä¸º1
+    //***Àí½â***
+    //bitsetÀàÖĞµÄ·½·¨ÉùÃ÷£ºbitset& set( std::size_t pos, bool value = true );
+    // ĞÎ²ÎposÏàµ±ÓÚindex
+    //usedColors.set(red);±íÊ¾bitsetÀà¶ÔÏóµÄµÚ1¸öÔªËØÖµÉèÎª1
 
     // print some bitset data
     cout << "bitfield of used colors:   " << usedColors << endl;
     cout << "number   of used colors:   " << usedColors.count() << endl;
-    cout << "bitfield of unused colors: " << ~usedColors << endl;//ç¿»è½¬æ‰€æœ‰ä½
+    cout << "bitfield of unused colors: " << ~usedColors << endl;//·­×ªËùÓĞÎ»
 
-    //to_string()æ–¹æ³•ï¼š
+    //to_string()·½·¨£º
     std::cout << usedColors.to_string() << '\n'
         << usedColors.to_string('*') << '\n'
         << usedColors.to_string('O', 'X') << '\n';
 
-    //***æ³¨***
-    //bitsetçš„bitset<N>::all, std::bitset<N>::any, std::bitset<N>::none è¿™äº›æ–¹æ³•
-    //æ—¶é—´å¤æ‚åº¦éƒ½æ˜¯O(N)
+    //***×¢***
+    //bitsetµÄbitset<N>::all, std::bitset<N>::any, std::bitset<N>::none ÕâĞ©·½·¨
+    //Ê±¼ä¸´ÔÓ¶È¶¼ÊÇO(N)
     // if any color is used
     if (usedColors.any()) {
         // loop over all colors
@@ -4872,7 +4958,7 @@ int main()
 #endif
 
 
-//bitsetçš„ç‰¹è‰²åŠŸèƒ½ï¼šç”¨bitsetè¡¨è¿°äºŒè¿›åˆ¶
+//bitsetµÄÌØÉ«¹¦ÄÜ£ºÓÃbitset±íÊö¶ş½øÖÆ
 #if 0
 #include <bitset>
 #include <iostream>
@@ -4894,16 +4980,16 @@ int main()
     cout << "10,000,000 with 24 bits: "
         << bitset<24>(1e7) << endl;
 
-    //ç”¨æ•°å€¼ç±»å‹åˆå§‹åŒ–bitsetç±»å¯¹è±¡
-    //*** (bitsetç±»å¯¹è±¡å­˜å‚¨çš„æ˜¯æ•°å€¼ç±»å‹çš„äºŒè¿›åˆ¶è¡¨ç¤º)***
-    //ä½¿ç”¨to_string()æ–¹æ³•å°†bitsetç±»å¯¹è±¡è¾“å‡ºä¸ºstringç±»å¯¹è±¡
+    //ÓÃÊıÖµÀàĞÍ³õÊ¼»¯bitsetÀà¶ÔÏó
+    //*** (bitsetÀà¶ÔÏó´æ´¢µÄÊÇÊıÖµÀàĞÍµÄ¶ş½øÖÆ±íÊ¾)***
+    //Ê¹ÓÃto_string()·½·¨½«bitsetÀà¶ÔÏóÊä³öÎªstringÀà¶ÔÏó
     // write binary representation into string
     string s = bitset<42>(12345678).to_string();
     cout << "12,345,678 with 42 bits: " << s << endl;
 
-    //ç”¨C-stringç±»å‹åˆå§‹åŒ–bitsetç±»å¯¹è±¡
-    //*** (bitsetç±»å¯¹è±¡å­˜å‚¨çš„æ˜¯C-stringç±»å‹æŒ‡ç¤ºçš„äºŒè¿›åˆ¶å†…å®¹) ***
-    //ä½¿ç”¨to_ullong()æ–¹æ³•å°†bitsetç±»å¯¹è±¡è¾“å‡ºä¸ºunsigned long longæ•´æ•°ç±»å‹
+    //ÓÃC-stringÀàĞÍ³õÊ¼»¯bitsetÀà¶ÔÏó
+    //*** (bitsetÀà¶ÔÏó´æ´¢µÄÊÇC-stringÀàĞÍÖ¸Ê¾µÄ¶ş½øÖÆÄÚÈİ) ***
+    //Ê¹ÓÃto_ullong()·½·¨½«bitsetÀà¶ÔÏóÊä³öÎªunsigned long longÕûÊıÀàĞÍ
     // transform binary representation into integral number
     cout << "\"1000101011\" as number:  "
         << bitset<100>("1000101011").to_ullong() << endl;
@@ -4911,8 +4997,8 @@ int main()
 #endif
 
 
-//stringç±»çš„èƒ½åŠ›å’Œç”¨æ³•
-//æç‚¼ä¸´æ—¶æ–‡ä»¶å
+//stringÀàµÄÄÜÁ¦ºÍÓÃ·¨
+//ÌáÁ¶ÁÙÊ±ÎÄ¼şÃû
 #if 0
 #include <iostream>
 #include <string>
@@ -4932,20 +5018,20 @@ int main(int argc, char* argv[])
 
         // search period in filename
         string::size_type idx = filename.find('.');
-        //***æ³¨***
-        //æ­¤å¤„å¿…é¡»ä½¿ç”¨string::size_typeç±»å‹
-        //ä¸èƒ½ä»¥ intæˆ– unsigned ä½œä¸ºè¿”å›å€¼ç±»å‹ï¼›å¦åˆ™è¿”å›å€¼ä¸string::nposä¹‹é—´çš„
-        //æ¯”è¾ƒå¯èƒ½æ— æ³•æ­£ç¡®æ‰§è¡Œã€‚è¿™æ˜¯å› ä¸ºnposè¢«è®¾è®¡ä¸ºsize_typeç±»å‹çš„ -1
-        //ä¸å¹¸çš„æ˜¯size_type(ç”±stringçš„åˆ†é…å™¨å®šä¹‰å‡º)å¿…é¡»æ˜¯ä¸ªæ— æ­£è´Ÿå·æ•´æ•°ç±»å‹
-        //äºæ˜¯-1 è¢«è½¬æ¢ä¸ºæ— æ­£è´Ÿå·æ•´æ•°ç±»å‹ï¼Œnpos ä¹Ÿå°±æˆäº†è¯¥ç±»å‹çš„æœ€å¤§æ— æ­£è´Ÿå·å€¼ã€‚
-        //ç„¶è€Œå®é™…å€¼å–å†³äºç±»å‹size_typeçš„çœŸå®å®šä¹‰ã€‚
-        // ä¸å¹¸çš„æ˜¯å¯¹äºä¸åŒçš„æ“ä½œç³»ç»Ÿï¼Œè¿™äº›æœ€å¤§å€¼ç±»å‹å’Œå€¼å¯èƒ½éƒ½ä¸ç›¸åŒã€‚
-        // äº‹å®ä¸Š(unsigned long) - 1å’Œ(unsigned short) - 1 ä¸åŒã€‚
+        //***×¢***
+        //´Ë´¦±ØĞëÊ¹ÓÃstring::size_typeÀàĞÍ
+        //²»ÄÜÒÔ int»ò unsigned ×÷Îª·µ»ØÖµÀàĞÍ£»·ñÔò·µ»ØÖµÓëstring::nposÖ®¼äµÄ
+        //±È½Ï¿ÉÄÜÎŞ·¨ÕıÈ·Ö´ĞĞ¡£ÕâÊÇÒòÎªnpos±»Éè¼ÆÎªsize_typeÀàĞÍµÄ -1
+        //²»ĞÒµÄÊÇsize_type(ÓÉstringµÄ·ÖÅäÆ÷¶¨Òå³ö)±ØĞëÊÇ¸öÎŞÕı¸ººÅÕûÊıÀàĞÍ
+        //ÓÚÊÇ-1 ±»×ª»»ÎªÎŞÕı¸ººÅÕûÊıÀàĞÍ£¬npos Ò²¾Í³ÉÁË¸ÃÀàĞÍµÄ×î´óÎŞÕı¸ººÅÖµ¡£
+        //È»¶øÊµ¼ÊÖµÈ¡¾öÓÚÀàĞÍsize_typeµÄÕæÊµ¶¨Òå¡£
+        // ²»ĞÒµÄÊÇ¶ÔÓÚ²»Í¬µÄ²Ù×÷ÏµÍ³£¬ÕâĞ©×î´óÖµÀàĞÍºÍÖµ¿ÉÄÜ¶¼²»ÏàÍ¬¡£
+        // ÊÂÊµÉÏ(unsigned long) - 1ºÍ(unsigned short) - 1 ²»Í¬¡£
 
-        //å› æ­¤ï¼Œå¯¹äºï¼š
+        //Òò´Ë£¬¶ÔÓÚ£º
         //idx == std::string::npos
-        //å¦‚æœ idxçš„å€¼ä¸º - 1, ç”±äº idxå’Œå­—ç¬¦ä¸² string::nposç±»å‹ä¸åŒï¼Œ
-        // æ¯”è¾ƒç»“æœå¯èƒ½ä¼šæ˜¯ false
+        //Èç¹û idxµÄÖµÎª - 1, ÓÉÓÚ idxºÍ×Ö·û´® string::nposÀàĞÍ²»Í¬£¬
+        // ±È½Ï½á¹û¿ÉÄÜ»áÊÇ false
 
         if (idx == string::npos) 
         {
@@ -4960,13 +5046,13 @@ int main(int argc, char* argv[])
             basename = filename.substr(0, idx);
             extname = filename.substr(idx + 1);
 
-            //***ç†è§£***
-            //find()æ–¹æ³•è¿”å›è¦æœç´¢çš„å­—ç¬¦åœ¨stringç±»å¯¹è±¡ä¸­çš„indexå€¼
+            //***Àí½â***
+            //find()·½·¨·µ»ØÒªËÑË÷µÄ×Ö·ûÔÚstringÀà¶ÔÏóÖĞµÄindexÖµ
 
             //filename.substr(0, idx);
-            //è¿”å› [0, 0+idx) 
+            //·µ»Ø [0, 0+idx) 
             //filename.substr(idx + 1);
-            //è¿”å› [pos, size())
+            //·µ»Ø [pos, size())
 
             if (extname.empty()) 
             {
@@ -4985,8 +5071,8 @@ int main(int argc, char* argv[])
                 // replace any extension with tmp
                 tmpname = filename;
                 tmpname.replace(idx + 1, string::npos, suffix);
-                //***æ³¨***
-                //string::nposå¿…é¡»è¦å†™ç±»åstring
+                //***×¢***
+                //string::npos±ØĞëÒªĞ´ÀàÃûstring
             }
         }
 
@@ -4997,7 +5083,7 @@ int main(int argc, char* argv[])
 #endif
 
 
-//æç‚¼å•è¯å¹¶åå‘æ‰“å°ï¼ˆå¯åŒæ—¶æŸ¥çœ‹//é¢è¯•é¢˜58ï¼šç¿»è½¬å­—ç¬¦ä¸²ï¼‰
+//ÌáÁ¶µ¥´Ê²¢·´Ïò´òÓ¡£¨¿ÉÍ¬Ê±²é¿´//ÃæÊÔÌâ58£º·­×ª×Ö·û´®£©
 #if 0
 #include <iostream>
 #include <string>
@@ -5005,7 +5091,7 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    //æ‰€æœ‰é—´éš”å­—ç¬¦è¢«å®šä¹‰äºä¸€ä¸ªç‰¹æ®Šçš„ string å¸¸é‡å†…ï¼š
+    //ËùÓĞ¼ä¸ô×Ö·û±»¶¨ÒåÓÚÒ»¸öÌØÊâµÄ string ³£Á¿ÄÚ£º
     const string delims(" \t,.;");
     string line;
 
@@ -5020,9 +5106,9 @@ int main(int argc, char** argv)
         // while beginning of a word found
         while (begIdx != string::npos) 
         {
-            //***æ³¨***
-            //ä»indexä¸ºbegIdxå¼€å§‹ï¼Œå¯»æ‰¾ç­‰äºdelimsä¸­ä»»ä¸€å­—ç¬¦çš„å­—ç¬¦æ‰€åœ¨çš„ä½ç½®
-            // æ­¤èŒƒå›´èƒ½åŒ…å«ç©ºå­—ç¬¦ã€‚
+            //***×¢***
+            //´ÓindexÎªbegIdx¿ªÊ¼£¬Ñ°ÕÒµÈÓÚdelimsÖĞÈÎÒ»×Ö·ûµÄ×Ö·ûËùÔÚµÄÎ»ÖÃ
+            // ´Ë·¶Î§ÄÜ°üº¬¿Õ×Ö·û¡£
             // search end of the actual word
             endIdx = line.find_first_of(delims, begIdx);
 
@@ -5050,8 +5136,8 @@ int main(int argc, char** argv)
 #endif
 
 
-//ç”¨C-stringå­—ç¬¦ä¸²åˆå§‹åŒ–stringå¯¹è±¡
-//ç»“å°¾å¸¦ä¸å¸¦ç©ºå­—ç¬¦ï¼Ÿ
+//ÓÃC-string×Ö·û´®³õÊ¼»¯string¶ÔÏó
+//½áÎ²´ø²»´ø¿Õ×Ö·û£¿
 #if 0
 #include <iostream>
 #include <string>
@@ -5063,7 +5149,7 @@ int main()
     string str1("abc");
     cout << str1.length()<<endl;
     
-    //è¯´æ˜str1ä¸€å¼€å§‹å°±åˆ†é…äº†å¤šä½™çš„ç©ºé—´ç”¨äºå­˜å‚¨å†…å®¹
+    //ËµÃ÷str1Ò»¿ªÊ¼¾Í·ÖÅäÁË¶àÓàµÄ¿Õ¼äÓÃÓÚ´æ´¢ÄÚÈİ
     cout << sizeof(str1) << endl;
 
     for (int i = 0; i < 4; ++i)
@@ -5076,17 +5162,17 @@ int main()
 
     cout << endl;
 
-    //***æ³¨***
-    //ç†è§£ï¼š
-    //åªæœ‰å•å®å‚çš„ const char*ç‰ˆæœ¬æ‰å°†å­—ç¬¦'\0'è§†ä¸ºstringçš„ç»“å°¾ç‰¹æ®Šç¬¦å·ï¼Œ
-    // å…¶ä»–æ‰€æœ‰æƒ…å†µä¸‹'\0'éƒ½ä¸è¢«è§†ä¸ºç‰¹æ®Šå­—ç¬¦
+    //***×¢***
+    //Àí½â£º
+    //Ö»ÓĞµ¥Êµ²ÎµÄ const char*°æ±¾²Å½«×Ö·û'\0'ÊÓÎªstringµÄ½áÎ²ÌØÊâ·ûºÅ£¬
+    // ÆäËûËùÓĞÇé¿öÏÂ'\0'¶¼²»±»ÊÓÎªÌØÊâ×Ö·û
     //std::string s1("nico");      // initializes s1 with:'n'  'i'  'c'  'o'
     //std::string s2("nico", 5);  //initializes s2 with:'n'  'i'  'c'  'o'  '\0'
     //std::string s3(5, '\0');       //initializes s3 with:'\0'  '\0'  '\0'  '\0'  '\0'
 
-    //å‰é¢çš„ä»£ç æµ‹è¯•çš„æƒ…å†µæ˜¾ç¤ºï¼š
-    //å³ä½¿s1ä»…å­˜4ä¸ªå…ƒç´ ï¼Œä½†
-    //s1è‹¥è¦æ˜¾ç¤ºs1[4]è¿˜æ˜¯ä¼šè¿”å›ä¸€ä¸ªç©ºå­—ç¬¦çš„ã€‚(åœ¨C++11ä¸­å®šä¹‰æ˜¯è¿™æ ·çš„è¡Œä¸º)
+    //Ç°ÃæµÄ´úÂë²âÊÔµÄÇé¿öÏÔÊ¾£º
+    //¼´Ê¹s1½ö´æ4¸öÔªËØ£¬µ«
+    //s1ÈôÒªÏÔÊ¾s1[4]»¹ÊÇ»á·µ»ØÒ»¸ö¿Õ×Ö·ûµÄ¡£(ÔÚC++11ÖĞ¶¨ÒåÊÇÕâÑùµÄĞĞÎª)
 
     string str2("abc",4);
     cout << str2.length()<<endl;
@@ -5099,19 +5185,19 @@ int main()
         else
             cout << "?" << ' ';
 
-    //å›ç­”ï¼š
-    //ç”¨C-stringå­—ç¬¦ä¸²åˆå§‹åŒ–std::stringå¯¹è±¡æ—¶ï¼Œä¸ä¼šå¸¦æœ‰ç©ºå­—ç¬¦ï¼ˆ\0ï¼‰ã€‚
-    // std::stringå¯¹è±¡ä¼šæ ¹æ®ä¼ å…¥çš„C-stringå­—ç¬¦ä¸²çš„é•¿åº¦è‡ªåŠ¨ç¡®å®šå…¶è‡ªèº«çš„é•¿åº¦ï¼Œ
-    // å¹¶ä¸éœ€è¦é¢å¤–çš„ç©ºå­—ç¬¦æ¥è¡¨ç¤ºç»“æŸã€‚
-    //ä½†è‹¥ä½¿ç”¨ç±»ä¼¼string str2("abc",4);è¿™æ ·æ¥åˆå§‹åŒ–stringå¯¹è±¡
-    //æ²¡æŒ‡å®šçš„å†…å®¹ä¼šç”¨ç©ºå­—ç¬¦å¡«å…¥ã€‚
+    //»Ø´ğ£º
+    //ÓÃC-string×Ö·û´®³õÊ¼»¯std::string¶ÔÏóÊ±£¬²»»á´øÓĞ¿Õ×Ö·û£¨\0£©¡£
+    // std::string¶ÔÏó»á¸ù¾İ´«ÈëµÄC-string×Ö·û´®µÄ³¤¶È×Ô¶¯È·¶¨Æä×ÔÉíµÄ³¤¶È£¬
+    // ²¢²»ĞèÒª¶îÍâµÄ¿Õ×Ö·ûÀ´±íÊ¾½áÊø¡£
+    //µ«ÈôÊ¹ÓÃÀàËÆstring str2("abc",4);ÕâÑùÀ´³õÊ¼»¯string¶ÔÏó
+    //Ã»Ö¸¶¨µÄÄÚÈİ»áÓÃ¿Õ×Ö·ûÌîÈë¡£
 
     return 0;
 }
 #endif
 
 
-//stringçš„å®‰æ’å…ƒç´ æ–¹æ³•
+//stringµÄ°²²åÔªËØ·½·¨
 #if 0
 #include <iostream>
 #include <string>
@@ -5122,12 +5208,12 @@ int main()
 {
     string str{"bc"};
 
-    //ä¸å¯ç”¨çš„å†™æ³•ï¼š
+    //²»¿ÉÓÃµÄĞ´·¨£º
     //str.insert(0,'a');
     //str.insert('a');
     //str.insert("a");
 
-    //æ­£ç¡®å†™æ³•ï¼š
+    //ÕıÈ·Ğ´·¨£º
     str.insert(0,"a");
 
     cout << str << endl;
@@ -5137,9 +5223,9 @@ int main()
 #endif
 
 
-//ç”¨stringç±»ä¸­ç›¸å…³æ–¹æ³•è¿›è¡Œå­—ç¬¦åˆ°æ•°å€¼çš„è½¬æ¢
-//è¡¥å……ï¼š
-//ç”¨to_string()å‡½æ•°è¿›è¡Œæ•°å€¼åˆ°å­—ç¬¦çš„è½¬æ¢
+//ÓÃstringÀàÖĞÏà¹Ø·½·¨½øĞĞ×Ö·ûµ½ÊıÖµµÄ×ª»»
+//²¹³ä£º
+//ÓÃto_string()º¯Êı½øĞĞÊıÖµµ½×Ö·ûµÄ×ª»»
 #if 0
 #include <string>
 #include <iostream>
@@ -5179,7 +5265,7 @@ int main()
 #endif
 
 
-//unique()å‡½æ•°éœ€è¦ç»“åˆerase()ä½¿ç”¨   ï¼ˆremove()ä¹Ÿè¦ç»“åˆerase()ï¼‰
+//unique()º¯ÊıĞèÒª½áºÏerase()Ê¹ÓÃ   £¨remove()Ò²Òª½áºÏerase()£©
 #if 0
 #include <string>
 #include <iostream>
@@ -5208,11 +5294,11 @@ int main()
     sort(s.begin(), s.end());
     cout << "ordered:       " << s << endl;
 
-    //é”™è¯¯å†™æ³•ï¼š
+    //´íÎóĞ´·¨£º
     //unique(s.begin(), s.end());
     //cout << s << endl;
 
-    //æ­£ç¡®å†™æ³•ï¼š
+    //ÕıÈ·Ğ´·¨£º
     // remove adjacent duplicates
     // - unique() reorders and returns new end
     // - erase() shrinks accordingly
@@ -5220,20 +5306,20 @@ int main()
         unique(s.begin(), s.end()),
         s.end());
     cout << "no duplicates: " << s << endl;
-    //ç†è§£ï¼š
-    //unique()ä»æ¥è‡ªèŒƒå›´ [first, last) çš„ç›¸ç»§ç­‰ä»·å…ƒç´ ç»„æ¶ˆé™¤é¦–å…ƒç´ å¤–çš„å…ƒç´ ï¼Œ
-    //å¹¶è¿”å›èŒƒå›´çš„æ–°é€»è¾‘ç»“å°¾çš„å°¾åè¿­ä»£å™¨ã€‚
+    //Àí½â£º
+    //unique()´ÓÀ´×Ô·¶Î§ [first, last) µÄÏà¼ÌµÈ¼ÛÔªËØ×éÏû³ıÊ×ÔªËØÍâµÄÔªËØ£¬
+    //²¢·µ»Ø·¶Î§µÄĞÂÂß¼­½áÎ²µÄÎ²ºóµü´úÆ÷¡£
     
-    //unique()ä¿æŒå‰©ä½™å…ƒç´ çš„ç›¸å¯¹é¡ºåºï¼Œä¸”ä¸æ›´æ”¹å®¹å™¨çš„ç‰©ç†å¤§å°ã€‚
-    //æŒ‡å‘èŒƒå›´çš„æ–°é€»è¾‘ç»“å°¾å’Œç‰©ç†ç»“å°¾ä¹‹é—´å…ƒç´ çš„è¿­ä»£å™¨ä»ç„¶å¯è§£å¼•ç”¨ï¼Œ
-    // ä½†å…ƒç´ è‡ªèº«æ‹¥æœ‰ã€æœªæŒ‡å®šå€¼ã€‘ã€‚
-    // è°ƒç”¨ unique åæœ‰æ—¶ä¼šè°ƒç”¨å®¹å™¨çš„ erase æˆå‘˜å‡½æ•°ï¼Œ
-    // å®ƒæ“¦é™¤æœªæŒ‡å®šå€¼å¹¶å‡å°å®¹å™¨çš„ç‰©ç†å¤§å°ï¼Œä»¥åŒ¹é…å…¶æ–°çš„é€»è¾‘å¤§å°ã€‚
+    //unique()±£³ÖÊ£ÓàÔªËØµÄÏà¶ÔË³Ğò£¬ÇÒ²»¸ü¸ÄÈİÆ÷µÄÎïÀí´óĞ¡¡£
+    //Ö¸Ïò·¶Î§µÄĞÂÂß¼­½áÎ²ºÍÎïÀí½áÎ²Ö®¼äÔªËØµÄµü´úÆ÷ÈÔÈ»¿É½âÒıÓÃ£¬
+    // µ«ÔªËØ×ÔÉíÓµÓĞ¡¾Î´Ö¸¶¨Öµ¡¿¡£
+    // µ÷ÓÃ unique ºóÓĞÊ±»áµ÷ÓÃÈİÆ÷µÄ erase ³ÉÔ±º¯Êı£¬
+    // Ëü²Á³ıÎ´Ö¸¶¨Öµ²¢¼õĞ¡ÈİÆ÷µÄÎïÀí´óĞ¡£¬ÒÔÆ¥ÅäÆäĞÂµÄÂß¼­´óĞ¡¡£
 }
 #endif
 
 
-//ä¸ä½¿ç”¨getline()ï¼Œå‘stringå¯¹è±¡è¾“å…¥å¤šè¡Œæ•°æ®ï¼Œä¸”ä¸å¿½ç•¥ç©ºç™½å­—ç¬¦çš„æ–¹æ³•
+//²»Ê¹ÓÃgetline()£¬Ïòstring¶ÔÏóÊäÈë¶àĞĞÊı¾İ£¬ÇÒ²»ºöÂÔ¿Õ°××Ö·ûµÄ·½·¨
 #if 0
 #include <string>
 #include <iostream>
@@ -5246,18 +5332,18 @@ int main()
 {
     string input;
 
-    //ç¦ç”¨æµ str ä¸­çš„ skipws æ ‡å¿—
-    //ç¦ç”¨æœ‰æ ¼å¼è¾“å…¥å‡½æ•°æ‰€åšçš„è·³è¿‡å‰å¯¼ç©ºç™½ç¬¦ï¼ˆé»˜è®¤å¯ç”¨ï¼‰ã€‚åœ¨è¾“å‡ºä¸Šæ— æ•ˆæœã€‚
+    //½ûÓÃÁ÷ str ÖĞµÄ skipws ±êÖ¾
+    //½ûÓÃÓĞ¸ñÊ½ÊäÈëº¯ÊıËù×öµÄÌø¹ıÇ°µ¼¿Õ°×·û£¨Ä¬ÈÏÆôÓÃ£©¡£ÔÚÊä³öÉÏÎŞĞ§¹û¡£
     // don't skip leading whitespaces
     cin.unsetf(ios::skipws);
 
     // read all characters while compressing whitespaces
     //const locale& loc(cin.getloc());    // locale
 
-    //ä½¿ç”¨unique_copyå‡½æ•°ä»æ ‡å‡†è¾“å…¥æµcinä¸­è¯»å–å­—ç¬¦ï¼Œ
-    // å¹¶å°†å…¶å¤åˆ¶åˆ°å®¹å™¨inputä¸­ï¼Œä½†æ˜¯åªä¿ç•™è¿ç»­çš„ä¸åŒå­—ç¬¦ã€‚
-    // åœ¨è¿™ä¸ªç‰¹å®šçš„ä¾‹å­ä¸­ï¼Œunique_copyå‡½æ•°è¿˜æ¥å—äº†ä¸€ä¸ªè°“è¯å‡½æ•°ä½œä¸ºå‚æ•°ï¼Œ
-    // ç”¨äºå®šä¹‰ä½•ä¸º"ç›¸é‚»çš„é‡å¤å­—ç¬¦"ã€‚
+    //Ê¹ÓÃunique_copyº¯Êı´Ó±ê×¼ÊäÈëÁ÷cinÖĞ¶ÁÈ¡×Ö·û£¬
+    // ²¢½«Æä¸´ÖÆµ½ÈİÆ÷inputÖĞ£¬µ«ÊÇÖ»±£ÁôÁ¬ĞøµÄ²»Í¬×Ö·û¡£
+    // ÔÚÕâ¸öÌØ¶¨µÄÀı×ÓÖĞ£¬unique_copyº¯Êı»¹½ÓÊÜÁËÒ»¸öÎ½´Êº¯Êı×÷Îª²ÎÊı£¬
+    // ÓÃÓÚ¶¨ÒåºÎÎª"ÏàÁÚµÄÖØ¸´×Ö·û"¡£
     unique_copy(istream_iterator<char>(cin),  // beginning of source
         istream_iterator<char>(),     // end of source
         back_inserter(input),         // destination
@@ -5279,26 +5365,26 @@ int main()
 		else if (*it != '\n')
 			cout << *it;
 }
-//æµ‹è¯•ï¼š
-//è¾“å…¥ï¼š
+//²âÊÔ£º
+//ÊäÈë£º
 /*
         a          b
       c          d
 ^Z
 */
-//è¾“å‡ºï¼š
+//Êä³ö£º
 /*
  a b
 c d
 
 [space]a[space]b[\n]c[space]d[\n]
 */ 
-//***æ³¨***
-//ç¬¬äºŒè¡Œå¼€å§‹çš„ç©ºç™½å­—ç¬¦è¢«å¿½ç•¥äº†
+//***×¢***
+//µÚ¶şĞĞ¿ªÊ¼µÄ¿Õ°××Ö·û±»ºöÂÔÁË
 #endif
 
 
-//æ‰“å¼€æ–‡ä»¶è¯»å–æ•°æ®ï¼Œå¹¶å†™å…¥æ•°æ®åˆ°æ–‡ä»¶
+//´ò¿ªÎÄ¼ş¶ÁÈ¡Êı¾İ£¬²¢Ğ´ÈëÊı¾İµ½ÎÄ¼ş
 #if 0
 #include <iostream>
 #include <fstream>
@@ -5314,7 +5400,7 @@ int main()
 
 	string str;
 
-	//ä¸å¥½çš„å†™æ³•ï¼š
+	//²»ºÃµÄĞ´·¨£º
 #if 0
 	while (fin)
 	{
@@ -5322,17 +5408,17 @@ int main()
 
 		cout << str << endl;
 	}
-    //åŸå› ï¼š
-    //è¯»åˆ°EOFæ—¶eof()ä¸º1ï¼Œfail()ä¹Ÿä¸º1ï¼Œfinçš„å¸ƒå°”å€¼æ‰ä¸ºfalse
+    //Ô­Òò£º
+    //¶Áµ½EOFÊ±eof()Îª1£¬fail()Ò²Îª1£¬finµÄ²¼¶ûÖµ²ÅÎªfalse
 #endif
-//è¾“å‡ºï¼š
+//Êä³ö£º
 /*
             a              b
       c               d
       c               d
 */
 
-    //åˆé€‚çš„å†™æ³•ï¼š
+    //ºÏÊÊµÄĞ´·¨£º
 	getline(fin, str);
 	while (fin)
 	{
@@ -5340,15 +5426,15 @@ int main()
 
 		getline(fin, str);
 	}
-//è¾“å‡ºï¼š
+//Êä³ö£º
 /*
             a              b
       c               d
 */
 
-    //æ¸…é™¤æ ‡å¿—ä½
+    //Çå³ı±êÖ¾Î»
     fin.clear();
-    //å›åˆ°æ–‡ä»¶å¼€å¤´
+    //»Øµ½ÎÄ¼ş¿ªÍ·
     fin.seekg(0);
 
     ofstream fout("DataOutput.txt",ios_base::out | ios_base::app);
@@ -5366,7 +5452,7 @@ int main()
         getline(fin, str);
     }
 
-    fin.close(); // å…³é—­æ–‡ä»¶æµ
+    fin.close(); // ¹Ø±ÕÎÄ¼şÁ÷
     fout.close();
 
     return 0;
@@ -5374,15 +5460,15 @@ int main()
 #endif
 
 
-//ä½¿ç”¨string stream
-//ç”¨é€”ï¼š
-//ä»¥â€œç‹¬ç«‹äºçœŸå®I/Oè®¾å¤‡ä»¥å¤–â€çš„æ–¹å¼æ¥å¤„ç†I/Oã€‚
-// ä¾‹å¦‚outputçš„æ–‡å­—æ ¼å¼å¯ä»¥åœ¨ string ä¸­è®¾å®šï¼Œ
-// ç„¶åå†å°†stringå‘é€è‡³æŸä¸ªè¾“å‡ºé€šé“ã€‚
-// ä¹Ÿå¯ä»¥é€è¡Œè¯»å– input, å¹¶ä»¥ string stream å¤„ç†æ¯ä¸€è¡Œã€‚
+//Ê¹ÓÃstring stream
+//ÓÃÍ¾£º
+//ÒÔ¡°¶ÀÁ¢ÓÚÕæÊµI/OÉè±¸ÒÔÍâ¡±µÄ·½Ê½À´´¦ÀíI/O¡£
+// ÀıÈçoutputµÄÎÄ×Ö¸ñÊ½¿ÉÒÔÔÚ string ÖĞÉè¶¨£¬
+// È»ºóÔÙ½«string·¢ËÍÖÁÄ³¸öÊä³öÍ¨µÀ¡£
+// Ò²¿ÉÒÔÖğĞĞ¶ÁÈ¡ input, ²¢ÒÔ string stream ´¦ÀíÃ¿Ò»ĞĞ¡£
 #if 0
 #include <iostream>
-#include <sstream>//ostringstreamç±»
+#include <sstream>//ostringstreamÀà
 #include <bitset>
 using namespace std;
 
@@ -5392,7 +5478,7 @@ int main()
 
     // decimal and hexadecimal value
     os << "dec: " << 15 << hex << " hex: " << 15 << endl;
-    //str()æ–¹æ³•ï¼šå°†ç¼“å†²åŒºå†…å®¹å½“åšä¸€ä¸ªstringè¿”å›
+    //str()·½·¨£º½«»º³åÇøÄÚÈİµ±×öÒ»¸östring·µ»Ø
     cout << os.str() << endl;
 
     // append floating value and bitset
@@ -5400,26 +5486,26 @@ int main()
     os << "float: " << 4.67 << " bitset: " << b << endl;
 
     // overwrite with octal value
-    //è¿ç”¨seekp()å°†æ¶‚å†™ä½ç½®è®¾äºstream èµ·å§‹å¤„ï¼Œ
-    // è¿™ä¹ˆä¸€æ¥åç»§çš„ operator<< å°±æŠŠè¾“å‡ºå†™åˆ° string å¤´éƒ¨ï¼Œ
-    // äºæ˜¯è¦†ç›–äº†åŸæœ¬çš„string stream å¤´éƒ¨å†…å®¹ã€‚æœªè¢«è¦†ç›–çš„å­—ç¬¦ä¾ç„¶æœ‰æ•ˆã€‚
+    //ÔËÓÃseekp()½«Í¿Ğ´Î»ÖÃÉèÓÚstream ÆğÊ¼´¦£¬
+    // ÕâÃ´Ò»À´ºó¼ÌµÄ operator<< ¾Í°ÑÊä³öĞ´µ½ string Í·²¿£¬
+    // ÓÚÊÇ¸²¸ÇÁËÔ­±¾µÄstring stream Í·²¿ÄÚÈİ¡£Î´±»¸²¸ÇµÄ×Ö·ûÒÀÈ»ÓĞĞ§¡£
     os.seekp(0);
 
     os << "oct: " << oct << 15;
     cout << os.str() << endl;
 
-    //è¡¥å……ï¼š
-    //è¦åˆ é™¤ stream çš„ç°æœ‰å†…å®¹ï¼Œå¯åˆ©ç”¨å‡½æ•°str()å°†å´­æ–°å†…å®¹èµ‹äºˆç¼“å†²åŒºï¼š
+    //²¹³ä£º
+    //ÒªÉ¾³ı stream µÄÏÖÓĞÄÚÈİ£¬¿ÉÀûÓÃº¯Êıstr()½«Õ¸ĞÂÄÚÈİ¸³Óè»º³åÇø£º
     //strm.str("");
 }
 #endif
 
 
-//Input string streamçš„ä¸»è¦ç”¨é€”
-//æ ¼å¼åŒ–åœ°ä»æ—¢æœ‰stringä¸­è¯»å–æ•°æ®
-//åº”ç”¨åœºæ™¯ï¼š
-//æ–‡ä»¶ä¸­æ¯è¡Œæ•°æ®å…ˆå­˜å…¥stringå¯¹è±¡ï¼Œå†å°†stringå†…å®¹è®¾ç½®ä¸ºç¼“å†²åŒºå†…å®¹
-//å†å¯¹ç¼“å†²åŒºå†…å®¹è¿›è¡Œæ ¼å¼åŒ–çš„è¯»å–å¤„ç†ï¼ˆè§é¢è¯•é¢˜36ï¼šåç¼€è¡¨è¾¾å¼ï¼‰
+//Input string streamµÄÖ÷ÒªÓÃÍ¾
+//¸ñÊ½»¯µØ´Ó¼ÈÓĞstringÖĞ¶ÁÈ¡Êı¾İ
+//Ó¦ÓÃ³¡¾°£º
+//ÎÄ¼şÖĞÃ¿ĞĞÊı¾İÏÈ´æÈëstring¶ÔÏó£¬ÔÙ½«stringÄÚÈİÉèÖÃÎª»º³åÇøÄÚÈİ
+//ÔÙ¶Ô»º³åÇøÄÚÈİ½øĞĞ¸ñÊ½»¯µÄ¶ÁÈ¡´¦Àí£¨¼ûÃæÊÔÌâ36£ººó×º±í´ïÊ½£©
 #if 0
 #include <iostream>
 #include <sstream>
@@ -5433,7 +5519,7 @@ int main()
 
     string str = "1.12";
 
-    //å°†stringå†…å®¹è®¾ç½®ä¸ºç¼“å†²åŒºå†…å®¹
+    //½«stringÄÚÈİÉèÖÃÎª»º³åÇøÄÚÈİ
     istringstream is(str);
 
     is >> x >> f;
@@ -5444,11 +5530,11 @@ int main()
 }
 #endif
 /*
-å¯ä»¥æ–¹ä¾¿åœ°å°†å­—ç¬¦ä¸²åˆ†å‰²æˆå„ç§éƒ¨åˆ†ï¼Œ
-æˆ–è€…å°†å­—ç¬¦ä¸²ä¸­çš„æ•°å­—æå–å‡ºæ¥å¹¶è½¬æ¢ä¸ºæ•°å€¼ç±»å‹ã€‚
-è¿™åœ¨å¤„ç†æ–‡æœ¬æ•°æ®æˆ–è€…è§£ææ ¼å¼åŒ–çš„è¾“å…¥æ—¶éå¸¸æœ‰ç”¨ã€‚
+¿ÉÒÔ·½±ãµØ½«×Ö·û´®·Ö¸î³É¸÷ÖÖ²¿·Ö£¬
+»òÕß½«×Ö·û´®ÖĞµÄÊı×ÖÌáÈ¡³öÀ´²¢×ª»»ÎªÊıÖµÀàĞÍ¡£
+ÕâÔÚ´¦ÀíÎÄ±¾Êı¾İ»òÕß½âÎö¸ñÊ½»¯µÄÊäÈëÊ±·Ç³£ÓĞÓÃ¡£
 */
-//è§£ææ ¼å¼åŒ–çš„è¾“å…¥
+//½âÎö¸ñÊ½»¯µÄÊäÈë
 #if 0
 #include <iostream>
 #include <sstream>
@@ -5463,27 +5549,27 @@ struct Student
 
 int main()
 {
-    // å‡è®¾è¿™æ˜¯ä¸€ä¸ªåŒ…å«å­¦ç”Ÿä¿¡æ¯çš„æ–‡æœ¬æ–‡ä»¶
+    // ¼ÙÉèÕâÊÇÒ»¸ö°üº¬Ñ§ÉúĞÅÏ¢µÄÎÄ±¾ÎÄ¼ş
     std::string studentData = "Alice,20,85.5\nBob,22,78.2\nCharlie,21,90.0";
 
-    std::istringstream iss(studentData); // ä½¿ç”¨istringstreamä»å­—ç¬¦ä¸²ä¸­è¯»å–æ•°æ®
+    std::istringstream iss(studentData); // Ê¹ÓÃistringstream´Ó×Ö·û´®ÖĞ¶ÁÈ¡Êı¾İ
 
     std::string line;
-    while (std::getline(iss, line))// é€è¡Œè¯»å–æ•°æ®
+    while (std::getline(iss, line))// ÖğĞĞ¶ÁÈ¡Êı¾İ
     { 
         std::istringstream lineStream(line);
         std::string name;
         int age;
         float score;
 
-        // ä½¿ç”¨æµæ“ä½œç¬¦å°†æ¯ä¸€è¡Œçš„æ•°æ®æå–å‡ºæ¥
+        // Ê¹ÓÃÁ÷²Ù×÷·û½«Ã¿Ò»ĞĞµÄÊı¾İÌáÈ¡³öÀ´
         if (std::getline(lineStream, name, ',') &&
             lineStream >> age &&
-            lineStream.ignore(1) && // å¿½ç•¥é€—å·
+            lineStream.ignore(1) && // ºöÂÔ¶ººÅ
             lineStream >> score)
         {
 
-            // åˆ›å»ºå­¦ç”Ÿå¯¹è±¡å¹¶è¾“å‡ºä¿¡æ¯
+            // ´´½¨Ñ§Éú¶ÔÏó²¢Êä³öĞÅÏ¢
             Student student{ name, age, score };
             std::cout << "Name: " << student.name << ", Age: " << student.age << ", Score: " << student.score << std::endl;
         }
@@ -5495,22 +5581,22 @@ int main()
 #endif
 
 
-//ä½¿ç”¨C++ä¸­çš„éšæœºæ•°
+//Ê¹ÓÃC++ÖĞµÄËæ»úÊı
 #if 0
-#include <random>//ç¬¬ä¸€æ­¥ï¼šåŒ…å«éšæœºæ•°ç¨‹åºåº“
+#include <random>//µÚÒ»²½£º°üº¬Ëæ»úÊı³ÌĞò¿â
 #include <iostream>
 #include <algorithm>
 #include <vector>
 
 int main()
 {
-    //ç¬¬äºŒæ­¥ï¼šæä¾›äº§ç”Ÿéšæœºæ•°çš„å¼•æ“
+    //µÚ¶ş²½£ºÌá¹©²úÉúËæ»úÊıµÄÒıÇæ
     // create default engine as source of randomness
     std::default_random_engine dre;
 
-    //ç¬¬ä¸‰æ­¥ï¼šä½¿ç”¨å‡åŒ€åˆ†å¸ƒï¼Œå¾—åˆ°æŒ‡å®šèŒƒå›´çš„éšæœºæ•°
-    // uniform_int_distributionï¼šç”¨äºç”Ÿæˆæ•´æ•°ç±»å‹çš„éšæœºæ•°ã€‚
-    // ä½ å¯ä»¥æŒ‡å®šç”Ÿæˆéšæœºæ•°çš„èŒƒå›´ï¼ŒåŒ…æ‹¬èŒƒå›´å†…çš„æ‰€æœ‰æ•´æ•°ã€‚
+    //µÚÈı²½£ºÊ¹ÓÃ¾ùÔÈ·Ö²¼£¬µÃµ½Ö¸¶¨·¶Î§µÄËæ»úÊı
+    // uniform_int_distribution£ºÓÃÓÚÉú³ÉÕûÊıÀàĞÍµÄËæ»úÊı¡£
+    // Äã¿ÉÒÔÖ¸¶¨Éú³ÉËæ»úÊıµÄ·¶Î§£¬°üÀ¨·¶Î§ÄÚµÄËùÓĞÕûÊı¡£
     // use engine to generate integral numbers between 10 and 20 (both included)
     std::uniform_int_distribution<int> di(10, 20);
     for (int i = 0; i < 20; ++i) {
@@ -5518,8 +5604,8 @@ int main()
     }
     std::cout << std::endl;
 
-    //uniform_real_distributionï¼šç”¨äºç”Ÿæˆæµ®ç‚¹æ•°ç±»å‹çš„éšæœºæ•°ã€‚
-    // ä½ å¯ä»¥æŒ‡å®šç”Ÿæˆéšæœºæ•°çš„èŒƒå›´ï¼Œåœ¨æŒ‡å®šçš„èŒƒå›´å†…ç”Ÿæˆå‡åŒ€åˆ†å¸ƒçš„æµ®ç‚¹æ•°ã€‚
+    //uniform_real_distribution£ºÓÃÓÚÉú³É¸¡µãÊıÀàĞÍµÄËæ»úÊı¡£
+    // Äã¿ÉÒÔÖ¸¶¨Éú³ÉËæ»úÊıµÄ·¶Î§£¬ÔÚÖ¸¶¨µÄ·¶Î§ÄÚÉú³É¾ùÔÈ·Ö²¼µÄ¸¡µãÊı¡£
     // use engine to generate floating-point numbers between 10.0 and 20.0
     // (10.0 included, 20.0 not included)
     std::uniform_real_distribution<double> dr(10, 20);
@@ -5528,7 +5614,7 @@ int main()
     }
     std::cout << std::endl;
 
-    //ä½¿ç”¨éšæœºæ•°ç”Ÿæˆå¼•æ“æ¥æ‰“ä¹±å®¹å™¨å†…å…ƒç´ æ¬¡åº
+    //Ê¹ÓÃËæ»úÊıÉú³ÉÒıÇæÀ´´òÂÒÈİÆ÷ÄÚÔªËØ´ÎĞò
     // use engine to shuffle elements
     std::vector<int> v = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     //...
@@ -5540,15 +5626,18 @@ int main()
     std::cout << std::endl;
 }
 #endif
-//è¡¥å……ï¼š
-//ä½¿ç”¨Cæ ‡å‡†éšæœºå€¼ç”Ÿæˆå™¨ä¼šé€ æˆçš„é—®é¢˜(P912)
+//²¹³ä£º
+//Ê¹ÓÃC±ê×¼Ëæ»úÖµÉú³ÉÆ÷»áÔì³ÉµÄÎÊÌâ(P912)
+//µ±ÉÌ±»µ±×÷nÇÒÎªĞ¡ÕûÊıÊ±£¬Ğí¶àÎ±Ëæ»úÊıÉú³ÉÆ÷ÖÆÔì³öÀ´µÄÓàÊı²¢²»ºÜËæ»ú¡£
+//Èç¹ûnÊÇ´óÊı£¬ÇÒ±»Éú³ÉÖ®×î´óÖµ²¢·Ç¾ùÔÈµØ¿É±»n³ı¾¡£¬
+//ÄÇÃ´Ä³Ğ©ÓàÊıµÄ³öÏÖÂÊ»áÔ¶¸ßÓÚÆäËû¡£
 
 
-//å¹¶å‘ç¼–ç¨‹
-//é«˜çº§æ¥å£ï¼šasync()ã€future
-//ä½å±‚æ¥å£ï¼šthreadã€promise
+//²¢·¢±à³Ì
+//¸ß¼¶½Ó¿Ú£ºasync()¡¢future
+//µÍ²ã½Ó¿Ú£ºthread¡¢promise
 
-//å¹¶è¡Œè¿è¡Œfunc1()ã€func2()
+//²¢ĞĞÔËĞĞfunc1()¡¢func2()
 #if 0
 #include <future>
 #include <thread>
@@ -5567,7 +5656,7 @@ int doSomething(char c)
     // loop to print character after a random period of time
     for (int i = 0; i < 10; ++i) 
     {
-        //å½“å‰çº¿ç¨‹æš‚åœæ—¶é—´
+        //µ±Ç°Ïß³ÌÔİÍ£Ê±¼ä
         this_thread::sleep_for(chrono::milliseconds(id(dre)));
         cout.put(c).flush();
     }
@@ -5590,99 +5679,99 @@ int main()
     std::cout << "starting func1() in background"
         << " and func2() in foreground:" << std::endl;
 
-    //å°†ä»¥ä¸‹å†™æ³•ï¼š
+    //½«ÒÔÏÂĞ´·¨£º
     //int result = func1()+func2();
-    //æ”¹æˆï¼š
+    //¸Ä³É£º
 
-    //ç¬¬ä¸€æ­¥ï¼š
-    // å¼‚æ­¥å¯åŠ¨func1()
+    //µÚÒ»²½£º
+    // Òì²½Æô¶¯func1()
     // start func1() asynchronously (now or later or never):
     std::future<int> result1(std::async(func1));
-    //ç†è§£ï¼š
-    //ä½¿ç”¨ std::async()å°è¯•å¯åŠ¨ func1()äºåå°ï¼Œå¹¶å°†ç»“æœèµ‹å€¼ç»™æŸä¸ª std::futureå¯¹è±¡
-    //async()å°è¯•å°†å…¶æ‰€è·å¾—çš„å‡½æ•°ç«‹åˆ»ã€å¼‚æ­¥å¯åŠ¨ã€‘äºä¸€ä¸ªåˆ†ç¦»çº¿ç¨‹å†…ã€‚
-    // å› æ­¤æ¦‚å¿µä¸Šfunc1()åœ¨è¿™é‡Œè¢«å¯åŠ¨äº†ï¼Œä¸ä¼šé€ æˆmain()åœæ»ã€‚
-    // åŸºäºä¸¤ä¸ªåŸå› ï¼Œè¿”å› future å¯¹è±¡ æ˜¯å¿…è¦çš„ï¼š
+    //Àí½â£º
+    //Ê¹ÓÃ std::async()³¢ÊÔÆô¶¯ func1()ÓÚºóÌ¨£¬²¢½«½á¹û¸³Öµ¸øÄ³¸ö std::future¶ÔÏó
+    //async()³¢ÊÔ½«ÆäËù»ñµÃµÄº¯ÊıÁ¢¿Ì¡¾Òì²½Æô¶¯¡¿ÓÚÒ»¸ö·ÖÀëÏß³ÌÄÚ¡£
+    // Òò´Ë¸ÅÄîÉÏfunc1()ÔÚÕâÀï±»Æô¶¯ÁË£¬²»»áÔì³Émain()Í£ÖÍ¡£
+    // »ùÓÚÁ½¸öÔ­Òò£¬·µ»Ø future ¶ÔÏóÊÇ±ØÒªµÄ£º
     /*
-        1.å®ƒå…è®¸ä½ å–å¾—â€œä¼ ç»™ async()çš„é‚£ä¸ªå‡½æ•°â€çš„æœªæ¥ç»“æœâ€”â€”
-            ä¹Ÿè®¸æ˜¯ä¸ªè¿”å›å€¼ï¼Œä¹Ÿè®¸æ˜¯ä¸ªå¼‚å¸¸ã€‚
-            è¿™ä¸ª future objectå·²å—åˆ°â€œè¢«å¯åŠ¨å‡½æ•°â€è¿”å›ç±»å‹çš„ç‰¹åŒ–ï¼Œ
-            å¦‚æœè¢«å¯åŠ¨çš„æ˜¯ä¸ªè¿”å›â€œæ— ç‰©â€çš„åå°ä»»åŠ¡(background task),
-            è¿™å°±ä¼šæ˜¯ std::future<void>ã€‚
-        2.å®ƒå¿…é¡»å­˜åœ¨ï¼Œç¡®ä¿â€œç›®æ ‡å‡½æ•°â€æˆ–å¿«æˆ–æ…¢ç»ˆä¼šè¢«è°ƒç”¨ã€‚
-            æ³¨æ„å…ˆå‰æˆ‘è¯´async()å°è¯•å¯åŠ¨ç›®æ ‡å‡½æ•°ã€‚
-            å¦‚æœè¿™æ ·çš„äº‹æƒ…æ²¡å‘ç”Ÿï¼Œç¨åæˆ‘ä»¬éœ€è¦è¿™ä¸ª future å¯¹è±¡æ‰èƒ½å¼ºè¿«å¯åŠ¨ä¹‹
-            (å½“æˆ‘ä»¬éœ€è¦å‡½æ•°çš„è¿è¡Œç»“æœæˆ–å½“æˆ‘ä»¬æƒ³è¦ç¡®ä¿è¯¥å‡½æ•°è¢«æ‰§è¡Œæ—¶)ã€‚
+        1.ËüÔÊĞíÄãÈ¡µÃ¡°´«¸ø async()µÄÄÇ¸öº¯Êı¡±µÄÎ´À´½á¹û¡ª¡ª
+            Ò²ĞíÊÇ¸ö·µ»ØÖµ£¬Ò²ĞíÊÇ¸öÒì³£¡£
+            Õâ¸ö future objectÒÑÊÜµ½¡°±»Æô¶¯º¯Êı¡±·µ»ØÀàĞÍµÄÌØ»¯£¬
+            Èç¹û±»Æô¶¯µÄÊÇ¸ö·µ»Ø¡°ÎŞÎï¡±µÄºóÌ¨ÈÎÎñ(background task),
+            Õâ¾Í»áÊÇ std::future<void>¡£
+        2.Ëü±ØĞë´æÔÚ£¬È·±£¡°Ä¿±êº¯Êı¡±»ò¿ì»òÂıÖÕ»á±»µ÷ÓÃ¡£
+            ×¢ÒâÏÈÇ°ÎÒËµasync()³¢ÊÔÆô¶¯Ä¿±êº¯Êı¡£
+            Èç¹ûÕâÑùµÄÊÂÇéÃ»·¢Éú£¬ÉÔºóÎÒÃÇĞèÒªÕâ¸ö future ¶ÔÏó²ÅÄÜÇ¿ÆÈÆô¶¯Ö®
+            (µ±ÎÒÃÇĞèÒªº¯ÊıµÄÔËĞĞ½á¹û»òµ±ÎÒÃÇÏëÒªÈ·±£¸Ãº¯Êı±»Ö´ĞĞÊ±)¡£
      */
 
-    //ç¬¬äºŒæ­¥ï¼š
-    //æ­£å¸¸å¯åŠ¨func2()äºå‰å°
+    //µÚ¶ş²½£º
+    //Õı³£Æô¶¯func2()ÓÚÇ°Ì¨
     int result2 = func2();    // call func2() synchronously (here and now)
 
-    //ç¬¬ä¸‰æ­¥ï¼š
-    // ä½¿ç”¨get()æ–¹æ³•ï¼Œæ„æ€æ˜¯æ¬²æ˜ç¡®ç´¢æ±‚ç›®æ ‡å‡½æ•°çš„ç»“æœ
+    //µÚÈı²½£º
+    // Ê¹ÓÃget()·½·¨£¬ÒâË¼ÊÇÓûÃ÷È·Ë÷ÇóÄ¿±êº¯ÊıµÄ½á¹û
     // print result (wait for func1() to finish and add its result to result2)
     int result = result1.get() + result2;
 
-    // get()è¢«è°ƒç”¨ï¼Œä»¥ä¸‹ä¸‰ä»¶äº‹æƒ…ä¹‹ä¸€ä¼šå‘ç”Ÿï¼›
+    // get()±»µ÷ÓÃ£¬ÒÔÏÂÈı¼şÊÂÇéÖ®Ò»»á·¢Éú£»
     /*
-     1.å¦‚æœ func1()è¢« async()å¯åŠ¨äºä¸€ä¸ªåˆ†ç¦»çº¿ç¨‹ä¸­å¹¶ä¸”å·²ç»“æŸï¼Œä½ ä¼šç«‹åˆ»è·å¾—å…¶ç»“æœã€‚
-     2.å¦‚æœfunc1()è¢«å¯åŠ¨ä½†å°šæœªç»“æŸï¼Œget()ä¼šå¼•å‘åœæ»(block)
-        å¾… func1()ç»“æŸåè·å¾—ç»“æœã€‚
-     3.å¦‚æœ func1()å°šæœªå¯åŠ¨ï¼Œä¼šè¢«å¼ºè¿«å¯åŠ¨å¦‚åŒä¸€ä¸ªåŒæ­¥è°ƒç”¨ï¼›
-         get()ä¼šå¼•å‘åœæ»ç›´è‡³äº§ç”Ÿç»“æœã€‚
-     è¿™æ ·çš„è¡Œä¸ºå¾ˆé‡è¦ï¼Œå› ä¸ºè¿™ç¡®ä¿äº†åœ¨å•çº¿ç¨‹ç¯å¢ƒä¸­ï¼Œ
-     æˆ–æ˜¯å½“async()æ— æ³•å¯åŠ¨æ–°çº¿ç¨‹æ—¶(ä¸è®ºåŸºäºä»»ä½•ç†ç”±), ç¨‹åºä»èƒ½æœ‰æ•ˆè¿ä½œã€‚
+     1.Èç¹û func1()±» async()Æô¶¯ÓÚÒ»¸ö·ÖÀëÏß³ÌÖĞ²¢ÇÒÒÑ½áÊø£¬Äã»áÁ¢¿Ì»ñµÃÆä½á¹û¡£
+     2.Èç¹ûfunc1()±»Æô¶¯µ«ÉĞÎ´½áÊø£¬get()»áÒı·¢Í£ÖÍ(block)
+        ´ı func1()½áÊøºó»ñµÃ½á¹û¡£
+     3.Èç¹û func1()ÉĞÎ´Æô¶¯£¬»á±»Ç¿ÆÈÆô¶¯ÈçÍ¬Ò»¸öÍ¬²½µ÷ÓÃ£»
+         get()»áÒı·¢Í£ÖÍÖ±ÖÁ²úÉú½á¹û¡£
+     ÕâÑùµÄĞĞÎªºÜÖØÒª£¬ÒòÎªÕâÈ·±£ÁËÔÚµ¥Ïß³Ì»·¾³ÖĞ£¬
+     »òÊÇµ±async()ÎŞ·¨Æô¶¯ĞÂÏß³ÌÊ±(²»ÂÛ»ùÓÚÈÎºÎÀíÓÉ), ³ÌĞòÈÔÄÜÓĞĞ§ÔË×÷¡£
      */
 
     /*
-    å› æ­¤ï¼Œ
+    Òò´Ë£¬
     std::future<int> result1(std::async(func1));
-    å’Œ
+    ºÍ
     result1.get()
-    çš„ç»„åˆå…è®¸ä½ ä»¥æŸç§æ–¹å¼ä¼˜åŒ–ç¨‹åºï¼š
-    (1)å¦‚æœå¯èƒ½ï¼Œå½“ main çº¿ç¨‹çš„ä¸‹ä¸€ä¸ªè¯­å¥è¢«å¤„ç†æ—¶func1()è¢«å¹¶è¡Œè¿è¡Œï¼Œ
-    (2)å¦‚æœæ— æ³•å¹¶è¡Œè¿è¡Œï¼Œé‚£ä¹ˆfunc1()ä¼šåœ¨ get()è¢«è°ƒç”¨æ—¶
-    è¢«å¾ªåºè°ƒç”¨(called sequentially)ã€‚
-    è¿™å°±æ„å‘³ç€æ— è®ºå¦‚ä½•éƒ½èƒ½ä¿è¯è‡³å°‘åœ¨ get()æ‰§è¡Œåä¸€å®šä¼šè°ƒç”¨
-    func1()â€”â€”ä¸æ˜¯å¼‚æ­¥å°±æ˜¯åŒæ­¥ã€‚
+    µÄ×éºÏÔÊĞíÄãÒÔÄ³ÖÖ·½Ê½ÓÅ»¯³ÌĞò£º
+    (1)Èç¹û¿ÉÄÜ£¬µ± main Ïß³ÌµÄÏÂÒ»¸öÓï¾ä±»´¦ÀíÊ±func1()±»²¢ĞĞÔËĞĞ£¬
+    (2)Èç¹ûÎŞ·¨²¢ĞĞÔËĞĞ£¬ÄÇÃ´func1()»áÔÚ get()±»µ÷ÓÃÊ±
+    ±»Ñ­Ğòµ÷ÓÃ(called sequentially)¡£
+    Õâ¾ÍÒâÎ¶×ÅÎŞÂÛÈçºÎ¶¼ÄÜ±£Ö¤ÖÁÉÙÔÚ get()Ö´ĞĞºóÒ»¶¨»áµ÷ÓÃ
+    func1()¡ª¡ª²»ÊÇÒì²½¾ÍÊÇÍ¬²½¡£
     */
 
-    //è¡¥å……ï¼š
+    //²¹³ä£º
     /*
-    ä»¥ä¸‹æˆ–è®¸ä¸æ˜¯ä½ è¦çš„ï¼š
+    ÒÔÏÂ»òĞí²»ÊÇÄãÒªµÄ£º
     std::future<int> result1(std::async(func1));
 
     int result = func2()+ result1.get();//might call func2() after func1() ends
 
-    ç”±äºä¸Šè¿°ç¬¬äºŒä¸ªè¯­å¥å³ä¾§çš„æ ¸ç®—é¡ºåºï¼Œresult1.get()æœ‰å¯èƒ½åœ¨ func2()ä¹‹å‰è¢«è°ƒç”¨
+    ÓÉÓÚÉÏÊöµÚ¶ş¸öÓï¾äÓÒ²àµÄºËËãË³Ğò£¬result1.get()ÓĞ¿ÉÄÜÔÚ func2()Ö®Ç°±»µ÷ÓÃ
     */
 
-    //æ•´ä½“è¿è¡Œæ—¶é—´æ˜¯func1()å’Œfunc2()è¿è¡Œæ—¶é—´ä¸­çš„è¾ƒå¤§è€…  åŠ ä¸Š è®¡ç®—æ€»å’Œçš„æ—¶é—´
+    //ÕûÌåÔËĞĞÊ±¼äÊÇfunc1()ºÍfunc2()ÔËĞĞÊ±¼äÖĞµÄ½Ï´óÕß  ¼ÓÉÏ ¼ÆËã×ÜºÍµÄÊ±¼ä
     std::cout << "\nresult of func1()+func2(): " << result
         << std::endl;
 }
 #endif
-//è¡¥å……ï¼š
-//Launch(å‘å°„)ç­–ç•¥
+//²¹³ä£º
+//Launch(·¢Éä)²ßÂÔ
 /*
-//æŒ‡ç¤ºasync()è¢«è°ƒç”¨æ—¶åº”æ˜ç¡®åœ°ä»¥å¼‚æ­¥æ–¹å¼å¯åŠ¨ç›®æ ‡å‡½æ•°ï¼šï¼ˆè¯¥åšæ³•ä¸å¿…éå¾—è°ƒç”¨get()ï¼‰
+//Ö¸Ê¾async()±»µ÷ÓÃÊ±Ó¦Ã÷È·µØÒÔÒì²½·½Ê½Æô¶¯Ä¿±êº¯Êı£º£¨¸Ã×ö·¨²»±Ø·ÇµÃµ÷ÓÃget()£©
 // force func1() to start asynchronously now or throw std::system_error
 
 std::future<long> result1 = std::async(std::launch:: async, func1);
 
-//æŒ‡ç¤ºå¼ºåˆ¶å»¶ç¼“æ‰§è¡Œ(deferred execution)ï¼š
-ä»¥ std::launch:deferredä¸ºå‘å°„ç­–ç•¥ä¼ ç»™ async()ã€‚ä¸‹é¢çš„åšæ³•å…è®¸ä½ å»¶ç¼“func1()ç›´åˆ°ä½ å¯¹fè°ƒç”¨get() :
+//Ö¸Ê¾Ç¿ÖÆÑÓ»ºÖ´ĞĞ(deferred execution)£º
+ÒÔ std::launch:deferredÎª·¢Éä²ßÂÔ´«¸ø async()¡£ÏÂÃæµÄ×ö·¨ÔÊĞíÄãÑÓ»ºfunc1()Ö±µ½Äã¶Ôfµ÷ÓÃget() :
    
-std::future<â€¦> f(std::async(std::launch::deferred,
+std::future<¡­> f(std::async(std::launch::deferred,
         func1));                                                     //defer func1 until get()
 
-//è¿™ä¿è¯ func1()ç»ä¸ä¼šåœ¨æ²¡æœ‰get()(æˆ– wait(); è§ç¬¬953é¡µ)çš„æƒ…å†µä¸‹å¯åŠ¨ã€‚
+//Õâ±£Ö¤ func1()¾ø²»»áÔÚÃ»ÓĞget()(»ò wait(); ¼ûµÚ953Ò³)µÄÇé¿öÏÂÆô¶¯¡£
 */
 
 
-//å¤„ç†åå°æ“ä½œæ‰€äº§ç”Ÿçš„å¼‚å¸¸ï¼Œåªéœ€ä½¿ç”¨get()åšå‡ºâ€œä»¥åŒæ­¥æ–¹å¼è°ƒç”¨è¯¥æ“ä½œâ€
-//æ‰€åšçš„ç›¸åŒåŠ¨ä½œå³å¯
+//´¦ÀíºóÌ¨²Ù×÷Ëù²úÉúµÄÒì³££¬Ö»ĞèÊ¹ÓÃget()×ö³ö¡°ÒÔÍ¬²½·½Ê½µ÷ÓÃ¸Ã²Ù×÷¡±
+//Ëù×öµÄÏàÍ¬¶¯×÷¼´¿É
 #if 0
 #include <future>
 #include <list>
@@ -5730,11 +5819,11 @@ int main()
 #endif
 
 
-//class std::futureæä¾›äº†â€œå¤„ç†å¹¶å‘è¿ç®—ä¹‹æœªæ¥ç»“æœâ€çš„èƒ½åŠ›ã€‚ç„¶è€Œ
-//ä½ åªèƒ½å¤„ç†è¯¥ç»“æœä¸€æ¬¡ã€‚ç¬¬äºŒæ¬¡è°ƒç”¨get()ä¼šå¯¼è‡´ä¸å¯é¢„æœŸçš„è¡Œä¸º
-//æœ‰æ—¶å€™ï¼Œå¤šæ¬¡å¤„ç†â€œå¹¶å‘è¿ç®—ä¹‹æœªæ¥ç»“æœâ€æ˜¯åˆç†çš„ï¼Œç‰¹åˆ«å½“å¤šä¸ªå…¶ä»–çº¿ç¨‹éƒ½æƒ³
-//å¤„ç†è¿™ä»½ç»“æœæ—¶ã€‚åŸºäºè¿™ä¸ªç›®çš„ï¼ŒC++æ ‡å‡†åº“æä¾›äº†class std::shared_future, 
-// äºæ˜¯ä½ å¯ä»¥å¤šæ¬¡è°ƒç”¨get(), å¯¼è‡´ç›¸åŒç»“æœï¼Œæˆ–å¯¼è‡´æŠ›å‡ºåŒä¸€ä¸ªå¼‚å¸¸
+//class std::futureÌá¹©ÁË¡°´¦Àí²¢·¢ÔËËãÖ®Î´À´½á¹û¡±µÄÄÜÁ¦¡£È»¶ø
+//ÄãÖ»ÄÜ´¦Àí¸Ã½á¹ûÒ»´Î¡£µÚ¶ş´Îµ÷ÓÃget()»áµ¼ÖÂ²»¿ÉÔ¤ÆÚµÄĞĞÎª
+//ÓĞÊ±ºò£¬¶à´Î´¦Àí¡°²¢·¢ÔËËãÖ®Î´À´½á¹û¡±ÊÇºÏÀíµÄ£¬ÌØ±ğµ±¶à¸öÆäËûÏß³Ì¶¼Ïë
+//´¦ÀíÕâ·İ½á¹ûÊ±¡£»ùÓÚÕâ¸öÄ¿µÄ£¬C++±ê×¼¿âÌá¹©ÁËclass std::shared_future, 
+// ÓÚÊÇÄã¿ÉÒÔ¶à´Îµ÷ÓÃget(), µ¼ÖÂÏàÍ¬½á¹û£¬»òµ¼ÖÂÅ×³öÍ¬Ò»¸öÒì³£
 #if 0
 #include <future>
 #include <thread>
@@ -5783,23 +5872,23 @@ int main()
 {
     try 
     {
-        //å¯åŠ¨ä¸€ä¸ªçº¿ç¨‹æ¥æŸ¥è¯¢ä¸€ä¸ªæ•°å­—
+        //Æô¶¯Ò»¸öÏß³ÌÀ´²éÑ¯Ò»¸öÊı×Ö
         // start one thread to query a number
         shared_future<int> f = async(queryNumber);
-        //shared futureå¯ä»¥ä»¥å¯»å¸¸çš„ futureä¸ºåˆå€¼ï¼Œ
-        // äºæ˜¯ futureçš„çŠ¶æ€(state)ä¼šè¢«æ¬ç§»åˆ° shared future èº«ä¸Š
-        //å°±å†…éƒ¨è€Œè¨€ï¼Œæ‰€æœ‰ shared future objectå…±äº«æ‰€è°“ shared state,
-        // åè€…ç”± async()å»ºç«‹ï¼Œç”¨æ¥å­˜æ”¾ç›®æ ‡å‡½æ•°çš„è¿è¡Œç»“æœ
-        // (ä¹Ÿå­˜æ”¾å‡½æ•°æœ¬èº«â€”â€”å¦‚æœå®ƒè¢«æ¨è¿Ÿæ‰§è¡Œçš„è¯)ã€‚
+        //shared future¿ÉÒÔÒÔÑ°³£µÄ futureÎª³õÖµ£¬
+        // ÓÚÊÇ futureµÄ×´Ì¬(state)»á±»°áÒÆµ½ shared future ÉíÉÏ
+        //¾ÍÄÚ²¿¶øÑÔ£¬ËùÓĞ shared future object¹²ÏíËùÎ½ shared state,
+        // ºóÕßÓÉ async()½¨Á¢£¬ÓÃÀ´´æ·ÅÄ¿±êº¯ÊıµÄÔËĞĞ½á¹û
+        // (Ò²´æ·Åº¯Êı±¾Éí¡ª¡ªÈç¹ûËü±»ÍÆ³ÙÖ´ĞĞµÄ»°)¡£
 
         // start three threads each processing this number in a loop
         auto f1 = async(launch::async, doSomething, '.', f);
         auto f2 = async(launch::async, doSomething, '+', f);
         auto f3 = async(launch::async, doSomething, '*', f);
-        //***æ³¨***
-        // æ¯ä¸€æ¬¡ doSomething()è¢«è°ƒç”¨ï¼Œ
-        // ä¾¿é€šè¿‡ä¼ å…¥ä¹‹ç¬¬äºŒå‚æ•°shared futureçš„æˆå‘˜å‡½æ•°get(),
-        // ç­‰å¾…åŠå¤„ç† queryNumber()çš„æ‰§è¡Œç»“æœï¼š
+        //***×¢***
+        // Ã¿Ò»´Î doSomething()±»µ÷ÓÃ£¬
+        // ±ãÍ¨¹ı´«ÈëÖ®µÚ¶ş²ÎÊıshared futureµÄ³ÉÔ±º¯Êıget(),
+        // µÈ´ı¼°´¦Àí queryNumber()µÄÖ´ĞĞ½á¹û£º
 
         // wait for all loops to be finished
         f1.get();
@@ -5815,7 +5904,7 @@ int main()
 #endif
 
 
-//ä½¿ç”¨thread
+//Ê¹ÓÃthread
 #if 0
 #include <thread>
 #include <chrono>
@@ -5857,7 +5946,7 @@ int main()
     {
         thread t1(doSomething, 5, '.');  // print five dots in separate thread
         cout << "- started fg thread " << t1.get_id() << endl;
-        //t1çº¿ç¨‹è´Ÿè´£æ‰“å° "....."
+        //t1Ïß³Ì¸ºÔğ´òÓ¡ "....."
 
         // print other characters in other background threads
         for (int i = 0; i < 5; ++i)
@@ -5866,7 +5955,7 @@ int main()
             cout << "- detach started bg thread " << t.get_id() << endl;
             t.detach();  // detach thread into the background
         }
-        //5ä¸ªçº¿ç¨‹è´Ÿè´£æ‰“å°aåˆ°eå…±50ä¸ªå­—æ¯
+        //5¸öÏß³Ì¸ºÔğ´òÓ¡aµ½e¹²50¸ö×ÖÄ¸
 
         cin.get();  // wait for any input (return)
 
@@ -5878,16 +5967,16 @@ int main()
         cerr << "EXCEPTION: " << e.what() << endl;
     }
 }
-//***æ³¨***
-//å¤šä¸ªçº¿ç¨‹ä¼šå…±äº«æ•°æ®åŒºå’Œå †ï¼Œæ¯ä¸ªçº¿ç¨‹ç»´æŠ¤è‡ªå·±çš„æ ˆã€‚
+//***×¢***
+//¶à¸öÏß³Ì»á¹²ÏíÊı¾İÇøºÍ¶Ñ£¬Ã¿¸öÏß³ÌÎ¬»¤×Ô¼ºµÄÕ»¡£
 #endif
 
-//å…³äºçº¿ç¨‹çš„ID
-// å®ç°(implementation)æœ‰å¯èƒ½åœ¨è¢«ç”³è¯·æ—¶æ‰åŠ¨æ€ç”Ÿæˆè¿™äº›ID,è€Œä¸æ˜¯åœ¨thread 
-// è¢«å¯åŠ¨æ—¶å°±ç”Ÿæˆä¹‹ï¼Œé‚£ä¹ˆ main thread çš„ç¼–å·å°±å–å†³äºå…ˆå‰å¯¹ thread IDçš„ç”³è¯·æ¬¡æ•°
+//¹ØÓÚÏß³ÌµÄID
+// ÊµÏÖ(implementation)ÓĞ¿ÉÄÜÔÚ±»ÉêÇëÊ±²Å¶¯Ì¬Éú³ÉÕâĞ©ID,¶ø²»ÊÇÔÚthread 
+// ±»Æô¶¯Ê±¾ÍÉú³ÉÖ®£¬ÄÇÃ´ main thread µÄ±àºÅ¾ÍÈ¡¾öÓÚÏÈÇ°¶Ô thread IDµÄÉêÇë´ÎÊı
 // 
-// å› æ­¤ï¼Œè¯†åˆ«çº¿ç¨‹(ä¾‹å¦‚ä¸»çº¿ç¨‹ master thread)çš„å”¯ä¸€åŠæ³•æ˜¯ï¼Œ
-// å°†çº¿ç¨‹å¯åŠ¨æ—¶çš„ IDå­˜å‚¨ä¸‹æ¥ï¼Œä»¥æ­¤ä¸ºå”¯ä¸€è¯†åˆ«å€¼ï¼š
+// Òò´Ë£¬Ê¶±ğÏß³Ì(ÀıÈçÖ÷Ïß³Ì master thread)µÄÎ¨Ò»°ì·¨ÊÇ£¬
+// ½«Ïß³ÌÆô¶¯Ê±µÄ ID´æ´¢ÏÂÀ´£¬ÒÔ´ËÎªÎ¨Ò»Ê¶±ğÖµ£º
 /*
 std::thread::id masterThreadID;
 
@@ -5904,7 +5993,7 @@ std::thread slave(doSomething);
 */
 
 
-//ç”¨æ¥ä¼ é€’è¿è¡Œç»“æœå’Œå¼‚å¸¸çš„ä¸€èˆ¬æ€§æœºåˆ¶ï¼špromise
+//ÓÃÀ´´«µİÔËĞĞ½á¹ûºÍÒì³£µÄÒ»°ãĞÔ»úÖÆ£ºpromise
 #if 0
 #include <thread>
 #include <future>
@@ -5940,29 +6029,29 @@ void doSomething(std::promise<std::string>& p)
 int main()
 {
     try {
-        // create a promise to ã€storeã€‘ the outcome
+        // create a promise to ¡¾store¡¿ the outcome
         std::promise<std::string> p;
-        //å­˜stringçš„å€¼æˆ–ä¸€ä¸ªå¼‚å¸¸ï¼Œå¹¶å¯è¢« future object å–å…¶æ•°æ®å½“ä½œçº¿ç¨‹ç»“æœã€‚
+        //´æstringµÄÖµ»òÒ»¸öÒì³££¬²¢¿É±» future object È¡ÆäÊı¾İµ±×÷Ïß³Ì½á¹û¡£
 
-        // create a future to ã€processã€‘ the outcome
+        // create a future to ¡¾process¡¿ the outcome
         std::future<std::string> f(p.get_future());
-        //åˆ›å»ºä¸€ä¸ªfutureå¯¹è±¡ï¼Œé€šè¿‡p.get_future()è·å–promiseå¯¹è±¡çš„futureï¼Œ
-        // ç”¨äºè·å–çº¿ç¨‹çš„ç»“æœã€‚è¿™é‡Œçš„ f å°†ä¼šæŒæœ‰å¼‚æ­¥ä»»åŠ¡çš„æœªæ¥ç»“æœã€‚
+        //´´½¨Ò»¸öfuture¶ÔÏó£¬Í¨¹ıp.get_future()»ñÈ¡promise¶ÔÏóµÄfuture£¬
+        // ÓÃÓÚ»ñÈ¡Ïß³ÌµÄ½á¹û¡£ÕâÀïµÄ f ½«»á³ÖÓĞÒì²½ÈÎÎñµÄÎ´À´½á¹û¡£
 
         // start a thread using the promise to store the outcome
         std::thread t(doSomething, std::ref(p));
-        //***æ³¨***
-        //åˆ›å»ºä¸€ä¸ªæ–°çš„çº¿ç¨‹ï¼Œçº¿ç¨‹çš„æ‰§è¡Œå‡½æ•°æ˜¯doSomethingï¼Œ
-        // å¹¶ä¼ é€’äº†ä¸€ä¸ªstd::reference_wrapper<std::promise<std::string>>ç±»å‹çš„å‚æ•°ï¼Œ
-        // å¼•ç”¨äº†ä¹‹å‰åˆ›å»ºçš„promiseå¯¹è±¡pã€‚ä½¿å…¶çŠ¶æ€å¯ä»¥è¢«æ”¹å˜ã€‚
-        // è¿™ä¸ªçº¿ç¨‹å°†ä¼šæ‰§è¡Œå¼‚æ­¥ä»»åŠ¡ã€‚
+        //***×¢***
+        //´´½¨Ò»¸öĞÂµÄÏß³Ì£¬Ïß³ÌµÄÖ´ĞĞº¯ÊıÊÇdoSomething£¬
+        // ²¢´«µİÁËÒ»¸östd::reference_wrapper<std::promise<std::string>>ÀàĞÍµÄ²ÎÊı£¬
+        // ÒıÓÃÁËÖ®Ç°´´½¨µÄpromise¶ÔÏóp¡£Ê¹Æä×´Ì¬¿ÉÒÔ±»¸Ä±ä¡£
+        // Õâ¸öÏß³Ì½«»áÖ´ĞĞÒì²½ÈÎÎñ¡£
 
         t.detach();
         //...
 
         // process the outcome
         std::cout << "result: " << f.get() << std::endl;
-        //é€šè¿‡get(),æˆ‘ä»¬å¯ä»¥å–å¾—â€œè¢«å­˜å‚¨çš„ç»“æœâ€,æˆ–æ˜¯ä»¤â€œè¢«å­˜å‚¨çš„å¼‚å¸¸â€å†æ¬¡è¢«æŠ›å‡º
+        //Í¨¹ıget(),ÎÒÃÇ¿ÉÒÔÈ¡µÃ¡°±»´æ´¢µÄ½á¹û¡±,»òÊÇÁî¡°±»´æ´¢µÄÒì³£¡±ÔÙ´Î±»Å×³ö
     }
     catch (const std::exception& e)
     {
@@ -5972,83 +6061,83 @@ int main()
     {
         std::cerr << "EXCEPTION " << std::endl;
     }
-    //***æ³¨***
-    //catch (...)ç”¨äºæ•è·ä»»ä½•å¯èƒ½å‘ç”Ÿçš„å¼‚å¸¸ï¼Œä¸ç®¡æ˜¯æ ‡å‡†å¼‚å¸¸ï¼ˆæ´¾ç”Ÿè‡ªstd::exceptionï¼‰
-    // è¿˜æ˜¯å…¶ä»–ç±»å‹çš„å¼‚å¸¸ã€‚è¿™æ ·åšå¯ä»¥ç¡®ä¿å³ä½¿å‡ºç°äº†æœªé¢„æœŸçš„å¼‚å¸¸ç±»å‹ï¼Œ
-    // ç¨‹åºä¹Ÿå¯ä»¥é€šè¿‡è¾“å‡ºé”™è¯¯ä¿¡æ¯æ¥è¿›è¡Œé€‚å½“çš„å¤„ç†ï¼Œè€Œä¸è‡³äºç›´æ¥å´©æºƒ
+    //***×¢***
+    //catch (...)ÓÃÓÚ²¶»ñÈÎºÎ¿ÉÄÜ·¢ÉúµÄÒì³££¬²»¹ÜÊÇ±ê×¼Òì³££¨ÅÉÉú×Ôstd::exception£©
+    // »¹ÊÇÆäËûÀàĞÍµÄÒì³£¡£ÕâÑù×ö¿ÉÒÔÈ·±£¼´Ê¹³öÏÖÁËÎ´Ô¤ÆÚµÄÒì³£ÀàĞÍ£¬
+    // ³ÌĞòÒ²¿ÉÒÔÍ¨¹ıÊä³ö´íÎóĞÅÏ¢À´½øĞĞÊÊµ±µÄ´¦Àí£¬¶ø²»ÖÁÓÚÖ±½Ó±ÀÀ£
 }
 #endif
 
 
 //packaged_task<>
-//å°è¯•ç«‹å³å¯åŠ¨äºåå°
+//³¢ÊÔÁ¢¼´Æô¶¯ÓÚºóÌ¨
 
 
-// å¹¶å‘
-// ä½¿ç”¨å¤šçº¿ç¨‹(multiple thread)å‡ ä¹æ€»æ˜¯ä¼šä¼´éšâ€œæ•°æ®çš„å¹¶å‘è®¿é—®â€(concurrent data access)ã€‚
-// çº¿ç¨‹æœ‰å¯èƒ½æä¾›æ•°æ®ç»™å…¶ä»–çº¿ç¨‹å¤„ç†ï¼Œæˆ–æ˜¯å¤‡å¦¥å¿…è¦çš„å…ˆå†³æ¡ä»¶(precondition)
-// ç”¨ä»¥å¯åŠ¨å…¶ä»–è¿›ç¨‹(process)ã€‚
-// ç¬¬ä¸€æ¡è§„åˆ™ï¼š
-// å¤šä¸ªçº¿ç¨‹å¹¶å‘å¤„ç†ç›¸åŒçš„æ•°æ®è€Œåˆä¸æ›¾åŒæ­¥åŒ–(synchronization),
-// é‚£ä¹ˆå”¯ä¸€å®‰å…¨çš„æƒ…å†µå°±æ˜¯ï¼šæ‰€æœ‰çº¿ç¨‹åªè¯»å–æ•°æ®ã€‚
+// ²¢·¢
+// Ê¹ÓÃ¶àÏß³Ì(multiple thread)¼¸ºõ×ÜÊÇ»á°éËæ¡°Êı¾İµÄ²¢·¢·ÃÎÊ¡±(concurrent data access)¡£
+// Ïß³ÌÓĞ¿ÉÄÜÌá¹©Êı¾İ¸øÆäËûÏß³Ì´¦Àí£¬»òÊÇ±¸Í×±ØÒªµÄÏÈ¾öÌõ¼ş(precondition)
+// ÓÃÒÔÆô¶¯ÆäËû½ø³Ì(process)¡£
+// µÚÒ»Ìõ¹æÔò£º
+// ¶à¸öÏß³Ì²¢·¢´¦ÀíÏàÍ¬µÄÊı¾İ¶øÓÖ²»ÔøÍ¬²½»¯(synchronization),
+// ÄÇÃ´Î¨Ò»°²È«µÄÇé¿ö¾ÍÊÇ£ºËùÓĞÏß³ÌÖ»¶ÁÈ¡Êı¾İ¡£
 
-//å½“ä¸¤ä¸ªæˆ–æ›´å¤šçº¿ç¨‹å¹¶å‘å¤„ç†ç›¸åŒçš„å˜é‡æˆ–å¯¹è±¡æˆ–æˆå‘˜ï¼Œè€Œä¸”è‡³å°‘å…¶ä¸­ä¸€ä¸ªçº¿ç¨‹æ”¹åŠ¨äº†å®ƒï¼Œ
-// è€Œä½ åˆä¸æ›¾åŒæ­¥åŒ–(synchronize)è¯¥å¤„ç†åŠ¨ä½œï¼Œä½ å°±å¯èƒ½æœ‰äº†æ·±æ·±çš„éº»çƒ¦ã€‚
-// è¿™å°±æ˜¯C++ æ‰€è°“çš„ data raceã€‚
-// C++11æ ‡å‡†ä¸­å®šä¹‰çš„ data race æ˜¯â€œä¸åŒçº¿ç¨‹ä¸­çš„ä¸¤ä¸ªäº’ç›¸å†²çªçš„åŠ¨ä½œï¼Œ
-// å…¶ä¸­è‡³å°‘ä¸€ä¸ªåŠ¨ä½œä¸æ˜¯atomic(ä¸å¯åˆ‡å‰²çš„), è€Œä¸”æ— ä¸€ä¸ªåŠ¨ä½œå‘ç”Ÿåœ¨å¦ä¸€åŠ¨ä½œä¹‹å‰â€ã€‚
-// Data race æ€»æ˜¯å¯¼è‡´ä¸å¯é¢„æœŸçš„è¡Œä¸ºã€‚
+//µ±Á½¸ö»ò¸ü¶àÏß³Ì²¢·¢´¦ÀíÏàÍ¬µÄ±äÁ¿»ò¶ÔÏó»ò³ÉÔ±£¬¶øÇÒÖÁÉÙÆäÖĞÒ»¸öÏß³Ì¸Ä¶¯ÁËËü£¬
+// ¶øÄãÓÖ²»ÔøÍ¬²½»¯(synchronize)¸Ã´¦Àí¶¯×÷£¬Äã¾Í¿ÉÄÜÓĞÁËÉîÉîµÄÂé·³¡£
+// Õâ¾ÍÊÇC++ ËùÎ½µÄ data race¡£
+// C++11±ê×¼ÖĞ¶¨ÒåµÄ data race ÊÇ¡°²»Í¬Ïß³ÌÖĞµÄÁ½¸ö»¥Ïà³åÍ»µÄ¶¯×÷£¬
+// ÆäÖĞÖÁÉÙÒ»¸ö¶¯×÷²»ÊÇatomic(²»¿ÉÇĞ¸îµÄ), ¶øÇÒÎŞÒ»¸ö¶¯×÷·¢ÉúÔÚÁíÒ»¶¯×÷Ö®Ç°¡±¡£
+// Data race ×ÜÊÇµ¼ÖÂ²»¿ÉÔ¤ÆÚµÄĞĞÎª¡£
 
-//Concurrent Data Access (å¹¶å‘æ•°æ®è®¿é—®)ä¸ºä»€ä¹ˆé€ æˆé—®é¢˜
-//C++,æ€»æ˜¯ä¸ªæŠ½è±¡å±‚ï¼Œä¸€ä¸ªåƒ C++è¿™æ ·çš„æ ‡å‡†å…·ä½“æè¿°äº†è¯­å¥å’Œæ“ä½œçš„å½±å“ï¼Œ
-// ä½†å¹¶éç­‰åŒäºå…¶æ‰€äº§ç”Ÿçš„æ±‡ç¼–ç (assembler code)ã€‚æ ‡å‡†æè¿°çš„æ˜¯ what è€Œä¸æ˜¯howã€‚
-//ç¼–è¯‘å™¨éƒ½å¯ä»¥å°†ä»£ç æ— é™ä¼˜åŒ–ï¼Œåªè¦ç¨‹åºè¡Œä¸ºå¤–è§‚ä¸Šç›¸åŒ(è¿™äº›ä¼˜åŒ–åªè€ƒè™‘åœ¨å•çº¿ç¨‹æƒ…å†µä¸‹)ã€‚
-// å› æ­¤ï¼Œè¢«ç”Ÿæˆçš„ä»£ç æ˜¯ä¸ªé»‘ç›’å­ï¼Œæ˜¯å¯ä»¥åŒ–çš„å˜ï¼Œåªè¦å¯è§‚æµ‹è¡Œä¸ºä¿æŒç¨³å®š
-//ä»»ä½•å®ç°(implementation)å¯ä»¥è‡ªç”±å¿½è§†å›½é™…æ ‡å‡†(International Standard)çš„ä»»ä½•è§„å®šï¼Œ
-// åªè¦æœ€ç»ˆæˆæœè²Œä¼¼éµå®ˆäº†é‚£äº›è§„å®š
+//Concurrent Data Access (²¢·¢Êı¾İ·ÃÎÊ)ÎªÊ²Ã´Ôì³ÉÎÊÌâ
+//C++,×ÜÊÇ¸ö³éÏó²ã£¬Ò»¸öÏñ C++ÕâÑùµÄ±ê×¼¾ßÌåÃèÊöÁËÓï¾äºÍ²Ù×÷µÄÓ°Ïì£¬
+// µ«²¢·ÇµÈÍ¬ÓÚÆäËù²úÉúµÄ»ã±àÂë(assembler code)¡£±ê×¼ÃèÊöµÄÊÇ what ¶ø²»ÊÇhow¡£
+//±àÒëÆ÷¶¼¿ÉÒÔ½«´úÂëÎŞÏŞÓÅ»¯£¬Ö»Òª³ÌĞòĞĞÎªÍâ¹ÛÉÏÏàÍ¬(ÕâĞ©ÓÅ»¯Ö»¿¼ÂÇÔÚµ¥Ïß³ÌÇé¿öÏÂ)¡£
+// Òò´Ë£¬±»Éú³ÉµÄ´úÂëÊÇ¸öºÚºĞ×Ó£¬ÊÇ¿ÉÒÔ»¯µÄ±ä£¬Ö»Òª¿É¹Û²âĞĞÎª±£³ÖÎÈ¶¨
+//ÈÎºÎÊµÏÖ(implementation)¿ÉÒÔ×ÔÓÉºöÊÓ¹ú¼Ê±ê×¼(International Standard)µÄÈÎºÎ¹æ¶¨£¬
+// Ö»Òª×îÖÕ³É¹ûÃ²ËÆ×ñÊØÁËÄÇĞ©¹æ¶¨
 
-//ä»€ä¹ˆæƒ…å†µä¸‹å¯èƒ½å‡ºé”™ï¼š
-//Unsynchronized data access(æœªåŒæ­¥åŒ–çš„æ•°æ®è®¿é—®):
-// å¹¶è¡Œè¿è¡Œçš„ä¸¤ä¸ªçº¿ç¨‹è¯»å’Œå†™åŒä¸€ç¬”æ•°æ®ï¼Œä¸çŸ¥é“å“ªä¸€ä¸ªè¯­å¥å…ˆæ¥ã€‚
-//Half-written data(å†™è‡³åŠé€”çš„æ•°æ®):
-// æŸä¸ªçº¿ç¨‹æ­£åœ¨è¯»æ•°æ®ï¼Œå¦ä¸€ä¸ªçº¿ç¨‹æ”¹åŠ¨å®ƒï¼Œäºæ˜¯è¯»å–ä¸­çš„çº¿ç¨‹ç”šè‡³
-// å¯èƒ½è¯»åˆ°æ”¹äº†ä¸€åŠçš„æ•°æ®ï¼Œè¯»åˆ°ä¸€ä¸ªåŠæ–°åŠæ—§å€¼ã€‚
-//Reordered statement(é‡æ–°å®‰æ’çš„è¯­å¥) :è¯­å¥å’Œæ“ä½œæœ‰å¯èƒ½è¢«é‡æ–°å®‰æ’æ¬¡åº(reordered),
-//ä¹Ÿè®¸å¯¹äºæ¯ä¸€ä¸ªå•çº¿ç¨‹æ­£ç¡®ï¼Œä½†å¯¹äºå¤šä¸ªçº¿ç¨‹çš„ç»„åˆå´ç ´åäº†é¢„æœŸçš„è¡Œä¸ºã€‚
+//Ê²Ã´Çé¿öÏÂ¿ÉÄÜ³ö´í£º
+//Unsynchronized data access(Î´Í¬²½»¯µÄÊı¾İ·ÃÎÊ):
+// ²¢ĞĞÔËĞĞµÄÁ½¸öÏß³Ì¶ÁºÍĞ´Í¬Ò»±ÊÊı¾İ£¬²»ÖªµÀÄÄÒ»¸öÓï¾äÏÈÀ´¡£
+//Half-written data(Ğ´ÖÁ°ëÍ¾µÄÊı¾İ):
+// Ä³¸öÏß³ÌÕıÔÚ¶ÁÊı¾İ£¬ÁíÒ»¸öÏß³Ì¸Ä¶¯Ëü£¬ÓÚÊÇ¶ÁÈ¡ÖĞµÄÏß³ÌÉõÖÁ
+// ¿ÉÄÜ¶Áµ½¸ÄÁËÒ»°ëµÄÊı¾İ£¬¶Áµ½Ò»¸ö°ëĞÂ°ë¾ÉÖµ¡£
+//Reordered statement(ÖØĞÂ°²ÅÅµÄÓï¾ä) :Óï¾äºÍ²Ù×÷ÓĞ¿ÉÄÜ±»ÖØĞÂ°²ÅÅ´ÎĞò(reordered),
+//Ò²Ğí¶ÔÓÚÃ¿Ò»¸öµ¥Ïß³ÌÕıÈ·£¬µ«¶ÔÓÚ¶à¸öÏß³ÌµÄ×éºÏÈ´ÆÆ»µÁËÔ¤ÆÚµÄĞĞÎª¡£
 
-//é™¤éå¦æœ‰è¯´æ˜ï¼ŒC++æ ‡å‡†åº“æä¾›çš„å‡½æ•°é€šå¸¸ä¸æ”¯æŒâ€œå†™æˆ–è¯»â€åŠ¨ä½œ
-// ä¸å¦ä¸€ä¸ªâ€œå†™â€åŠ¨ä½œ(å†™è‡³åŒä¸€ç¬”æ•°æ®)å¹¶å‘æ‰§è¡Œã€‚
-//å¹¶å‘å¤„ç†åŒä¸€å®¹å™¨å†…çš„ä¸åŒå…ƒç´ æ˜¯å¯ä»¥çš„(ä½†vector<bool>ä¾‹å¤–)ã€‚å› æ­¤ï¼Œä¸åŒçš„çº¿ç¨‹
-//å¯ä»¥å¹¶å‘è¯»å’Œ/æˆ–å†™åŒä¸€å®¹å™¨å†…çš„ä¸åŒå…ƒç´ ã€‚ä¾‹å¦‚ï¼Œæ¯ä¸ªçº¿ç¨‹å¯ä»¥å¤„ç†æŸäº›äº‹ç„¶åå°†ç»“æœ
-//å­˜å‚¨äºä¸€ä¸ªå…±äº«çš„ vector å†…ä¸“å±è¯¥çº¿ç¨‹çš„æŸå…ƒç´ ã€‚
-//å¹¶å‘å¤„ç† string streamã€file streamæˆ– stream buffer ä¼šå¯¼è‡´ä¸å¯é¢„æœŸçš„è¡Œä¸ºã€‚
-// ä½†æ˜¯æ ¼å¼åŒ–è¾“å…¥è‡ªå’Œè¾“å‡ºè‡³æŸä¸ªæ ‡å‡†stream(å®ƒå’ŒC I/OåŒæ­¥åŒ–äº†ï¼Œè§15.14.1èŠ‚ç¬¬845é¡µ)
-// æ˜¯å¯ä»¥çš„ï¼Œè™½ç„¶è¿™å¯èƒ½å¯¼è‡´æ’å™çš„å­—ç¬¦
+//³ı·ÇÁíÓĞËµÃ÷£¬C++±ê×¼¿âÌá¹©µÄº¯ÊıÍ¨³£²»Ö§³Ö¡°Ğ´»ò¶Á¡±¶¯×÷
+// ÓëÁíÒ»¸ö¡°Ğ´¡±¶¯×÷(Ğ´ÖÁÍ¬Ò»±ÊÊı¾İ)²¢·¢Ö´ĞĞ¡£
+//²¢·¢´¦ÀíÍ¬Ò»ÈİÆ÷ÄÚµÄ²»Í¬ÔªËØÊÇ¿ÉÒÔµÄ(µ«vector<bool>ÀıÍâ)¡£Òò´Ë£¬²»Í¬µÄÏß³Ì
+//¿ÉÒÔ²¢·¢¶ÁºÍ/»òĞ´Í¬Ò»ÈİÆ÷ÄÚµÄ²»Í¬ÔªËØ¡£ÀıÈç£¬Ã¿¸öÏß³Ì¿ÉÒÔ´¦ÀíÄ³Ğ©ÊÂÈ»ºó½«½á¹û
+//´æ´¢ÓÚÒ»¸ö¹²ÏíµÄ vector ÄÚ×¨Êô¸ÃÏß³ÌµÄÄ³ÔªËØ¡£
+//²¢·¢´¦Àí string stream¡¢file stream»ò stream buffer »áµ¼ÖÂ²»¿ÉÔ¤ÆÚµÄĞĞÎª¡£
+// µ«ÊÇ¸ñÊ½»¯ÊäÈë×ÔºÍÊä³öÖÁÄ³¸ö±ê×¼stream(ËüºÍC I/OÍ¬²½»¯ÁË£¬¼û15.14.1½ÚµÚ845Ò³)
+// ÊÇ¿ÉÒÔµÄ£¬ËäÈ»Õâ¿ÉÄÜµ¼ÖÂ²åĞğµÄ×Ö·û
 
-//C++çš„vollatileå¯¹äºè§£å†³å¹¶å‘æ•°æ®è®¿é—®äº§ç”Ÿçš„é—®é¢˜æ— æ•ˆ
-//volatile å…³é”®å­—ä¸»è¦ç”¨äºå‘ŠçŸ¥ç¼–è¯‘å™¨ä¸è¦å¯¹æ ‡è®°ä¸º volatile çš„å˜é‡è¿›è¡Œä¼˜åŒ–ï¼Œ
-// ä»¥ç¡®ä¿æ¯æ¬¡è®¿é—®è¯¥å˜é‡æ—¶éƒ½ä»å†…å­˜ä¸­è¯»å–å…¶æœ€æ–°å€¼ï¼Œè€Œä¸æ˜¯ä½¿ç”¨ç¼“å­˜çš„å€¼ã€‚
-// ç„¶è€Œï¼Œvolatile å¹¶ä¸èƒ½ä¿è¯çº¿ç¨‹å®‰å…¨æˆ–è§£å†³å¹¶å‘æ•°æ®è®¿é—®çš„é—®é¢˜ã€‚
+//C++µÄvollatile¶ÔÓÚ½â¾ö²¢·¢Êı¾İ·ÃÎÊ²úÉúµÄÎÊÌâÎŞĞ§
+//volatile ¹Ø¼ü×ÖÖ÷ÒªÓÃÓÚ¸æÖª±àÒëÆ÷²»Òª¶Ô±ê¼ÇÎª volatile µÄ±äÁ¿½øĞĞÓÅ»¯£¬
+// ÒÔÈ·±£Ã¿´Î·ÃÎÊ¸Ã±äÁ¿Ê±¶¼´ÓÄÚ´æÖĞ¶ÁÈ¡Æä×îĞÂÖµ£¬¶ø²»ÊÇÊ¹ÓÃ»º´æµÄÖµ¡£
+// È»¶ø£¬volatile ²¢²»ÄÜ±£Ö¤Ïß³Ì°²È«»ò½â¾ö²¢·¢Êı¾İ·ÃÎÊµÄÎÊÌâ¡£
 
-//çº¿ç¨‹åŒæ­¥åŒ–æŠ€æœ¯ï¼š
-//Mutexã€lock
-//æ¡ä»¶å˜é‡
+//Ïß³ÌÍ¬²½»¯¼¼Êõ£º
+//Mutex¡¢lock
+//Ìõ¼ş±äÁ¿
 //Atomic
 
 
-//ä½¿ç”¨Mutexå’ŒLock
-//ä¸ºäº†è·å¾—ç‹¬å å¼çš„èµ„æºè®¿é—®èƒ½åŠ›ï¼Œç›¸åº”çš„çº¿ç¨‹å¿…é¡»é”å®š(lock) mutex,
-// è¿™æ ·å¯ä»¥é˜²æ­¢å…¶ä»–çº¿ç¨‹ä¹Ÿé”å®šmutex, ç›´åˆ°ç¬¬ä¸€ä¸ªçº¿ç¨‹è§£é”(unlock) mutexã€‚
+//Ê¹ÓÃMutexºÍLock
+//ÎªÁË»ñµÃ¶ÀÕ¼Ê½µÄ×ÊÔ´·ÃÎÊÄÜÁ¦£¬ÏàÓ¦µÄÏß³Ì±ØĞëËø¶¨(lock) mutex,
+// ÕâÑù¿ÉÒÔ·ÀÖ¹ÆäËûÏß³ÌÒ²Ëø¶¨mutex, Ö±µ½µÚÒ»¸öÏß³Ì½âËø(unlock) mutex¡£
 
-//ä¼ ç»Ÿçš„mutexå’Œlockç”¨æ³•çš„ç¼ºç‚¹ï¼š
-// ä½ åº”è¯¥ç¡®ä¿å¼‚å¸¸â€”â€”å®ƒä¼šç»ˆæ­¢ç‹¬å â€”â€”ä¹Ÿè§£é™¤(unlock)ç›¸åº”çš„ mutex, 
-// å¦åˆ™èµ„æºå°±æœ‰å¯èƒ½è¢«æ°¸è¿œé”ä½ã€‚æ­¤å¤–ä¹Ÿå¯èƒ½å‡ºç°deadlock æƒ…æ™¯ï¼š
-// ä¸¤ä¸ªçº¿ç¨‹åœ¨é‡Šæ”¾å®ƒä»¬è‡ªå·±çš„lock ä¹‹å‰å½¼æ­¤ç­‰å¾…å¯¹æ–¹çš„ lockã€‚
+//´«Í³µÄmutexºÍlockÓÃ·¨µÄÈ±µã£º
+// ÄãÓ¦¸ÃÈ·±£Òì³£¡ª¡ªËü»áÖÕÖ¹¶ÀÕ¼¡ª¡ªÒ²½â³ı(unlock)ÏàÓ¦µÄ mutex, 
+// ·ñÔò×ÊÔ´¾ÍÓĞ¿ÉÄÜ±»ÓÀÔ¶Ëø×¡¡£´ËÍâÒ²¿ÉÄÜ³öÏÖdeadlock Çé¾°£º
+// Á½¸öÏß³ÌÔÚÊÍ·ÅËüÃÇ×Ô¼ºµÄlock Ö®Ç°±Ë´ËµÈ´ı¶Ô·½µÄ lock¡£
 
-//è§£å†³ï¼š
-//æ ¹æ®RAIIå®ˆåˆ™(Resource Acquisition Is Initialization),æ„é€ å‡½æ•°å°†è·å¾—èµ„æºï¼Œè€Œææ„å‡½æ•°
-//ç”šè‡³å½“â€œå¼‚å¸¸é€ æˆç”Ÿå‘½æœŸç»“æŸâ€å®ƒä¹Ÿæ€»æ˜¯ä¼šè¢«è°ƒç”¨â€”â€”åˆ™è´Ÿè´£ä¸ºæˆ‘ä»¬é‡Šæ”¾èµ„æº
-// ä½¿ç”¨C++æ ‡å‡†åº“æä¾›çš„
+//½â¾ö£º
+//¸ù¾İRAIIÊØÔò(Resource Acquisition Is Initialization),¹¹Ôìº¯Êı½«»ñµÃ×ÊÔ´£¬¶øÎö¹¹º¯Êı
+//ÉõÖÁµ±¡°Òì³£Ôì³ÉÉúÃüÆÚ½áÊø¡±ËüÒ²×ÜÊÇ»á±»µ÷ÓÃ¡ª¡ªÔò¸ºÔğÎªÎÒÃÇÊÍ·Å×ÊÔ´
+// Ê¹ÓÃC++±ê×¼¿âÌá¹©µÄ
 //class std::lock_guard
 #if 0
 #include <future>
@@ -6062,7 +6151,7 @@ void print(const std::string& s)
 {
     // ...
     
-    //lockåº”è¯¥è¢«é™åˆ¶åœ¨å¯èƒ½ä¹‹æœ€çŸ­å‘¨æœŸå†…ï¼Œå› ä¸ºå®ƒä»¬ä¼šé˜»å¡(block)å…¶ä»–ä»£ç çš„å¹¶è¡Œè¿è¡Œæœºä¼š
+    //lockÓ¦¸Ã±»ÏŞÖÆÔÚ¿ÉÄÜÖ®×î¶ÌÖÜÆÚÄÚ£¬ÒòÎªËüÃÇ»á×èÈû(block)ÆäËû´úÂëµÄ²¢ĞĞÔËĞĞ»ú»á
     {
         std::lock_guard<std::mutex> lg(printMutex);
         for (char c : s)
@@ -6071,8 +6160,8 @@ void print(const std::string& s)
         }
         std::cout << std::endl;
     }
-    //ä»¤æ¯æ¬¡å¯¹print()çš„è°ƒç”¨éƒ½ç‹¬å åœ°å†™å‡ºæ‰€æœ‰å­—ç¬¦
-    //å®ç°ã€è¾“å‡ºåŒæ­¥åŒ–(synchronize)ã€‘
+    //ÁîÃ¿´Î¶Ôprint()µÄµ÷ÓÃ¶¼¶ÀÕ¼µØĞ´³öËùÓĞ×Ö·û
+    //ÊµÏÖ¡¾Êä³öÍ¬²½»¯(synchronize)¡¿
 
     //...
 }
@@ -6087,47 +6176,47 @@ int main()
 
     print("Hello from the main thread");
 
-    //***æ³¨***
-    //lock çš„æ¬¡åºä»æ—§ä¸æ˜ç¡®ï¼Œå› æ­¤ä¸Šè¿°ä¸‰è¡Œè¾“å‡ºæœ‰å¯èƒ½ä»¥ä»»ä½•æ¬¡åºå‡ºç°ã€‚
+    //***×¢***
+    //lock µÄ´ÎĞòÈÔ¾É²»Ã÷È·£¬Òò´ËÉÏÊöÈıĞĞÊä³öÓĞ¿ÉÄÜÒÔÈÎºÎ´ÎĞò³öÏÖ¡£
 }
 #endif
 
 
-//æ­»é”æ˜¯æ€ä¹ˆäº§ç”Ÿçš„ï¼Ÿ
-//æœ‰å¦‚ä¸‹æ¥å£ï¼š
+//ËÀËøÊÇÔõÃ´²úÉúµÄ£¿
+//ÓĞÈçÏÂ½Ó¿Ú£º
 /*
 class DatabaseAccess
 {
 private:
 std::mutex dbMutex;
-â€¦ //state of database access
+¡­ //state of database access
 
 public:
-void createTable(â€¦)
+void createTable(¡­)
 {
 std::lock_guard<std::mutex>lg(dbMutex);
 }
-void insertData(â€¦)
+void insertData(¡­)
 {
 std::lock_guard<std::mutex>lg(dbMutex);
 }
 };
 
-å½“æˆ‘ä»¬å¼•å…¥ä¸€ä¸ª publicæˆå‘˜å‡½æ•°è€Œå®ƒå¯èƒ½è°ƒç”¨å…¶ä»– public æˆå‘˜å‡½æ•°ï¼Œæƒ…å†µå˜å¾—å¤æ‚ï¼š
-void createTableAndInsertData(â€¦)
+µ±ÎÒÃÇÒıÈëÒ»¸ö public³ÉÔ±º¯Êı¶øËü¿ÉÄÜµ÷ÓÃÆäËû public ³ÉÔ±º¯Êı£¬Çé¿ö±äµÃ¸´ÔÓ£º
+void createTableAndInsertData(¡­)
 {
 std::lock_guard<std::mutex>lg(dbMutex);
-createTable(â€¦);   //ERROR:deadlock because dbMutex is locked again
+createTable(¡­);   //ERROR:deadlock because dbMutex is locked again
 }
 
-è°ƒç”¨createTableAndInsertData()ä¼šé€ æˆ deadlock(æ­»é”),å› ä¸ºå®ƒé”ä½ dbMutex ä¹‹åè°ƒ
-ç”¨createTable(),é€ æˆåè€…å°è¯•å†æ¬¡ lock dbMutex,é‚£å°†ä¼š block(é˜»å¡)ç›´åˆ° dbMutex
-å˜ä¸ºå¯ç”¨ï¼Œè€Œè¿™ç»ä¸ä¼šå‘ç”Ÿï¼Œå› ä¸º createTableAndInsertData()ä¼š block(é˜»å¡)ç›´åˆ°
-createTable()å®Œæˆã€‚
+µ÷ÓÃcreateTableAndInsertData()»áÔì³É deadlock(ËÀËø),ÒòÎªËüËø×¡ dbMutex Ö®ºóµ÷
+ÓÃcreateTable(),Ôì³ÉºóÕß³¢ÊÔÔÙ´Î lock dbMutex,ÄÇ½«»á block(×èÈû)Ö±µ½ dbMutex
+±äÎª¿ÉÓÃ£¬¶øÕâ¾ø²»»á·¢Éú£¬ÒòÎª createTableAndInsertData()»á block(×èÈû)Ö±µ½
+createTable()Íê³É¡£
 */
 
 
-//ä½¿ç”¨é€’å½’çš„Lock  (Recursive Lock)è§£å†³æ­»é”
+//Ê¹ÓÃµİ¹éµÄLock  (Recursive Lock)½â¾öËÀËø
 #if 0
 #include <mutex>
 
@@ -6151,21 +6240,21 @@ public:
         createTable();//OK:no deadlock
     }
 };
- //å€Ÿç€ä½¿ç”¨recursive_mutex,ä¸Šè¿°è¡Œä¸ºä¸å†æœ‰é—®é¢˜ã€‚
- // è¿™ä¸ª mutex å…è®¸åŒä¸€çº¿ç¨‹å¤šæ¬¡é”å®šï¼Œå¹¶åœ¨æœ€è¿‘ä¸€æ¬¡(last)ç›¸åº”çš„ unlock()æ—¶é‡Šæ”¾ lock 
+ //½è×ÅÊ¹ÓÃrecursive_mutex,ÉÏÊöĞĞÎª²»ÔÙÓĞÎÊÌâ¡£
+ // Õâ¸ö mutex ÔÊĞíÍ¬Ò»Ïß³Ì¶à´ÎËø¶¨£¬²¢ÔÚ×î½üÒ»´Î(last)ÏàÓ¦µÄ unlock()Ê±ÊÍ·Å lock 
 #endif
 
 
-//å°è¯•æ€§çš„lockä»¥åŠå¸¦æ—¶é—´æ€§çš„lock
+//³¢ÊÔĞÔµÄlockÒÔ¼°´øÊ±¼äĞÔµÄlock
 
 
-//å¤„ç†å¤šä¸ªlock   ä½¿ç”¨å…¨å±€çš„lock()å‡½æ•°
+//´¦Àí¶à¸ölock   Ê¹ÓÃÈ«¾ÖµÄlock()º¯Êı
 
 
-//ä¿è¯ä¸€æ¬¡ä»…æœ‰ä¸€ä¸ªlockæ‹¥æœ‰mutex ï¼šclass unique_lock
+//±£Ö¤Ò»´Î½öÓĞÒ»¸ölockÓµÓĞmutex £ºclass unique_lock
 
 
-//å¤šçº¿ç¨‹ç¯å¢ƒä¸‹çš„ç¼“å¼åˆå§‹åŒ–(lazy initialization)
+//¶àÏß³Ì»·¾³ÏÂµÄ»ºÊ½³õÊ¼»¯(lazy initialization)
 #if 0
 class X
 {
@@ -6177,24 +6266,24 @@ public:
     int getData() const
     {
         std::call_once(initDataFlag, &X::initData, this);
-        // once flag å¯¹è±¡å½“ä½œç¬¬ä¸€å®å‚ä¼ ç»™call_once()æ˜¯ä¸ºäº†ç¡®ä¿ä¼ å…¥çš„æœºèƒ½åªè¢«æ‰§è¡Œä¸€æ¬¡ã€‚
-        // å› æ­¤ï¼Œå¦‚æœç¬¬ä¸€æ¬¡è°ƒç”¨æˆåŠŸï¼Œä¸‹ä¸€æ¬¡è°ƒç”¨åˆå¸¦ç€ç›¸åŒçš„ once flag,
-        // ä¼ å…¥çš„æœºèƒ½å°±ä¸ä¼šè¢«è°ƒç”¨â€”â€”å³ä½¿è¯¥æœºèƒ½ä¸ç¬¬ä¸€æ¬¡æœ‰å¼‚
+        // once flag ¶ÔÏóµ±×÷µÚÒ»Êµ²Î´«¸øcall_once()ÊÇÎªÁËÈ·±£´«ÈëµÄ»úÄÜÖ»±»Ö´ĞĞÒ»´Î¡£
+        // Òò´Ë£¬Èç¹ûµÚÒ»´Îµ÷ÓÃ³É¹¦£¬ÏÂÒ»´Îµ÷ÓÃÓÖ´ø×ÅÏàÍ¬µÄ once flag,
+        // ´«ÈëµÄ»úÄÜ¾Í²»»á±»µ÷ÓÃ¡ª¡ª¼´Ê¹¸Ã»úÄÜÓëµÚÒ»´ÎÓĞÒì
     }
 };
 #endif
 
 
-//Future(è§18.1èŠ‚ç¬¬946é¡µ)å…è®¸ä½ åœä¸‹æ¥(to block)ç›´åˆ°å¦ä¸€çº¿ç¨‹æä¾›æŸç¬”æ•°æ®
-// æˆ–ç›´åˆ°å¦ä¸€çº¿ç¨‹ç»“æŸã€‚ç„¶è€Œ future ä»æŸçº¿ç¨‹ä¼ é€’æ•°æ®åˆ°å¦ä¸€çº¿ç¨‹åªèƒ½ä¸€æ¬¡ã€‚
-// äº‹å®ä¸Š futureçš„ä¸»è¦ç›®çš„æ˜¯å¤„ç†çº¿ç¨‹çš„ã€è¿”å›å€¼æˆ–å¼‚å¸¸ã€‘
+//Future(¼û18.1½ÚµÚ946Ò³)ÔÊĞíÄãÍ£ÏÂÀ´(to block)Ö±µ½ÁíÒ»Ïß³ÌÌá¹©Ä³±ÊÊı¾İ
+// »òÖ±µ½ÁíÒ»Ïß³Ì½áÊø¡£È»¶ø future ´ÓÄ³Ïß³Ì´«µİÊı¾İµ½ÁíÒ»Ïß³ÌÖ»ÄÜÒ»´Î¡£
+// ÊÂÊµÉÏ futureµÄÖ÷ÒªÄ¿µÄÊÇ´¦ÀíÏß³ÌµÄ¡¾·µ»ØÖµ»òÒì³£¡¿
 
-//Condition variable(æ¡ä»¶å˜é‡),å®ƒå¯ç”¨æ¥åŒæ­¥åŒ–çº¿ç¨‹ä¹‹é—´çš„æ•°æ®æµé€»è¾‘ä¾èµ–å…³ç³»
-// (logical dependencies in data flow between threads)ã€‚
+//Condition variable(Ìõ¼ş±äÁ¿),Ëü¿ÉÓÃÀ´Í¬²½»¯Ïß³ÌÖ®¼äµÄÊı¾İÁ÷Âß¼­ÒÀÀµ¹ØÏµ
+// (logical dependencies in data flow between threads)¡£
 
 
-//è®©æŸçº¿ç¨‹ç­‰å¾…å¦ä¸€ä¸ªçº¿ç¨‹çš„ä¸€ä¸ªç²—æµ…æ–¹æ³•
-//ä½¿ç”¨ready flagä¹‹ç±»çš„æ ‡è®°
+//ÈÃÄ³Ïß³ÌµÈ´ıÁíÒ»¸öÏß³ÌµÄÒ»¸ö´ÖÇ³·½·¨
+//Ê¹ÓÃready flagÖ®ÀàµÄ±ê¼Ç
 #if 0
 class x
 {
@@ -6217,41 +6306,41 @@ public:
         }
     } //release lock
 };
-//è¿™é€šå¸¸æ„å‘³ç€ç­‰å¾…ä¸­çš„çº¿ç¨‹(waiting thread)éœ€è¦è½®è¯¢(poll)
-// å…¶æ‰€éœ€è¦çš„æ•°æ®æˆ–æ¡ä»¶æ˜¯å¦å·²è¾¾åˆ°ã€‚è¿™ä¸æ˜¯å¥½çš„è§£å†³æ–¹æ³•ã€‚
-//ç­‰å¾…ä¸­çš„çº¿ç¨‹(waiting thread)æ¶ˆè€—å®è´µçš„CPUæ—¶é—´é‡å¤æ£€éªŒ flag,ä¸”å½“å®ƒé”ä½mutexæ—¶
-// â€œè´Ÿè´£è®¾ç½® ready flagâ€çš„é‚£ä¸ªçº¿ç¨‹ä¼šè¢«é˜»å¡(blocked)ã€‚
-// æ­¤å¤–æˆ‘ä»¬ä¹Ÿå¾ˆéš¾æ‰¾å‡ºé€‚å½“çš„ sleep å‘¨æœŸï¼šä¸¤æ¬¡æ£€æŸ¥è‹¥é—´éš”å¤ªçŸ­åˆ™çº¿ç¨‹ä»æ—§å¤ªæµªè´¹CPU
-// æ—¶é—´äºæ£€æŸ¥åŠ¨ä½œä¸Šï¼Œè‹¥å¤ªé•¿åˆ™ä¹Ÿè®¸ç­‰å¾…çš„ task å·²å®Œæˆè€Œçº¿ç¨‹å´è¿˜ç»§ç»­ sleeping, 
-// å¯¼è‡´å‘ç”Ÿå»¶è¯¯ã€‚
+//ÕâÍ¨³£ÒâÎ¶×ÅµÈ´ıÖĞµÄÏß³Ì(waiting thread)ĞèÒªÂÖÑ¯(poll)
+// ÆäËùĞèÒªµÄÊı¾İ»òÌõ¼şÊÇ·ñÒÑ´ïµ½¡£Õâ²»ÊÇºÃµÄ½â¾ö·½·¨¡£
+//µÈ´ıÖĞµÄÏß³Ì(waiting thread)ÏûºÄ±¦¹óµÄCPUÊ±¼äÖØ¸´¼ìÑé flag,ÇÒµ±ËüËø×¡mutexÊ±
+// ¡°¸ºÔğÉèÖÃ ready flag¡±µÄÄÇ¸öÏß³Ì»á±»×èÈû(blocked)¡£
+// ´ËÍâÎÒÃÇÒ²ºÜÄÑÕÒ³öÊÊµ±µÄ sleep ÖÜÆÚ£ºÁ½´Î¼ì²éÈô¼ä¸ôÌ«¶ÌÔòÏß³ÌÈÔ¾ÉÌ«ÀË·ÑCPU
+// Ê±¼äÓÚ¼ì²é¶¯×÷ÉÏ£¬ÈôÌ«³¤ÔòÒ²ĞíµÈ´ıµÄ task ÒÑÍê³É¶øÏß³ÌÈ´»¹¼ÌĞø sleeping, 
+// µ¼ÖÂ·¢ÉúÑÓÎó¡£
 #endif
 
 
-//ä½¿ç”¨Condition Variable(æ¡ä»¶å˜é‡) åŒæ­¥åŒ–çº¿ç¨‹ä¹‹é—´çš„æ•°æ®æµé€»è¾‘ä¾èµ–å…³ç³»
-//ä¸€ä¸ªçº¿ç¨‹å¯ä»¥å”¤é†’(wake up)ä¸€æˆ–å¤šä¸ªå…¶ä»–ç­‰å¾…ä¸­çš„çº¿ç¨‹(waiting thread)ã€‚
+//Ê¹ÓÃCondition Variable(Ìõ¼ş±äÁ¿) Í¬²½»¯Ïß³ÌÖ®¼äµÄÊı¾İÁ÷Âß¼­ÒÀÀµ¹ØÏµ
+//Ò»¸öÏß³Ì¿ÉÒÔ»½ĞÑ(wake up)Ò»»ò¶à¸öÆäËûµÈ´ıÖĞµÄÏß³Ì(waiting thread)¡£
 #if 0
-//ç¬¬ä¸€æ­¥ï¼šåŒ…å«<condition_variable> å’Œ <mutex>å¤´æ–‡ä»¶
+//µÚÒ»²½£º°üº¬<condition_variable> ºÍ <mutex>Í·ÎÄ¼ş
 #include <condition_variable>
 #include <mutex>
 #include <future>
 #include <iostream>
 
-//ç¬¬äºŒæ­¥ï¼Œåˆ›å»ºflagæ£€æŸ¥æ•°æ®æ˜¯å¦çœŸçš„å¤‡å¦¥
+//µÚ¶ş²½£¬´´½¨flag¼ì²éÊı¾İÊÇ·ñÕæµÄ±¸Í×
 bool readyFlag;
-//è¡¥å……ï¼š
+//²¹³ä£º
 /*
-condition variable ä¹Ÿè®¸æœ‰æ‰€è°“å‡é†’(spurious wakeup)ã€‚
-ä¹Ÿå°±æ˜¯æŸä¸ª condition variable çš„ waitåŠ¨ä½œæœ‰å¯èƒ½åœ¨è¯¥ condition variable 
-å°šæœªè¢« notified æ—¶ä¾¿è¿”å›ã€‚å‡é†’æ— æ³•è¢«æµ‹å®šï¼Œä»¥ä½¿ç”¨è€…çš„è§‚ç‚¹æ¥çœ‹å®ƒä»¬å®è´¨ä¸Šæ˜¯éšæœºçš„ã€‚
-ç„¶è€Œå®ƒä»¬é€šå¸¸å‘ç”Ÿäº thread library æ— æ³•å¯é ç¡®å®šæŸä¸ª waiting thread ä¸é—æ¼ä»»ä½•
-notificationæ—¶ã€‚ç”±äºé—æ¼ notification ä¾¿ä»£è¡¨ condition variable æ— ç”¨ï¼Œ
-thread library å®æ„¿åœ¨çº¿ç¨‹çš„ wait ä¹‹ä¸­å”¤é†’å®ƒè€Œä¸æ„¿æ‰¿å—é£é™©ã€‚â€
-å› æ­¤ï¼Œå‘ç”Ÿ wakeup ä¸ä¸€å®šæ„å‘³ç€çº¿ç¨‹æ‰€éœ€è¦çš„æ¡ä»¶å·²ç»æŒæ¡äº†ã€‚æ›´ç¡®åˆ‡åœ°è¯´ï¼Œ
-åœ¨wakeupä¹‹åä½ ä»ç„¶éœ€è¦ä»£ç å»éªŒè¯â€œæ¡ä»¶å®é™…å·²è¾¾æˆâ€ã€‚
-å› æ­¤(ä¾‹å¦‚)æˆ‘ä»¬å¿…é¡»æ£€æŸ¥æ•°æ®æ˜¯å¦çœŸæ­£å¤‡å¦¥ï¼Œæˆ–æ˜¯æˆ‘ä»¬ä»éœ€è¦è¯¸å¦‚ready flagä¹‹ç±»çš„ä¸œè¥¿ã€‚
+condition variable Ò²ĞíÓĞËùÎ½¼ÙĞÑ(spurious wakeup)¡£
+Ò²¾ÍÊÇÄ³¸ö condition variable µÄ wait¶¯×÷ÓĞ¿ÉÄÜÔÚ¸Ã condition variable 
+ÉĞÎ´±» notified Ê±±ã·µ»Ø¡£¼ÙĞÑÎŞ·¨±»²â¶¨£¬ÒÔÊ¹ÓÃÕßµÄ¹ÛµãÀ´¿´ËüÃÇÊµÖÊÉÏÊÇËæ»úµÄ¡£
+È»¶øËüÃÇÍ¨³£·¢ÉúÓÚ thread library ÎŞ·¨¿É¿¿È·¶¨Ä³¸ö waiting thread ²»ÒÅÂ©ÈÎºÎ
+notificationÊ±¡£ÓÉÓÚÒÅÂ© notification ±ã´ú±í condition variable ÎŞÓÃ£¬
+thread library ÄşÔ¸ÔÚÏß³ÌµÄ wait Ö®ÖĞ»½ĞÑËü¶ø²»Ô¸³ĞÊÜ·çÏÕ¡£¡±
+Òò´Ë£¬·¢Éú wakeup ²»Ò»¶¨ÒâÎ¶×ÅÏß³ÌËùĞèÒªµÄÌõ¼şÒÑ¾­ÕÆÎÕÁË¡£¸üÈ·ÇĞµØËµ£¬
+ÔÚwakeupÖ®ºóÄãÈÔÈ»ĞèÒª´úÂëÈ¥ÑéÖ¤¡°Ìõ¼şÊµ¼ÊÒÑ´ï³É¡±¡£
+Òò´Ë(ÀıÈç)ÎÒÃÇ±ØĞë¼ì²éÊı¾İÊÇ·ñÕæÕı±¸Í×£¬»òÊÇÎÒÃÇÈÔĞèÒªÖîÈçready flagÖ®ÀàµÄ¶«Î÷¡£
 */
 
-//ç¬¬ä¸‰æ­¥ï¼šåˆ›å»ºé”å’Œæ¡ä»¶å˜é‡
+//µÚÈı²½£º´´½¨ËøºÍÌõ¼ş±äÁ¿
 std::mutex readyMutex;
 std::condition_variable readyCondVar;
 
@@ -6261,36 +6350,36 @@ void thread1()
     std::cout << "<return>" << std::endl;
     std::cin.get();
 
-    //ç¬¬å››æ­¥ï¼šé”ä½ï¼Œæ›´æ–°flagï¼Œè§£é”ï¼Œé€šçŸ¥æ¡ä»¶å˜é‡
+    //µÚËÄ²½£ºËø×¡£¬¸üĞÂflag£¬½âËø£¬Í¨ÖªÌõ¼ş±äÁ¿
     
     // signal that thread1 has prepared a condition
     {
         std::lock_guard<std::mutex> lg(readyMutex);
-        readyFlag = true;//***ä¸ºä»€ä¹ˆå¯¹äºåŸºæœ¬æ•°æ®ç±»å‹ä¹Ÿè¦è¿™æ ·ï¼Ÿ***è§//ä½¿ç”¨atomicæ¥å–ä»£mutexå’Œlock
+        readyFlag = true;//***ÎªÊ²Ã´¶ÔÓÚ»ù±¾Êı¾İÀàĞÍÒ²ÒªÕâÑù£¿***¼û//Ê¹ÓÃatomicÀ´È¡´úmutexºÍlock
     } // release lock
 
-    //é‚£ä¸ªç”¨æ¥æ¿€å‘â€œæ¡ä»¶ç»ˆäºæ»¡è¶³â€çš„çº¿ç¨‹(æˆ–å¤šçº¿ç¨‹ä¹‹ä¸€)å¿…é¡»è°ƒç”¨notify_one()æˆ–notify_all()
+    //ÄÇ¸öÓÃÀ´¼¤·¢¡°Ìõ¼şÖÕÓÚÂú×ã¡±µÄÏß³Ì(»ò¶àÏß³ÌÖ®Ò»)±ØĞëµ÷ÓÃnotify_one()»ònotify_all()
     readyCondVar.notify_one();
-    //å”¤é†’ä¸€ä¸ªæˆ–æ‰€æœ‰ç­‰å¾…ä¸­çš„çº¿ç¨‹(waiting thread)ã€‚
-    //***æ³¨***
-    //é€šçŸ¥åŠ¨ä½œä¸éœ€è¦è¢«å®‰æ’åœ¨ lock ä¿æŠ¤åŒºå†…ã€‚
+    //»½ĞÑÒ»¸ö»òËùÓĞµÈ´ıÖĞµÄÏß³Ì(waiting thread)¡£
+    //***×¢***
+    //Í¨Öª¶¯×÷²»ĞèÒª±»°²ÅÅÔÚ lock ±£»¤ÇøÄÚ¡£
 }
 
 void thread2()
 {
-    //ç¬¬äº”æ­¥ï¼šä»¥ä¸€ä¸ª unique_locké”ä½ mutex,ä¸€é¢æ£€æŸ¥æ¡ä»¶ä¸€é¢ç­‰å¾…è¢«é€šçŸ¥ï¼Œç„¶åé‡Šæ”¾é”
+    //µÚÎå²½£ºÒÔÒ»¸ö unique_lockËø×¡ mutex,Ò»Ãæ¼ì²éÌõ¼şÒ»ÃæµÈ´ı±»Í¨Öª£¬È»ºóÊÍ·ÅËø
 
     // wait until thread1 is ready (readyFlag is true)
     {
         std::unique_lock<std::mutex> ul(readyMutex);
-        //***æ³¨***
-        //æ­¤å¤„å¿…é¡»ä½¿ç”¨unique_lockï¼Œä¸å¯ä½¿ç”¨lock_guard,
-        // å› ä¸º wait()çš„å†…éƒ¨ä¼šæ˜ç¡®åœ°å¯¹ mutex è¿›è¡Œè§£é”å’Œé”å®šã€‚
+        //***×¢***
+        //´Ë´¦±ØĞëÊ¹ÓÃunique_lock£¬²»¿ÉÊ¹ÓÃlock_guard,
+        // ÒòÎª wait()µÄÄÚ²¿»áÃ÷È·µØ¶Ô mutex ½øĞĞ½âËøºÍËø¶¨¡£
 
-        //é‚£ä¸ªâ€œç­‰å¾…æ¡ä»¶è¢«æ»¡è¶³â€çš„çº¿ç¨‹å¿…é¡»è°ƒç”¨
-        readyCondVar.wait(ul, []() { return readyFlag; });// wait()å†…éƒ¨ä¼šä¸æ–­è°ƒç”¨è¯¥ç¬¬äºŒå®å‚ï¼Œç›´åˆ°å®ƒè¿”å› true
+        //ÄÇ¸ö¡°µÈ´ıÌõ¼ş±»Âú×ã¡±µÄÏß³Ì±ØĞëµ÷ÓÃ
+        readyCondVar.wait(ul, []() { return readyFlag; });// wait()ÄÚ²¿»á²»¶Ïµ÷ÓÃ¸ÃµÚ¶şÊµ²Î£¬Ö±µ½Ëü·µ»Ø true
 
-        //è¿™æ®µä»£ç ç›¸å½“äº
+        //Õâ¶Î´úÂëÏàµ±ÓÚ
         /*
         {
             std::unique_lock<std::mutex> ul(readyMutex);
@@ -6301,18 +6390,18 @@ void thread2()
         }// release lock
         */
 
-        //è¡¥å……ï¼š
+        //²¹³ä£º
         /*
-        std::condition_variable::wait()å‡½æ•°çš„å†…éƒ¨éœ€è¦åœ¨ç­‰å¾…æœŸé—´è§£é”äº’æ–¥é‡ï¼Œ
-        å¹¶åœ¨æ¡ä»¶æ»¡è¶³æ—¶é‡æ–°é”å®šäº’æ–¥é‡ã€‚è€Œstd::lock_guardæ— æ³•æ‰‹åŠ¨è§£é”ï¼Œ
-        å®ƒåªèƒ½åœ¨æ„é€ æ—¶é”å®šäº’æ–¥é‡ï¼Œåœ¨ææ„æ—¶è‡ªåŠ¨é‡Šæ”¾é”ã€‚
-        è¿™å°±æ„å‘³ç€å¦‚æœåœ¨std::lock_guardçš„ä½œç”¨åŸŸå†…è°ƒç”¨wait()å‡½æ•°ï¼Œ
-        å®ƒå°†å°è¯•åœ¨ç­‰å¾…æœŸé—´é‡æ–°è§£é”å·²ç»è¢«é”å®šçš„äº’æ–¥é‡ï¼Œ
-        è€Œstd::lock_guardä¸æ”¯æŒæ‰‹åŠ¨è§£é”ï¼Œä»è€Œå¯¼è‡´æœªå®šä¹‰çš„è¡Œä¸ºã€‚
+        std::condition_variable::wait()º¯ÊıµÄÄÚ²¿ĞèÒªÔÚµÈ´ıÆÚ¼ä½âËø»¥³âÁ¿£¬
+        ²¢ÔÚÌõ¼şÂú×ãÊ±ÖØĞÂËø¶¨»¥³âÁ¿¡£¶østd::lock_guardÎŞ·¨ÊÖ¶¯½âËø£¬
+        ËüÖ»ÄÜÔÚ¹¹ÔìÊ±Ëø¶¨»¥³âÁ¿£¬ÔÚÎö¹¹Ê±×Ô¶¯ÊÍ·ÅËø¡£
+        Õâ¾ÍÒâÎ¶×ÅÈç¹ûÔÚstd::lock_guardµÄ×÷ÓÃÓòÄÚµ÷ÓÃwait()º¯Êı£¬
+        Ëü½«³¢ÊÔÔÚµÈ´ıÆÚ¼äÖØĞÂ½âËøÒÑ¾­±»Ëø¶¨µÄ»¥³âÁ¿£¬
+        ¶østd::lock_guard²»Ö§³ÖÊÖ¶¯½âËø£¬´Ó¶øµ¼ÖÂÎ´¶¨ÒåµÄĞĞÎª¡£
 
-        å› æ­¤ï¼Œä¸ºäº†èƒ½å¤Ÿåœ¨ç­‰å¾…æœŸé—´æ‰‹åŠ¨è§£é”å¹¶åœ¨æ¡ä»¶æ»¡è¶³æ—¶é‡æ–°é”å®šäº’æ–¥é‡ï¼Œ
-        å¿…é¡»ä½¿ç”¨std::unique_lockã€‚std::unique_lockå…è®¸åœ¨å…¶ç”Ÿå‘½å‘¨æœŸå†…
-        æ‰‹åŠ¨æ§åˆ¶é”çš„è·å–å’Œé‡Šæ”¾ï¼Œè¿™ä¸std::condition_variableçš„è¦æ±‚ç›¸ç¬¦åˆã€‚
+        Òò´Ë£¬ÎªÁËÄÜ¹»ÔÚµÈ´ıÆÚ¼äÊÖ¶¯½âËø²¢ÔÚÌõ¼şÂú×ãÊ±ÖØĞÂËø¶¨»¥³âÁ¿£¬
+        ±ØĞëÊ¹ÓÃstd::unique_lock¡£std::unique_lockÔÊĞíÔÚÆäÉúÃüÖÜÆÚÄÚ
+        ÊÖ¶¯¿ØÖÆËøµÄ»ñÈ¡ºÍÊÍ·Å£¬ÕâÓëstd::condition_variableµÄÒªÇóÏà·ûºÏ¡£
         */
 
     } // release lock
@@ -6327,26 +6416,26 @@ int main()
     auto f2 = std::async(std::launch::async, thread2);
 }
 #endif
-//è¡¥å……ï¼š
+//²¹³ä£º
 /*
-unique_lockå†…éƒ¨æŒæœ‰mutexçš„çŠ¶æ€ï¼šlocked,unlockedã€‚
-unique_lockæ¯”lock_guardå ç”¨ç©ºé—´å’Œé€Ÿåº¦æ…¢ä¸€äº›ï¼Œå› ä¸ºå…¶è¦ç»´æŠ¤mutexçš„çŠ¶æ€
+unique_lockÄÚ²¿³ÖÓĞmutexµÄ×´Ì¬£ºlocked,unlocked¡£
+unique_lock±Èlock_guardÕ¼ÓÃ¿Õ¼äºÍËÙ¶ÈÂıÒ»Ğ©£¬ÒòÎªÆäÒªÎ¬»¤mutexµÄ×´Ì¬
 
-unique_lock åœ¨ä½¿ç”¨ä¸Šæ¯”lock_guardæ›´å…·æœ‰å¼¹æ€§ï¼Œå’Œ lock_guard ç›¸æ¯”ï¼Œ
-unique_lock ä¸»è¦çš„ç‰¹è‰²åœ¨äºï¼š
-unique_lock ä¸ä¸€å®šè¦æ‹¥æœ‰ mutexï¼Œæ‰€ä»¥å¯ä»¥é€šè¿‡
-default constructor å»ºç«‹å‡ºä¸€ä¸ªç©ºçš„ unique_lockã€‚
-unique_lock è™½ç„¶ä¸€æ ·ä¸å¯å¤åˆ¶ï¼ˆnon-copyableï¼‰ï¼Œä½†æ˜¯å®ƒæ˜¯å¯ä»¥è½¬ç§»çš„ï¼ˆmovableï¼‰ã€‚
-æ‰€ä»¥ï¼Œunique_lock ä¸ä½†å¯ä»¥è¢«å‡½æ•°å›ä¼ ï¼Œä¹Ÿå¯ä»¥æ”¾åˆ° STL çš„ container é‡Œã€‚
+unique_lock ÔÚÊ¹ÓÃÉÏ±Èlock_guard¸ü¾ßÓĞµ¯ĞÔ£¬ºÍ lock_guard Ïà±È£¬
+unique_lock Ö÷ÒªµÄÌØÉ«ÔÚÓÚ£º
+unique_lock ²»Ò»¶¨ÒªÓµÓĞ mutex£¬ËùÒÔ¿ÉÒÔÍ¨¹ı
+default constructor ½¨Á¢³öÒ»¸ö¿ÕµÄ unique_lock¡£
+unique_lock ËäÈ»Ò»Ñù²»¿É¸´ÖÆ£¨non-copyable£©£¬µ«ÊÇËüÊÇ¿ÉÒÔ×ªÒÆµÄ£¨movable£©¡£
+ËùÒÔ£¬unique_lock ²»µ«¿ÉÒÔ±»º¯Êı»Ø´«£¬Ò²¿ÉÒÔ·Åµ½ STL µÄ container Àï¡£
 
-å¦å¤–ï¼Œunique_lock ä¹Ÿæœ‰æä¾› lock()ã€unlock() ç­‰å‡½æ•°ï¼Œå¯ä»¥ç”¨æ¥æ‰‹åŠ¨åŠ é”è§£é”mutex
-unique_lockæœ¬èº«è¿˜å¯ä»¥ç”¨äºstd::lockå‚æ•°ï¼Œ
-å› ä¸ºå…¶å…·å¤‡lockã€unlockã€try_lockæˆå‘˜å‡½æ•°,è¿™äº›å‡½æ•°ä¸ä»…å®Œæˆ
-é’ˆå¯¹mutexçš„æ“ä½œè¿˜è¦æ›´æ–°mutexçš„çŠ¶æ€ã€‚
+ÁíÍâ£¬unique_lock Ò²ÓĞÌá¹© lock()¡¢unlock() µÈº¯Êı£¬¿ÉÒÔÓÃÀ´ÊÖ¶¯¼ÓËø½âËømutex
+unique_lock±¾Éí»¹¿ÉÒÔÓÃÓÚstd::lock²ÎÊı£¬
+ÒòÎªÆä¾ß±¸lock¡¢unlock¡¢try_lock³ÉÔ±º¯Êı,ÕâĞ©º¯Êı²»½öÍê³É
+Õë¶ÔmutexµÄ²Ù×÷»¹Òª¸üĞÂmutexµÄ×´Ì¬¡£
 */
 
 
-//ä½¿ç”¨ Condition Variable(æ¡ä»¶å˜é‡)å®ç°å¤šçº¿ç¨‹ Queue
+//Ê¹ÓÃ Condition Variable(Ìõ¼ş±äÁ¿)ÊµÏÖ¶àÏß³Ì Queue
 #if 0
 #include <condition_variable>
 #include <mutex>
@@ -6355,7 +6444,7 @@ unique_lockæœ¬èº«è¿˜å¯ä»¥ç”¨äºstd::lockå‚æ•°ï¼Œ
 #include <iostream>
 #include <queue>
 
-//åˆ›å»ºä¸€ä¸ªqueueè¢«å¹¶å‘ä½¿ç”¨
+//´´½¨Ò»¸öqueue±»²¢·¢Ê¹ÓÃ
 std::queue<int> queue;
 
 std::mutex queueMutex;
@@ -6371,7 +6460,7 @@ void provider(int val)
             queue.push(val + i);
         } // release lock
 
-        //condition variable ç”¨æ¥åœ¨â€œæœ‰æ–°å…ƒç´ å¯ç”¨â€æ—¶æ¿€å‘å’Œå”¤é†’æŸä¸€ä¸ªçº¿ç¨‹
+        //condition variable ÓÃÀ´ÔÚ¡°ÓĞĞÂÔªËØ¿ÉÓÃ¡±Ê±¼¤·¢ºÍ»½ĞÑÄ³Ò»¸öÏß³Ì
         queueCondVar.notify_one();
 
         std::this_thread::sleep_for(std::chrono::milliseconds(val));
@@ -6385,10 +6474,10 @@ void consumer(int num)
     {
         int val;
         {
-            //***æ³¨***
-            //æ‰€æœ‰ç­‰å¾…æŸä¸ª condition variable çš„çº¿ç¨‹éƒ½å¿…é¡»ä½¿ç”¨ç›¸åŒçš„ mutex;
-            // å½“ wait()å®¶æ—çš„æŸä¸ªæˆå‘˜è¢«è°ƒç”¨æ—¶è¯¥mutex å¿…é¡»è¢« unique_lock é”å®šï¼Œ
-            // å¦åˆ™ä¼šå‘ç”Ÿä¸æ˜ç¡®çš„è¡Œä¸ºã€‚
+            //***×¢***
+            //ËùÓĞµÈ´ıÄ³¸ö condition variable µÄÏß³Ì¶¼±ØĞëÊ¹ÓÃÏàÍ¬µÄ mutex;
+            // µ± wait()¼Ò×åµÄÄ³¸ö³ÉÔ±±»µ÷ÓÃÊ±¸Ãmutex ±ØĞë±» unique_lock Ëø¶¨£¬
+            // ·ñÔò»á·¢Éú²»Ã÷È·µÄĞĞÎª¡£
             std::unique_lock<std::mutex> ul(queueMutex);
             
             queueCondVar.wait(ul, [] { return !queue.empty(); });
@@ -6403,7 +6492,7 @@ void consumer(int num)
 
 int main()
 {
-    //ä¸‰ä¸ªçº¿ç¨‹éƒ½æŠŠæ•°å€¼æ¨å…¥(push)æŸä¸ª queue,å¦ä¸¤ä¸ªçº¿ç¨‹åˆ™æ˜¯ä»ä¸­è¯»å–æ•°æ®
+    //Èı¸öÏß³Ì¶¼°ÑÊıÖµÍÆÈë(push)Ä³¸ö queue,ÁíÁ½¸öÏß³ÌÔòÊÇ´ÓÖĞ¶ÁÈ¡Êı¾İ
 
     // start three providers for values 100+, 300+, and 500+
     auto p1 = std::async(std::launch::async, provider, 100);
@@ -6414,16 +6503,16 @@ int main()
     auto c1 = std::async(std::launch::async, consumer, 1);
     auto c2 = std::async(std::launch::async, consumer, 2);
 
-    //***æ³¨***
-    //ä¸¤ä¸ª consumerçš„è¾“å‡ºå¹¶éåŒæ­¥ï¼Œæ‰€ä»¥å­—ç¬¦æœ‰å¯èƒ½äº¤é”™ã€‚
-    // ä¹Ÿè¯·æ³¨æ„ï¼Œå¹¶å‘ç­‰å¾…è€…(çº¿ç¨‹)çš„è¢«é€šçŸ¥æ¬¡åºæ˜¯ä¸ç¡®å®šçš„ã€‚
+    //***×¢***
+    //Á½¸ö consumerµÄÊä³ö²¢·ÇÍ¬²½£¬ËùÒÔ×Ö·ûÓĞ¿ÉÄÜ½»´í¡£
+    // Ò²Çë×¢Òâ£¬²¢·¢µÈ´ıÕß(Ïß³Ì)µÄ±»Í¨Öª´ÎĞòÊÇ²»È·¶¨µÄ¡£
 }
 #endif
 
 
-//ä½¿ç”¨atomicæ¥å–ä»£mutexå’Œlock
-//åœ¨//ä½¿ç”¨Condition Variable(æ¡ä»¶å˜é‡) åŒæ­¥åŒ–çº¿ç¨‹ä¹‹é—´çš„æ•°æ®æµé€»è¾‘ä¾èµ–å…³ç³»
-//ä¸­æœ‰å¦‚ä¸‹ä»£ç å—ï¼š
+//Ê¹ÓÃatomicÀ´È¡´úmutexºÍlock
+//ÔÚ//Ê¹ÓÃCondition Variable(Ìõ¼ş±äÁ¿) Í¬²½»¯Ïß³ÌÖ®¼äµÄÊı¾İÁ÷Âß¼­ÒÀÀµ¹ØÏµ
+//ÖĞÓĞÈçÏÂ´úÂë¿é£º
 /*
     // signal that thread1 has prepared a condition
     {
@@ -6432,20 +6521,20 @@ int main()
     } // release lock
 */
 //1.
-//ä¸€èˆ¬è€Œè¨€ï¼Œå³ä½¿é¢å¯¹åŸºæœ¬æ•°æ®ç±»å‹ï¼Œè¯»å’Œå†™ä¹Ÿä¸æ˜¯ atomic(ä¸å¯åˆ‡å‰²çš„)
-//å› æ­¤ä½ å¯èƒ½è¯»åˆ°ä¸€ä¸ªè¢«å†™ä¸€åŠçš„ boolå€¼ï¼ŒC++ standard è¯´è¿™ä¼šå¸¦æ¥ä¸æ˜ç¡®çš„è¡Œä¸ºã€‚
+//Ò»°ã¶øÑÔ£¬¼´Ê¹Ãæ¶Ô»ù±¾Êı¾İÀàĞÍ£¬¶ÁºÍĞ´Ò²²»ÊÇ atomic(²»¿ÉÇĞ¸îµÄ)
+//Òò´ËÄã¿ÉÄÜ¶Áµ½Ò»¸ö±»Ğ´Ò»°ëµÄ boolÖµ£¬C++ standard ËµÕâ»á´øÀ´²»Ã÷È·µÄĞĞÎª¡£
 //2.
-//ç¼–è¯‘å™¨ç”Ÿæˆçš„ä»£ç æœ‰å¯èƒ½æ”¹å˜æ“ä½œæ¬¡åºï¼Œæ‰€ä»¥ä¾›åº”ç«¯(çº¿ç¨‹)æœ‰å¯èƒ½åœ¨ä¾›åº”æ•°æ®ä¹‹å‰
-// å°±å…ˆè®¾ç½® ready flag, è€Œæ¶ˆè´¹ç«¯(çº¿ç¨‹)äº¦æœ‰å¯èƒ½åœ¨ä¾¦æµ‹ ready flag ä¹‹å‰å°±å¤„ç†è¯¥æ•°æ®ã€‚
+//±àÒëÆ÷Éú³ÉµÄ´úÂëÓĞ¿ÉÄÜ¸Ä±ä²Ù×÷´ÎĞò£¬ËùÒÔ¹©Ó¦¶Ë(Ïß³Ì)ÓĞ¿ÉÄÜÔÚ¹©Ó¦Êı¾İÖ®Ç°
+// ¾ÍÏÈÉèÖÃ ready flag, ¶øÏû·Ñ¶Ë(Ïß³Ì)ÒàÓĞ¿ÉÄÜÔÚÕì²â ready flag Ö®Ç°¾Í´¦Àí¸ÃÊı¾İ¡£
 
 
-//ä½¿ç”¨atomicçš„é«˜å±‚æ¥å£ï¼Œå®ƒæ‰€æä¾›çš„æ“ä½œå°†ä½¿ç”¨é»˜è®¤ä¿è¯ï¼Œä¸è®ºå†…å­˜è®¿é—®æ¬¡åºå¦‚ä½•ã€‚
-// è¿™ä¸ªé»˜è®¤ä¿è¯æä¾›äº†é¡ºåºä¸€è‡´æ€§(sequential consistency), æ„æ€æ˜¯åœ¨çº¿ç¨‹ä¹‹ä¸­
-// atomic æ“ä½œä¿è¯ä¸€å®šâ€œåƒä»£ç å‡ºç°çš„æ¬¡åºâ€é‚£æ ·åœ°å‘ç”Ÿã€‚
-// å› æ­¤ 18.4.3 èŠ‚ç¬¬ 986 é¡µæ‰€è¯´çš„é‡æ’è¯­å¥ä¹Ÿå°±ä¸ä¼šå‡ºç°ã€‚
+//Ê¹ÓÃatomicµÄ¸ß²ã½Ó¿Ú£¬ËüËùÌá¹©µÄ²Ù×÷½«Ê¹ÓÃÄ¬ÈÏ±£Ö¤£¬²»ÂÛÄÚ´æ·ÃÎÊ´ÎĞòÈçºÎ¡£
+// Õâ¸öÄ¬ÈÏ±£Ö¤Ìá¹©ÁËË³ĞòÒ»ÖÂĞÔ(sequential consistency), ÒâË¼ÊÇÔÚÏß³ÌÖ®ÖĞ
+// atomic ²Ù×÷±£Ö¤Ò»¶¨¡°Ïñ´úÂë³öÏÖµÄ´ÎĞò¡±ÄÇÑùµØ·¢Éú¡£
+// Òò´Ë 18.4.3 ½ÚµÚ 986 Ò³ËùËµµÄÖØÅÅÓï¾äÒ²¾Í²»»á³öÏÖ¡£
 
-//é‡å†™//ä½¿ç”¨Condition Variable(æ¡ä»¶å˜é‡) åŒæ­¥åŒ–çº¿ç¨‹ä¹‹é—´çš„æ•°æ®æµé€»è¾‘ä¾èµ–å…³ç³»
-//atomicçš„é«˜çº§æ¥å£ï¼šstore()ã€load()
+//ÖØĞ´//Ê¹ÓÃCondition Variable(Ìõ¼ş±äÁ¿) Í¬²½»¯Ïß³ÌÖ®¼äµÄÊı¾İÁ÷Âß¼­ÒÀÀµ¹ØÏµ
+//atomicµÄ¸ß¼¶½Ó¿Ú£ºstore()¡¢load()
 #if 0
 #include <condition_variable>
 #include <mutex>
@@ -6454,10 +6543,10 @@ int main()
 #include <atomic>
 
 std::atomic_bool readyFlag(false);
-//***æ³¨***
-//æ€»æ˜¯åº”è¯¥å°† atomic object åˆå§‹åŒ–ï¼Œ
-// å› ä¸ºå…¶ default æ„é€ å‡½æ•°å¹¶ä¸å®Œå…¨åˆå§‹åŒ–å®ƒ
-// (å€’ä¸æ˜¯å…¶åˆå€¼ä¸æ˜ç¡®ï¼Œè€Œæ˜¯å…¶lock æœªè¢«åˆå§‹åŒ–)ã€‚
+//***×¢***
+//×ÜÊÇÓ¦¸Ã½« atomic object ³õÊ¼»¯£¬
+// ÒòÎªÆä default ¹¹Ôìº¯Êı²¢²»ÍêÈ«³õÊ¼»¯Ëü
+// (µ¹²»ÊÇÆä³õÖµ²»Ã÷È·£¬¶øÊÇÆälock Î´±»³õÊ¼»¯)¡£
 
 std::mutex readyMutex;
 std::condition_variable readyCondVar;
@@ -6468,18 +6557,18 @@ void thread1()
     std::cin.get();
         
 	readyFlag.store(true);    
-    //***æ³¨***
+    //***×¢***
     /*
-    æ¯”è¾ƒï¼š
+    ±È½Ï£º
     readyFlag.store(true);
-    è¿™æ˜¯ä¸€ç§åŸå­æ“ä½œï¼Œå°†trueå­˜å‚¨åˆ°readyFlagä¸­ã€‚
-    å®ƒç¡®ä¿åœ¨å­˜å‚¨æœŸé—´æ²¡æœ‰å…¶ä»–çº¿ç¨‹å¯ä»¥åŒæ—¶è®¿é—®æˆ–ä¿®æ”¹readyFlagçš„å€¼ã€‚
-    è¿™ä¸ªæ“ä½œè¿”å›voidï¼Œå› æ­¤å®ƒä¸ä¼šè¿”å›ä»»ä½•å€¼ã€‚
+    ÕâÊÇÒ»ÖÖÔ­×Ó²Ù×÷£¬½«true´æ´¢µ½readyFlagÖĞ¡£
+    ËüÈ·±£ÔÚ´æ´¢ÆÚ¼äÃ»ÓĞÆäËûÏß³Ì¿ÉÒÔÍ¬Ê±·ÃÎÊ»òĞŞ¸ÄreadyFlagµÄÖµ¡£
+    Õâ¸ö²Ù×÷·µ»Øvoid£¬Òò´ËËü²»»á·µ»ØÈÎºÎÖµ¡£
     readyFlag = true;
-    è¿™æ˜¯æ™®é€šçš„èµ‹å€¼æ“ä½œã€‚åœ¨å•çº¿ç¨‹ç¯å¢ƒä¸‹å¯èƒ½æ˜¯å®‰å…¨çš„ï¼Œ
-    ä½†åœ¨å¤šçº¿ç¨‹ç¯å¢ƒä¸‹å¯èƒ½ä¼šå¯¼è‡´ç«æ€æ¡ä»¶ã€‚
-    åœ¨å¤šçº¿ç¨‹ç¯å¢ƒä¸‹ï¼Œå¦‚æœæœ‰å…¶ä»–çº¿ç¨‹åŒæ—¶è®¿é—®æˆ–ä¿®æ”¹readyFlagï¼Œ
-    å¯èƒ½ä¼šå¯¼è‡´æœªå®šä¹‰çš„è¡Œä¸ºæˆ–ç¨‹åºé”™è¯¯ã€‚
+    ÕâÊÇÆÕÍ¨µÄ¸³Öµ²Ù×÷¡£ÔÚµ¥Ïß³Ì»·¾³ÏÂ¿ÉÄÜÊÇ°²È«µÄ£¬
+    µ«ÔÚ¶àÏß³Ì»·¾³ÏÂ¿ÉÄÜ»áµ¼ÖÂ¾ºÌ¬Ìõ¼ş¡£
+    ÔÚ¶àÏß³Ì»·¾³ÏÂ£¬Èç¹ûÓĞÆäËûÏß³ÌÍ¬Ê±·ÃÎÊ»òĞŞ¸ÄreadyFlag£¬
+    ¿ÉÄÜ»áµ¼ÖÂÎ´¶¨ÒåµÄĞĞÎª»ò³ÌĞò´íÎó¡£
     */
 
     readyCondVar.notify_one();
@@ -6488,9 +6577,9 @@ void thread1()
 void thread2()
 {
     {
-        //***æ³¨***
-        //ä½¿ç”¨condition variable æ—¶æˆ‘ä»¬ä»ç„¶éœ€è¦ mutex æ‰èƒ½ä¿æŠ¤å¯¹ 
-        // condition variable çš„æ¶ˆè´¹ (å³ä½¿readyFlagç°åœ¨æ˜¯ä¸ª atomic object)
+        //***×¢***
+        //Ê¹ÓÃcondition variable Ê±ÎÒÃÇÈÔÈ»ĞèÒª mutex ²ÅÄÜ±£»¤¶Ô 
+        // condition variable µÄÏû·Ñ (¼´Ê¹readyFlagÏÖÔÚÊÇ¸ö atomic object)
         std::unique_lock<std::mutex> ul(readyMutex);
 
         readyCondVar.wait(ul, []() { return readyFlag.load(); });
@@ -6507,7 +6596,7 @@ int main()
 #endif
 
 
-//atomic çš„store()ã€load()æ–¹æ³•çš„ç»†èŠ‚
+//atomic µÄstore()¡¢load()·½·¨µÄÏ¸½Ú
 #if 0
 #include <atomic>    // for atomics
 #include <future>    // for async() and futures
@@ -6529,13 +6618,13 @@ void provider()
 
     // and signal readiness
     readyFlag.store(true);
-    //***æ³¨***
-    //store()ä¼šå¯¹å½±å“æ‰€åŠçš„å†…å­˜åŒºæ‰§è¡Œä¸€ä¸ªæ‰€è°“ release æ“ä½œï¼Œç¡®ä¿æ­¤å‰æ‰€æœ‰å†…å­˜æ“ä½œ(all prior memory operations)
-    // ä¸è®ºæ˜¯å¦ä¸º atomic, åœ¨storeå‘æŒ¥æ•ˆç”¨ä¹‹å‰éƒ½å˜æˆâ€œå¯è¢«å…¶ä»–çº¿ç¨‹çœ‹è§â€ã€‚
-    //***ç†è§£***
-    //è¿™æ„å‘³ç€åœ¨æ‰§è¡Œstore()ä¹‹åï¼Œå…¶ä»–çº¿ç¨‹å¯ä»¥çœ‹åˆ°è¯¥çº¿ç¨‹ä¹‹å‰æ‰€æœ‰çš„å†…å­˜ä¿®æ”¹ï¼Œ
-    // æ— è®ºè¿™äº›ä¿®æ”¹æ˜¯å¦ä¸ºåŸå­æ“ä½œã€‚
-    // è¿™æ ·å¯ä»¥ç¡®ä¿ã€å†…å­˜çš„ä¸€è‡´æ€§ã€‘ï¼Œé¿å…äº†å‡ºç°æ•°æ®ä¸ä¸€è‡´æˆ–è€…ç«æ€æ¡ä»¶çš„æƒ…å†µã€‚
+    //***×¢***
+    //store()»á¶ÔÓ°ÏìËù¼°µÄÄÚ´æÇøÖ´ĞĞÒ»¸öËùÎ½ release ²Ù×÷£¬È·±£´ËÇ°ËùÓĞÄÚ´æ²Ù×÷(all prior memory operations)
+    // ²»ÂÛÊÇ·ñÎª atomic, ÔÚstore·¢»ÓĞ§ÓÃÖ®Ç°¶¼±ä³É¡°¿É±»ÆäËûÏß³Ì¿´¼û¡±¡£
+    //***Àí½â***
+    //ÕâÒâÎ¶×ÅÔÚÖ´ĞĞstore()Ö®ºó£¬ÆäËûÏß³Ì¿ÉÒÔ¿´µ½¸ÃÏß³ÌÖ®Ç°ËùÓĞµÄÄÚ´æĞŞ¸Ä£¬
+    // ÎŞÂÛÕâĞ©ĞŞ¸ÄÊÇ·ñÎªÔ­×Ó²Ù×÷¡£
+    // ÕâÑù¿ÉÒÔÈ·±£¡¾ÄÚ´æµÄÒ»ÖÂĞÔ¡¿£¬±ÜÃâÁË³öÏÖÊı¾İ²»Ò»ÖÂ»òÕß¾ºÌ¬Ìõ¼şµÄÇé¿ö¡£
 }
 
 void consumer()
@@ -6546,13 +6635,13 @@ void consumer()
         std::cout.put('.').flush();
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
-    //load()ä¼šå¯¹å½±å“æ‰€åŠçš„å†…å­˜åŒºæ‰§è¡Œä¸€ä¸ªæ‰€è°“ acquire æ“ä½œï¼Œç¡®ä¿éšåæ‰€æœ‰å†…å­˜æ“ä½œ(all following memory operations)
-    // ä¸è®ºæ˜¯å¦ä¸º atomic, åœ¨ load ä¹‹åéƒ½å˜æˆâ€œå¯è¢«å…¶ä»–çº¿ç¨‹çœ‹è§"ã€‚
+    //load()»á¶ÔÓ°ÏìËù¼°µÄÄÚ´æÇøÖ´ĞĞÒ»¸öËùÎ½ acquire ²Ù×÷£¬È·±£ËæºóËùÓĞÄÚ´æ²Ù×÷(all following memory operations)
+    // ²»ÂÛÊÇ·ñÎª atomic, ÔÚ load Ö®ºó¶¼±ä³É¡°¿É±»ÆäËûÏß³Ì¿´¼û"¡£
 
-    //***ç†è§£***
-    //ç”±äºdataçš„è®¾å€¼å‘ç”Ÿåœ¨ provider()å°†readyFlagå­˜å‚¨(store)ä¸º trueä¹‹å‰ï¼Œ
-    //è€Œå¯¹ dataçš„å¤„ç†å‘ç”Ÿåœ¨ consumer()å°†trueè½½å…¥(loaded)æ”¾è¿› readyFlagä¹‹åï¼Œ
-    // å› æ­¤å¯¹dataçš„å¤„ç†ä¿è¯å‘ç”Ÿåœ¨ dataå·²æä¾›ä¹‹å
+    //***Àí½â***
+    //ÓÉÓÚdataµÄÉèÖµ·¢ÉúÔÚ provider()½«readyFlag´æ´¢(store)Îª trueÖ®Ç°£¬
+    //¶ø¶Ô dataµÄ´¦Àí·¢ÉúÔÚ consumer()½«trueÔØÈë(loaded)·Å½ø readyFlagÖ®ºó£¬
+    // Òò´Ë¶ÔdataµÄ´¦Àí±£Ö¤·¢ÉúÔÚ dataÒÑÌá¹©Ö®ºó
 
     // and process provided data
     std::cout << "\nvalue : " << data << std::endl;
@@ -6567,7 +6656,7 @@ int main()
 #endif
 
 
-//è¡¥å……ï¼š
+//²¹³ä£º
 /*
 
 long data;
@@ -6580,9 +6669,9 @@ while(!readyFlag.load()){ //loop until ready
 }
 std::cout << data << std::endl; //and process provided data
 
-ä½¿ç”¨é»˜è®¤çš„å†…å­˜å¤„ç†æ¬¡åº(default memory order),äºæ˜¯ä¿è¯é¡ºåºä¸€è‡´æ€§(sequential consistency)
+Ê¹ÓÃÄ¬ÈÏµÄÄÚ´æ´¦Àí´ÎĞò(default memory order),ÓÚÊÇ±£Ö¤Ë³ĞòÒ»ÖÂĞÔ(sequential consistency)
 
-äº‹å®ä¸Šï¼Œæˆ‘ä»¬çœŸæ­£è°ƒç”¨çš„æ˜¯ï¼š
+ÊÂÊµÉÏ£¬ÎÒÃÇÕæÕıµ÷ÓÃµÄÊÇ£º
 
 data = 42;
 readyFlag.store(true,std::memory_order_seq_cst);
@@ -6591,38 +6680,38 @@ while(!readyFlag.load(std::memory_order_seq_cst)){
 }
 std::cout << data << std::endl;
 
-ä¸Šè¿°æ“ä½œéƒ½æœ‰ä¸€ä¸ªå¯æœ‰å¯æ— çš„å®å‚ç”¨æ¥æŒ‡å®šå†…å­˜æ¬¡åº(memory order),é»˜è®¤å®å‚å€¼
-æ˜¯std::memory_order_seq_cst(ä»£è¡¨ sequential consistent memory orderé¡ºåºä¸€è‡´çš„å†…å­˜æ¬¡åº)ã€‚
+ÉÏÊö²Ù×÷¶¼ÓĞÒ»¸ö¿ÉÓĞ¿ÉÎŞµÄÊµ²ÎÓÃÀ´Ö¸¶¨ÄÚ´æ´ÎĞò(memory order),Ä¬ÈÏÊµ²ÎÖµ
+ÊÇstd::memory_order_seq_cst(´ú±í sequential consistent memory orderË³ĞòÒ»ÖÂµÄÄÚ´æ´ÎĞò)¡£
 
-å¦‚æœæŒ‡å®šå¦ä¸€ç§å†…å­˜å¤„ç†æ¬¡åº(memory order),æˆ‘ä»¬å°±å¯ä»¥å‰Šå¼±(weaken)å¯¹æ¬¡åºçš„ä¿è¯ï¼Œ
-åœ¨æˆ‘ä»¬çš„ä¾‹å­ä¸­è¿™å°±è¶³ä»¥(ä¾‹å¦‚)è¦æ±‚ provider(æ•°æ®ä¾›åº”è€…)ä¸æ¨è¿Ÿ atomic store
-ä¹‹åçš„æ“ä½œ(not delay operations past the atomic store),è€Œ consumer(æ•°æ®æ¶ˆè´¹è€…)ä¸ä¼šåœ¨
-atomic load ä¹‹åå¸¦æ¥å‘å‰æ“ä½œ(not bring forward operations following the atomic load):
+Èç¹ûÖ¸¶¨ÁíÒ»ÖÖÄÚ´æ´¦Àí´ÎĞò(memory order),ÎÒÃÇ¾Í¿ÉÒÔÏ÷Èõ(weaken)¶Ô´ÎĞòµÄ±£Ö¤£¬
+ÔÚÎÒÃÇµÄÀı×ÓÖĞÕâ¾Í×ãÒÔ(ÀıÈç)ÒªÇó provider(Êı¾İ¹©Ó¦Õß)²»ÍÆ³Ù atomic storeÖ®ºóµÄ²Ù×÷
+(not delay operations past the atomic store),¶ø consumer(Êı¾İÏû·ÑÕß)²»»áÔÚ
+atomic load Ö®ºó´øÀ´ÏòÇ°²Ù×÷(not bring forward operations following the atomic load):
 
 data = 42;
 readyFlag.store(true,std::memory_order_release);
 
-å’Œ
+ºÍ
 
 while(!readyFlag.load(std::memory_order_acquire)){
 }
 std::cout << data << std::end1;
 
-ç„¶è€Œå¦‚æœæ”¾å®½(relaxing)atomicæ“ä½œæ¬¡åºä¸Šçš„æ‰€æœ‰çº¦æŸï¼Œä¼šå¯¼è‡´ä¸æ˜ç¡®çš„è¡Œä¸ºï¼š
+È»¶øÈç¹û·Å¿í(relaxing)atomic²Ù×÷´ÎĞòÉÏµÄËùÓĞÔ¼Êø£¬»áµ¼ÖÂ²»Ã÷È·µÄĞĞÎª£º
 // ERROR:undefined behavior:
 data = 42;
 readyFlag.store(true,std::memory_order_relaxed);
 
-åŸå› æ˜¯ std::memory_order_relaxed ä¸ä¿è¯æ­¤å‰æ‰€æœ‰å†…å­˜æ“ä½œ
-(all prior memory operations)åœ¨storeå‘æŒ¥æ•ˆç”¨å‰éƒ½å˜å¾—â€œå¯è¢«å…¶ä»–çº¿ç¨‹çœ‹è§â€ã€‚
-å› æ­¤ provider çº¿ç¨‹æœ‰å¯èƒ½åœ¨è®¾ç½®ready flag ä¹‹åæ‰å†™ data,
-äºæ˜¯ consumer çº¿ç¨‹æœ‰å¯èƒ½åœ¨ data æ­£è¢«å†™æ—¶è¯»å®ƒï¼Œè¿™å°±ä¼šé€ æˆdata race
+Ô­ÒòÊÇ std::memory_order_relaxed ²»±£Ö¤´ËÇ°ËùÓĞÄÚ´æ²Ù×÷
+(all prior memory operations)ÔÚstore·¢»ÓĞ§ÓÃÇ°¶¼±äµÃ¡°¿É±»ÆäËûÏß³Ì¿´¼û¡±¡£
+Òò´Ë provider Ïß³ÌÓĞ¿ÉÄÜÔÚÉèÖÃready flag Ö®ºó²ÅĞ´ data,
+ÓÚÊÇ consumer Ïß³ÌÓĞ¿ÉÄÜÔÚ data Õı±»Ğ´Ê±¶ÁËü£¬Õâ¾Í»áÔì³Édata race
 
 */
 
 
-//atomicçš„ä½å±‚æ¥å£
-//å¦‚ä¸Šæ‰€è¿°ï¼Œadã€storeã€exchangeã€CAS åŠ fetchç­‰æ“ä½œæä¾›äº†ä¸€ä¸ªå¢è¡¥èƒ½åŠ›ï¼š
-// å®ƒä»¬å…è®¸ä½ é¢å¤–ä¼ é€’ä¸€ä¸ªå†…å­˜æ¬¡åº(memory order)å®å‚ã€‚
-//è¿™äº›ä½å±‚æ¥å£æ˜¯ä¸ºçœŸæ­£çš„å¹¶å‘ä¸“å®¶å‡†å¤‡çš„
+//atomicµÄµÍ²ã½Ó¿Ú
+//ÈçÉÏËùÊö£¬ad¡¢store¡¢exchange¡¢CAS ¼° fetchµÈ²Ù×÷Ìá¹©ÁËÒ»¸öÔö²¹ÄÜÁ¦£º
+// ËüÃÇÔÊĞíÄã¶îÍâ´«µİÒ»¸öÄÚ´æ´ÎĞò(memory order)Êµ²Î¡£
+//ÕâĞ©µÍ²ã½Ó¿ÚÊÇÎªÕæÕıµÄ²¢·¢×¨¼Ò×¼±¸µÄ
 
