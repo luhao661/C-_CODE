@@ -4,15 +4,22 @@
 //C++11新特性：
 /*
 C：
-
-auto   后置返回类型  。。。。。
-
+lambda函数、智能指针、nullptr
+新关键字auto、后置返回类型decltype
+基于范围的for循环、
+一致性初始化、noexcept、constexpr
 
 类和对象：
+类内初始化、初始化列表、
+新关键字default、delete、override、final
+移动构造函数、移动赋值运算符
 
-模板：
+Template C++：
+可变参数模板、模板元编程、模板别名
 
 STL：
+unordered_map、
+cbegin()、cend()
 
 */
 
@@ -27,7 +34,7 @@ int main()
 {
     int array[] = { 1,2,3,4,5 };
 
-    for (const auto& x : array)
+    for (const auto& x : array)//补充：声明为一个const reference 可以避免非必要的复制操作
         cout << x << " ";
 
     return 0;
@@ -44,9 +51,12 @@ using namespace std;
 
 int main()
 {
-    auto pNico = make_shared<string>("Nico");
+    auto pNico1 = make_shared<string>("Nico");
+    auto pNico2(pNico1);
 
-    cout << pNico.use_count();
+    cout << pNico1.use_count()<<" "<<pNico2.use_count();
+
+    //显示为2  2
 
     return 0;
 }
@@ -104,54 +114,6 @@ int main()
 #endif
 
 
-//原子操作
-#if 0
-#include <atomic>
-#include <iostream>
-
-int main() {
-    std::atomic<int> atomicInt;
-
-    // 使用 store 将值原子地存储到 atomicInt 对象中
-    atomicInt.store(10);
-
-    std::cout << "Value in atomicInt: " << atomicInt.load() << std::endl;
-
-    return 0;
-}
-#endif
-
-
-//如果你将同一个动态分配的内存地址传递给多个 shared_ptr 实例来管理，
-//会导致程序出现未定义的行为，
-//这是因为多个 shared_ptr 实例会各自尝试释放同一个内存地址，
-//可能导致重复释放内存，从而引发问题
-//一个动态分配的内存空间只能由【一组】shared_ptr管理
-#if 0
-#include <iostream>
-
-using namespace std;
-
-int main()
-{
-    //正确写法
-    //shared_ptr<int>sp1(new int);
-    //shared_ptr<int>sp2(sp1);
-
-    //错误写法：
-    //一个动态分配的内存空间由【两组】shared_ptr管理
-    int* p = new int;
-    shared_ptr<int>sp1(p);
-    shared_ptr<int>sp2(p);
-
-    cout << sp1.use_count() << endl;
-    cout << sp2.use_count() << endl;
-
-    return 0;
-}
-#endif
-
-
 //weak_ptr
 //用于协助管理shared_ptr所管理的对象，用于解决shared_ptr的循环引用问题
 //weak_ptr允许你观察到一个对象，但不增加其引用计数，它只是指向shared_ptr
@@ -205,6 +167,44 @@ int main()
     cout << "jim's family exists" << endl;
 }
 #endif
+
+
+//如果你将同一个动态分配的内存地址传递给多个 shared_ptr 实例来管理，
+//会导致程序出现未定义的行为，
+//这是因为多个 shared_ptr 实例会各自尝试释放同一个内存地址，
+//可能导致重复释放内存，从而引发问题
+//一个动态分配的内存空间只能由【一组】shared_ptr管理
+#if 0
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    //正确写法
+    //shared_ptr<int>sp1(new int);
+    //shared_ptr<int>sp2(sp1);
+
+    //错误写法：
+    //一个动态分配的内存空间由【两组】shared_ptr管理
+    int* p = new int;
+    shared_ptr<int>sp1(p);
+    shared_ptr<int>sp2(p);
+
+    cout << sp1.use_count() << endl;
+    cout << sp2.use_count() << endl;
+
+    return 0;
+}
+#endif
+
+
+//unique_ptr
+//关于其复制构造函数和赋值运算符重载函数
+//实参都要用到move(...)
+//补充：
+//函数是接收端：实参用move(...)
+//函数是供应端：return语句不需要加上move(...)
 
 
 //计算程序的执行时间
@@ -399,11 +399,11 @@ int main()
 }
 #endif
 //比较
-// 1. 使用 copy() 和 ostream_iterator与 2. 使用基于范围的for循环
+// 方法1. 使用 copy() 和 ostream_iterator与方法2. 使用基于范围的for循环
 //两种输出方法
-//1.非常简洁，一行代码即可完成任务。可以支持普通数组如copy(flag,flag+10000,ostream_iterator<bool>(cout));
+//方法1.非常简洁，一行代码即可完成任务。可以支持普通数组如copy(flag,flag+10000,ostream_iterator<bool>(cout));
 // 但是，它有些局限性，例如无法进行更复杂的处理或转换输出。
-//2.更加灵活和直观。它使代码更易读，尤其是在需要对输出进行更多控制或转换时。
+//方法2.更加灵活和直观。它使代码更易读，尤其是在需要对输出进行更多控制或转换时。
 // 你可以在循环内部添加逻辑，对输出进行格式化或添加其他操作。
 
 
