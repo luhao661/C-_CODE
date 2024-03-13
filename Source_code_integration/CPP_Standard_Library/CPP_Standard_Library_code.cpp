@@ -270,6 +270,12 @@ cout<<myarray.at(10);//报错
 */
 
 
+//容器可以分为三大类：
+//序列式容器
+//关联式容器
+//无序(关联式)容器
+
+
 //从标准输入读取string，排序然后打印(去掉重复的字符串)
 //自己写的方法：
 #if 0
@@ -474,7 +480,237 @@ int main()
 #endif
 
 
-//实现在执行时确定函数
+//以函数作为算法的实参
+//使用普通函数作为单参判断式(Unary Predicate)(一元谓词函数)
+#if 0
+#include <list>
+#include <algorithm>
+#include <iostream>
+#include <cstdlib>      // for abs()
+using namespace std;
+
+// predicate, which returns whether an integer is a prime number
+bool isPrime(int number)
+{
+    // ignore negative sign
+    number = abs(number);
+
+    // 0 and 1 are no prime numbers
+    if (number == 0 || number == 1) {
+        return false;
+    }
+
+    // find divisor that divides without a remainder
+    int divisor;
+    for (divisor = number / 2; number % divisor != 0; --divisor)
+    {
+        ;
+    }
+
+    // if no divisor greater than 1 is found, it is a prime number
+    return divisor == 1;
+}
+
+int main()
+{
+    list<int> coll;
+
+    // insert elements from 24 to 30
+    for (int i = 24; i <= 30; ++i)
+    {
+        coll.push_back(i);
+    }
+
+    // search for prime number
+    auto pos = find_if(coll.cbegin(), coll.cend(),  // range
+        isPrime);                    // predicate
+    if (pos != coll.end()) 
+    {
+        // found
+        cout << *pos << " is first prime number found" << endl;
+    }
+    else 
+    {
+        // not found
+        cout << "no prime number found" << endl;
+    }
+}
+#endif
+
+
+//以函数作为算法的实参
+//使用普通函数作为双参判断式(Binary Predicate)(二元谓词函数)
+#if 0
+#include <algorithm>
+#include <deque>
+#include <string>
+#include <iostream>
+using namespace std;
+
+/* class Person
+ */
+class Person 
+{
+private:
+    string fn;    // first name
+    string ln;    // last name
+public:
+    Person() {
+    }
+    Person(const string& f, const string& n)
+        : fn(f), ln(n) {
+    }
+    string firstname() const;
+    string lastname() const;
+    // ...
+};
+
+inline string Person::firstname() const {
+    return fn;
+}
+
+inline string Person::lastname() const {
+    return ln;
+}
+
+ostream& operator<< (ostream& s, const Person& p)
+{
+    s << "[" << p.firstname() << " " << p.lastname() << "]";
+    return s;
+}
+
+
+/* binary function predicate:
+ * - returns whether a person is less than another person
+ */
+bool personSortCriterion(const Person& p1, const Person& p2)
+{
+    /* a person is less than another person
+     * - if the last name is less
+     * - if the last name is equal and the first name is less
+     */
+    return p1.lastname() < p2.lastname() ||
+        (p1.lastname() == p2.lastname() &&
+            p1.firstname() < p2.firstname());
+}
+
+int main()
+{
+    // create some persons
+    Person p1("nicolai", "josuttis");
+    Person p2("ulli", "josuttis");
+    Person p3("anica", "josuttis");
+    Person p4("lucas", "josuttis");
+    Person p5("lucas", "otto");
+    Person p6("lucas", "arm");
+    Person p7("anica", "holle");
+
+    // insert person into collection coll
+    deque<Person> coll;
+    coll.push_back(p1);
+    coll.push_back(p2);
+    coll.push_back(p3);
+    coll.push_back(p4);
+    coll.push_back(p5);
+    coll.push_back(p6);
+    coll.push_back(p7);
+
+    // print elements
+    cout << "deque before sort():" << endl;
+    deque<Person>::iterator pos;
+    for (pos = coll.begin(); pos != coll.end(); ++pos) {
+        cout << *pos << endl;
+    }
+
+    // sort elements
+    sort(coll.begin(), coll.end(),    // range
+        personSortCriterion);       // sort criterion
+
+    // print elements
+    cout << "deque after sort():" << endl;
+    for (pos = coll.begin(); pos != coll.end(); ++pos) {
+        cout << *pos << endl;
+    }
+}
+#endif
+
+
+//以函数作为算法的实参
+//使用lambda作为双参判断式(Binary Predicate)(二元谓词函数)，作为排序准则
+#if 0
+#include <algorithm>
+#include <deque>
+#include <string>
+#include <iostream>
+using namespace std;
+
+class Person {
+public:
+    string firstname() const;
+    string lastname() const;
+    //...
+};
+
+int main()
+{
+    deque<Person> coll;
+    //...
+
+    // sort Persons according to lastname (and firstname):
+    sort(coll.begin(), coll.end(),                // range
+        [](const Person& p1, const Person& p2) { // sort criterion
+            return p1.lastname() < p2.lastname() ||
+                (p1.lastname() == p2.lastname() &&
+                    p1.firstname() < p2.firstname());
+        });
+    //...
+
+    //写法2：
+    auto cmp = [](const Person& p1, const Person& p2) { // sort criterion
+        return p1.lastname() < p2.lastname() ||
+            (p1.lastname() == p2.lastname() &&
+                p1.firstname() < p2.firstname());
+        };
+
+    sort(coll.begin(), coll.end(), cmp);
+}
+#endif
+//***注***
+//对于关联式容器，使用lambda时有特定的写法。(所以这种情况用lambda不推荐)
+//推荐写为：//对于关联容器，实现运行期指定排序准则
+#if 0
+#include <algorithm>
+#include <set>
+#include <string>
+#include <iostream>
+using namespace std;
+
+class Person {
+public:
+    string firstname() const;
+    string lastname() const;
+    //...
+};
+
+int main()
+{
+    auto cmp = [](const Person& p1, const Person& p2) { // sort criterion
+        return p1.lastname() < p2.lastname() ||
+            (p1.lastname() == p2.lastname() &&
+                p1.firstname() < p2.firstname());
+        };
+
+    std::set<Person, decltype(cmp)> coll(cmp);
+    //由于 set 声明式需要指明 lambda类型，所以我们必须使用decltype(见3.1.11 节第 32 页), 
+    // 它会为一个 lambda对象(上例的 cmp)产出类型。
+    // 注意，你也必须把 lambda 对象传给coll的构造函数，
+    // 否则coll会调用被传入的排序准则的 default 构造的数，而根据C++语言规则，
+    // lambda没有 default 构造函数，也没有 assignment 操作符
+}
+#endif
+
+
+//使用函数对象，实现在执行时确定函数
 #if 0
 #include <list>
 #include <algorithm>
