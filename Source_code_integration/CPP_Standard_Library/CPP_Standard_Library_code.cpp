@@ -54,7 +54,7 @@ int main()
     auto pNico1 = make_shared<string>("Nico");
     auto pNico2(pNico1);
 
-    cout << pNico1.use_count()<<" "<<pNico2.use_count();
+    cout << pNico1.use_count() << " " << pNico2.use_count();
 
     //显示为2  2
 
@@ -524,12 +524,12 @@ int main()
     // search for prime number
     auto pos = find_if(coll.cbegin(), coll.cend(),  // range
         isPrime);                    // predicate
-    if (pos != coll.end()) 
+    if (pos != coll.end())
     {
         // found
         cout << *pos << " is first prime number found" << endl;
     }
-    else 
+    else
     {
         // not found
         cout << "no prime number found" << endl;
@@ -549,7 +549,7 @@ using namespace std;
 
 /* class Person
  */
-class Person 
+class Person
 {
 private:
     string fn;    // first name
@@ -781,6 +781,10 @@ int main()
     retunr 0;
 }
 #endif
+//使用函数对象的优势：
+//1.函数对象是一种带状态(with state)的函数。
+//2.每个函数对象有其自己的类型。
+//3.函数对象通常比寻常函数速度快。
 
 
 //函数适配器bind
@@ -866,7 +870,36 @@ int main()
 #endif
 
 
-//对于array，不要以迭代器表现“第一元素的地址”
+//STL只支持value语义，不支持reference语义
+
+//STL的迭代器可能会因为其他动作的副作用而变得无效。例如：
+//对 vector 和 deque 而言，一旦发生元素的安插、删除或重新分配。//***注***
+//对无序容器而言，一旦发生 rehashing(重新散列)。
+
+//***注***
+//对于vector容器
+// 安插动作【可能】使 reference、pointer 和 iterator失效
+// (译注：因为安插可能导致 vector 重新分配)。
+// 你可以使用reserve()保留适当容量，避免重新分配内存。
+// 如此一来，只要保留的容量尚有富余，就不必担心reference失效。
+// vector的容量不会缩减，我们便可确定，即使删除元素，
+// 其reference、pointer 和 iterator 也会继续指向动作发生前的位置。
+//补充：
+//【安插】或【移除】元素，都会使“作用点”之后的各元素的
+//  reference、pointer 和 iterator 失效。
+// 如果【安插】动作甚至引发内存重新分配，那么该容器身上的
+// 所有reference、 pointer 和 iterator 会失效。
+
+//对于deque容器
+//【除了头尾两端】，在任何地点【安插】或【删除】元素都将导致指向deque 元素的
+// 任何 pointer、reference 和 iterator 失效。
+// 不过，deque的内存重分配优于 vector, 因为其内部结构显示，
+// deque 不必在内存重新分配时复制所有元素。
+
+//(可以查看//移除元素，并避免使用一个【暂时】无效的迭代器)
+
+
+//对于容器，不要以迭代器表现“第一元素的地址”
 #if 0
 #include <iostream>
 #include <array>
@@ -877,12 +910,18 @@ int main()
 {
     array<int, 5>myarray{ 0 };
 
-    //cout << (int*)(myarray.begin() )<< endl;
+    //cout << (int*)(myarray.begin() )<< endl;//迭代器无法强制转换为指针
+
     cout << myarray.data() << endl;
 
-    *(myarray.data()) = 1;
+    //data()：返回指向数组首元素的指针。
+    //begin()：返回指向数组第一个元素的迭代器。
 
-    cout << myarray[0] << endl;
+    //data() 方法在使用 C 函数或者需要直接传递数组给某些 C 接口时非常有用，
+    // 因为它返回一个指向数组的指针，与 C 数组的使用方式相符合。
+
+    printf("%p\n", myarray.data());
+    printf("%p\n", myarray.begin());
 
     return 0;
 }
@@ -1422,7 +1461,7 @@ int main()
 //移除元素，并避免使用一个【暂时】无效的迭代器
 //(因为该迭代器指向了一个被删除的元素的位置)
 //***注***
-//如果某元素被删除，所有容器(除了vector 和 deque，因为可能导致内存重新分配)
+//如果某元素被删除，所有容器(除了deque，因为可能导致内存重新分配)
 //都保证迭代器以及用以指向【未被删除的元素】的reference继续保持有效。
 //而指向被删除的元素的迭代器都要进行该段代码展示的操作。
 #if 0
@@ -1524,7 +1563,7 @@ int main()
 
     cout << endl;
 
-    vector<int> vec{1,2,3,4,5,6,7,8,9};
+    vector<int> vec{ 1,2,3,4,5,6,7,8,9 };
 
     for (auto i = vec.begin(); i != vec.end();)
     {
@@ -3459,7 +3498,7 @@ using namespace std;
 
 char myToupper(char c)
 {
- 
+
     return toupper(c);
 }
 
@@ -3487,7 +3526,7 @@ int main()
             return myToupper(c1) == myToupper(c2);
         });
 
-    if (pos != s.end()) 
+    if (pos != s.end())
     {
         cout << "\"" << sub << "\" is part of \"" << s << "\""
             << endl;
@@ -3641,11 +3680,11 @@ bool check(int elem);
 
 int main()
 {
-    list<int> link_list{1,2,3,4,5,6};
+    list<int> link_list{ 1,2,3,4,5,6 };
 
     //auto pos=find_if(link_list.begin(),link_list.end(),check);
-    auto pos=find_if(link_list.begin(),link_list.end(),
-        function<bool (int)>(check));
+    auto pos = find_if(link_list.begin(), link_list.end(),
+        function<bool(int)>(check));
     //可以不使用function<>
     //当需要存储不同类型的可调用对象、
     // 将它们作为参数传递给函数或通过传递可调用对象为
@@ -3701,13 +3740,13 @@ int main()
         7);                          // value
 
     // print result
-    if (pos != coll.end()) 
+    if (pos != coll.end())
     {
         cout << "three consecutive elements with value 7 "
             << "start with Num." << distance(coll.begin(), pos) + 1
             << ". element" << endl;
     }
-    else 
+    else
     {
         cout << "no four consecutive elements with value 7 found"
             << endl;
@@ -3718,7 +3757,7 @@ int main()
         4,                           // count
         0,                           // value
         [](int elem, int value) // criterion   ***注***
-        {     
+        {
             return elem % 2 == 1;
         });
     //***注***
@@ -3733,9 +3772,9 @@ int main()
             return elem % 2 == 1;
         });
         */
-    
-    //因为有如下写法：
-    //找出四个值大于3的连续元素
+
+        //因为有如下写法：
+        //找出四个值大于3的连续元素
 #if 0
     pos = search_n(coll.begin(), coll.end(), // range
         4, // count
@@ -3752,7 +3791,7 @@ int main()
             cout << *pos << ' ';
         }
     }
-    else 
+    else
     {
         cout << "no four consecutive elements with value > 3 found";
     }
@@ -3816,7 +3855,7 @@ int main()
         checkEven);                     // subrange criterion
 
     // loop while subrange found
-    while (pos != coll.end()) 
+    while (pos != coll.end())
     {
         // print position of first element
         cout << "subrange found starting with element "
@@ -4004,7 +4043,7 @@ int main()
     // define an object for the predicate (using a lambda)
     auto isEven = [](int elem)
         {
-        return elem % 2 == 0;
+            return elem % 2 == 0;
         };
 
     // print whether all, any, or none of the elements are/is even
@@ -4089,7 +4128,7 @@ int main()
     //coll2的大小仍然是5, 所以我们可以再次调用move()覆盖(overwrite)这些元素。
 
     //验证输出：
-    copy(coll2.cbegin(), coll2.cend(),        
+    copy(coll2.cbegin(), coll2.cend(),
         ostream_iterator<string>(cout, " "));
     cout << endl;
     //输出内容正常，结果表明：
@@ -4137,10 +4176,10 @@ template <typename T>
 inline void PRINT_ELEMENTS(const T& coll,
     const std::string& optcstr = "")
 {
-    std::cout << optcstr<<endl;
-    for (auto elem : coll) 
+    std::cout << optcstr << endl;
+    for (auto elem : coll)
     {
-        std::cout <<setw(5)<<right<< elem;
+        std::cout << setw(5) << right << elem;
     }
     std::cout << std::endl;
 }
@@ -4668,7 +4707,7 @@ inline void PRINT_ELEMENTS(const T& coll,
     std::cout << optcstr << endl;
     for (auto elem : coll)
     {
-        std::cout << right << elem<<' ';
+        std::cout << right << elem << ' ';
     }
     std::cout << std::endl;
 }
@@ -4743,11 +4782,11 @@ int main()
     }
 
     // check existence of element with value 42
-    if (binary_search(coll.cbegin(), coll.cend(), 42)) 
+    if (binary_search(coll.cbegin(), coll.cend(), 42))
     {
         cout << "42 is present" << endl;
     }
-    else 
+    else
     {
         cout << "42 is not present" << endl;
     }
@@ -5014,7 +5053,7 @@ public:
     public:
         //***注***
         //最后写 throw() 表示该函数不会抛出任何异常
-        virtual const char* what() const throw() 
+        virtual const char* what() const throw()
         {
             return "read empty stack";
         }
@@ -5027,21 +5066,21 @@ public:
     }
 
     // is stack empty?
-    bool empty() const 
+    bool empty() const
     {
         return c.empty();
     }
 
     // push element into the stack
-    void push(const T& elem) 
+    void push(const T& elem)
     {
         c.push_back(elem);
     }
 
     // pop element out of the stack and return its value
-    T pop() 
+    T pop()
     {
-        if (c.empty()) 
+        if (c.empty())
         {
             throw ReadEmptyStack();
         }
@@ -5056,7 +5095,7 @@ public:
     // return value of next element
     T& top()
     {
-        if (c.empty()) 
+        if (c.empty())
         {
             throw ReadEmptyStack();
         }
@@ -5077,7 +5116,7 @@ public:
 #include <exception>
 
 template <typename T>
-class Queue 
+class Queue
 {
 protected:
     std::deque<T> c;        // container for the elements
@@ -5087,7 +5126,7 @@ public:
     class ReadEmptyQueue : public std::exception
     {
     public:
-        virtual const char* what() const throw() 
+        virtual const char* what() const throw()
         {
             return "read empty queue";
         }
@@ -5100,19 +5139,19 @@ public:
     }
 
     // is queue empty?
-    bool empty() const 
+    bool empty() const
     {
         return c.empty();
     }
 
     // insert element into the queue
-    void push(const T& elem) 
+    void push(const T& elem)
     {
         c.push_back(elem);
     }
 
     // remove next element from the queue and return its value
-    T pop() 
+    T pop()
     {
         if (c.empty())
         {
@@ -5127,7 +5166,7 @@ public:
     }
 
     // return value of next element
-    T& front() 
+    T& front()
     {
         if (c.empty())
         {
@@ -5269,12 +5308,12 @@ int main(int argc, char* argv[])
         //如果 idx的值为 - 1, 由于 idx和字符串 string::npos类型不同，
         // 比较结果可能会是 false
 
-        if (idx == string::npos) 
+        if (idx == string::npos)
         {
             // filename does not contain any period
             tmpname = filename + '.' + suffix;
         }
-        else 
+        else
         {
             // split filename into base name and extension
             // - base name contains all characters before the period
@@ -5290,13 +5329,13 @@ int main(int argc, char* argv[])
             //filename.substr(idx + 1);
             //返回 [pos, size())
 
-            if (extname.empty()) 
+            if (extname.empty())
             {
                 // contains period but no extension: append tmp
                 tmpname = filename;
                 tmpname += suffix;
             }
-            else if (extname == suffix) 
+            else if (extname == suffix)
             {
                 // replace extension tmp with xxx
                 tmpname = filename;
@@ -5332,7 +5371,7 @@ int main(int argc, char** argv)
     string line;
 
     // for every line read successfully
-    while (getline(cin, line)) 
+    while (getline(cin, line))
     {
         string::size_type begIdx, endIdx;
 
@@ -5340,7 +5379,7 @@ int main(int argc, char** argv)
         begIdx = line.find_first_not_of(delims);
 
         // while beginning of a word found
-        while (begIdx != string::npos) 
+        while (begIdx != string::npos)
         {
             //***注***
             //从index为begIdx开始，寻找等于delims中任一字符的字符所在的位置
@@ -5348,14 +5387,14 @@ int main(int argc, char** argv)
             // search end of the actual word
             endIdx = line.find_first_of(delims, begIdx);
 
-            if (endIdx == string::npos) 
+            if (endIdx == string::npos)
             {
                 // end of word is end of line
                 endIdx = line.length();
             }
 
             // print characters in reverse order
-            for (int i = endIdx - 1; i >= static_cast<int>(begIdx); --i) 
+            for (int i = endIdx - 1; i >= static_cast<int>(begIdx); --i)
             {
                 cout << line[i];
             }
@@ -5383,8 +5422,8 @@ using namespace std;
 int main()
 {
     string str1("abc");
-    cout << str1.length()<<endl;
-    
+    cout << str1.length() << endl;
+
     //说明str1一开始就分配了多余的空间用于存储内容
     cout << sizeof(str1) << endl;
 
@@ -5410,8 +5449,8 @@ int main()
     //即使s1仅存4个元素，但
     //s1若要显示s1[4]还是会返回一个空字符的。(在C++11中定义是这样的行为)
 
-    string str2("abc",4);
-    cout << str2.length()<<endl;
+    string str2("abc", 4);
+    cout << str2.length() << endl;
 
     for (int i = 0; i < 5; ++i)
         if (str2[i] == '\0')
@@ -5442,7 +5481,7 @@ using namespace std;
 
 int main()
 {
-    string str{"bc"};
+    string str{ "bc" };
 
     //不可用的写法：
     //str.insert(0,'a');
@@ -5450,7 +5489,7 @@ int main()
     //str.insert("a");
 
     //正确写法：
-    str.insert(0,"a");
+    str.insert(0, "a");
 
     cout << str << endl;
 
@@ -5545,7 +5584,7 @@ int main()
     //理解：
     //unique()从来自范围 [first, last) 的相继等价元素组消除首元素外的元素，
     //并返回范围的新逻辑结尾的尾后迭代器。
-    
+
     //unique()保持剩余元素的相对顺序，且不更改容器的物理大小。
     //指向范围的新逻辑结尾和物理结尾之间元素的迭代器仍然可解引用，
     // 但元素自身拥有【未指定值】。
@@ -5597,9 +5636,9 @@ int main()
         if (*it == ' ')
             cout << "[space]";
         else if (*it == '\n')
-			cout << "[\\n]";
-		else if (*it != '\n')
-			cout << *it;
+            cout << "[\\n]";
+        else if (*it != '\n')
+            cout << *it;
 }
 //测试：
 //输入：
@@ -5614,7 +5653,7 @@ int main()
 c d
 
 [space]a[space]b[\n]c[space]d[\n]
-*/ 
+*/
 //***注***
 //第二行开始的空白字符被忽略了
 #endif
@@ -5631,19 +5670,19 @@ int main()
 {
     ifstream fin("DataReceive.txt");
 
-	if (!fin.is_open())
-		cout << "Can not open DataReceive.txt !" << endl;
+    if (!fin.is_open())
+        cout << "Can not open DataReceive.txt !" << endl;
 
-	string str;
+    string str;
 
-	//不好的写法：
+    //不好的写法：
 #if 0
-	while (fin)
-	{
-		getline(fin, str);
+    while (fin)
+    {
+        getline(fin, str);
 
-		cout << str << endl;
-	}
+        cout << str << endl;
+    }
     //原因：
     //读到EOF时eof()为1，fail()也为1，fin的布尔值才为false
 #endif
@@ -5654,35 +5693,35 @@ int main()
       c               d
 */
 
-    //合适的写法：
-	getline(fin, str);
-	while (fin)
-	{
-		cout << str << endl;
+//合适的写法：
+    getline(fin, str);
+    while (fin)
+    {
+        cout << str << endl;
 
-		getline(fin, str);
-	}
-//输出：
-/*
-            a              b
-      c               d
-*/
+        getline(fin, str);
+    }
+    //输出：
+    /*
+                a              b
+          c               d
+    */
 
     //清除标志位
     fin.clear();
     //回到文件开头
     fin.seekg(0);
 
-    ofstream fout("DataOutput.txt",ios_base::out | ios_base::app);
-    if(!fout.is_open())
-        cout<< "Can not open DataOutput.txt !" << endl;
+    ofstream fout("DataOutput.txt", ios_base::out | ios_base::app);
+    if (!fout.is_open())
+        cout << "Can not open DataOutput.txt !" << endl;
 
     getline(fin, str);
     while (fin)
     {
         cout << str << endl;
 
-        fout << str<<'\n';
+        fout << str << '\n';
         //fout << str.c_str()<<'\n';
 
         getline(fin, str);
@@ -5776,7 +5815,7 @@ int main()
 #include <sstream>
 #include <string>
 
-struct Student 
+struct Student
 {
     std::string name;
     int age;
@@ -5792,7 +5831,7 @@ int main()
 
     std::string line;
     while (std::getline(iss, line))// 逐行读取数据
-    { 
+    {
         std::istringstream lineStream(line);
         std::string name;
         int age;
@@ -5890,7 +5929,7 @@ int doSomething(char c)
     std::uniform_int_distribution<int> id(10, 1000);
 
     // loop to print character after a random period of time
-    for (int i = 0; i < 10; ++i) 
+    for (int i = 0; i < 10; ++i)
     {
         //当前线程暂停时间
         this_thread::sleep_for(chrono::milliseconds(id(dre)));
@@ -5940,8 +5979,8 @@ int main()
             (当我们需要函数的运行结果或当我们想要确保该函数被执行时)。
      */
 
-    //第二步：
-    //正常启动func2()于前台
+     //第二步：
+     //正常启动func2()于前台
     int result2 = func2();    // call func2() synchronously (here and now)
 
     //第三步：
@@ -5960,30 +5999,30 @@ int main()
      或是当async()无法启动新线程时(不论基于任何理由), 程序仍能有效运作。
      */
 
-    /*
-    因此，
-    std::future<int> result1(std::async(func1));
-    和
-    result1.get()
-    的组合允许你以某种方式优化程序：
-    (1)如果可能，当 main 线程的下一个语句被处理时func1()被并行运行，
-    (2)如果无法并行运行，那么func1()会在 get()被调用时
-    被循序调用(called sequentially)。
-    这就意味着无论如何都能保证至少在 get()执行后一定会调用
-    func1()——不是异步就是同步。
-    */
+     /*
+     因此，
+     std::future<int> result1(std::async(func1));
+     和
+     result1.get()
+     的组合允许你以某种方式优化程序：
+     (1)如果可能，当 main 线程的下一个语句被处理时func1()被并行运行，
+     (2)如果无法并行运行，那么func1()会在 get()被调用时
+     被循序调用(called sequentially)。
+     这就意味着无论如何都能保证至少在 get()执行后一定会调用
+     func1()——不是异步就是同步。
+     */
 
-    //补充：
-    /*
-    以下或许不是你要的：
-    std::future<int> result1(std::async(func1));
+     //补充：
+     /*
+     以下或许不是你要的：
+     std::future<int> result1(std::async(func1));
 
-    int result = func2()+ result1.get();//might call func2() after func1() ends
+     int result = func2()+ result1.get();//might call func2() after func1() ends
 
-    由于上述第二个语句右侧的核算顺序，result1.get()有可能在 func2()之前被调用
-    */
+     由于上述第二个语句右侧的核算顺序，result1.get()有可能在 func2()之前被调用
+     */
 
-    //整体运行时间是func1()和func2()运行时间中的较大者  加上 计算总和的时间
+     //整体运行时间是func1()和func2()运行时间中的较大者  加上 计算总和的时间
     std::cout << "\nresult of func1()+func2(): " << result
         << std::endl;
 }
@@ -5998,7 +6037,7 @@ std::future<long> result1 = std::async(std::launch:: async, func1);
 
 //指示强制延缓执行(deferred execution)：
 以 std::launch:deferred为发射策略传给 async()。下面的做法允许你延缓func1()直到你对f调用get() :
-   
+
 std::future<…> f(std::async(std::launch::deferred,
         func1));                                                     //defer func1 until get()
 
@@ -6022,7 +6061,7 @@ void task1()
     // - will sooner or later raise an exception
     // - BEWARE: this is bad practice
     list<int> v;
-    while (true) 
+    while (true)
     {
         for (int i = 0; i < 1000000; ++i)
         {
@@ -6043,7 +6082,7 @@ int main()
     cin.get();  // read a character (like getchar())
 
     cout << "\nwait for the end of task1: " << endl;
-    try 
+    try
     {
         f1.get();  // wait for task1() to finish (raises exception if any)
     }
@@ -6076,7 +6115,7 @@ int queryNumber()
     cin >> num;
 
     // throw exception if none
-    if (!cin) 
+    if (!cin)
     {
         throw runtime_error("no number read");
     }
@@ -6091,7 +6130,7 @@ void doSomething(char c, shared_future<int> f)
         // wait for number of characters to print
         int num = f.get();  // get result of queryNumber()
 
-        for (int i = 0; i < num; ++i) 
+        for (int i = 0; i < num; ++i)
         {
             this_thread::sleep_for(chrono::milliseconds(100));
             cout.put(c).flush();
@@ -6106,7 +6145,7 @@ void doSomething(char c, shared_future<int> f)
 
 int main()
 {
-    try 
+    try
     {
         //启动一个线程来查询一个数字
         // start one thread to query a number
@@ -6293,7 +6332,7 @@ int main()
     {
         std::cerr << "EXCEPTION: " << e.what() << std::endl;
     }
-    catch (...) 
+    catch (...)
     {
         std::cerr << "EXCEPTION " << std::endl;
     }
@@ -6386,7 +6425,7 @@ std::mutex printMutex;  // enable synchronized output with print()
 void print(const std::string& s)
 {
     // ...
-    
+
     //lock应该被限制在可能之最短周期内，因为它们会阻塞(block)其他代码的并行运行机会
     {
         std::lock_guard<std::mutex> lg(printMutex);
@@ -6476,8 +6515,8 @@ public:
         createTable();//OK:no deadlock
     }
 };
- //借着使用recursive_mutex,上述行为不再有问题。
- // 这个 mutex 允许同一线程多次锁定，并在最近一次(last)相应的 unlock()时释放 lock 
+//借着使用recursive_mutex,上述行为不再有问题。
+// 这个 mutex 允许同一线程多次锁定，并在最近一次(last)相应的 unlock()时释放 lock 
 #endif
 
 
@@ -6532,8 +6571,8 @@ public:
     {
         std::unique_lock<std::mutex> ul(readyFlagMutex);
 
-		// wait until readyFlag is true:
-        while (!readyFlag) 
+        // wait until readyFlag is true:
+        while (!readyFlag)
         {
             ul.unlock();
             std::this_thread::yield();//hint to reschedule to the next thread
@@ -6566,7 +6605,7 @@ bool readyFlag;
 //补充：
 /*
 condition variable 也许有所谓假醒(spurious wakeup)。
-也就是某个 condition variable 的 wait动作有可能在该 condition variable 
+也就是某个 condition variable 的 wait动作有可能在该 condition variable
 尚未被 notified 时便返回。假醒无法被测定，以使用者的观点来看它们实质上是随机的。
 然而它们通常发生于 thread library 无法可靠确定某个 waiting thread 不遗漏任何
 notification时。由于遗漏 notification 便代表 condition variable 无用，
@@ -6587,7 +6626,7 @@ void thread1()
     std::cin.get();
 
     //第四步：锁住，更新flag，解锁，通知条件变量
-    
+
     // signal that thread1 has prepared a condition
     {
         std::lock_guard<std::mutex> lg(readyMutex);
@@ -6689,7 +6728,7 @@ std::condition_variable queueCondVar;
 void provider(int val)
 {
     // push different values (val til val+5 with timeouts of val milliseconds into the queue
-    for (int i = 0; i < 6; ++i) 
+    for (int i = 0; i < 6; ++i)
     {
         {
             std::lock_guard<std::mutex> lg(queueMutex);
@@ -6706,7 +6745,7 @@ void provider(int val)
 void consumer(int num)
 {
     // pop values if available (num identifies the consumer)
-    while (true) 
+    while (true)
     {
         int val;
         {
@@ -6715,7 +6754,7 @@ void consumer(int num)
             // 当 wait()家族的某个成员被调用时该mutex 必须被 unique_lock 锁定，
             // 否则会发生不明确的行为。
             std::unique_lock<std::mutex> ul(queueMutex);
-            
+
             queueCondVar.wait(ul, [] { return !queue.empty(); });
 
             val = queue.front();
@@ -6791,8 +6830,8 @@ void thread1()
 {
     std::cout << "<return>" << std::endl;
     std::cin.get();
-        
-	readyFlag.store(true);    
+
+    readyFlag.store(true);
     //***注***
     /*
     比较：
@@ -6820,7 +6859,7 @@ void thread2()
 
         readyCondVar.wait(ul, []() { return readyFlag.load(); });
 
-    } 
+    }
     std::cout << "done" << std::endl;
 }
 
