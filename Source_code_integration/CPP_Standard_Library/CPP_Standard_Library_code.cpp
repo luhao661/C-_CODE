@@ -1248,6 +1248,8 @@ int main()
 #endif
 
 
+//Set 和 multiset 不提供任何操作函数可以直接访问元素。
+
 //lower_bound()、upper_bound()、equal_range()
 #if 0
 #include <iostream>
@@ -4461,6 +4463,66 @@ int main()
     PRINT_ELEMENTS(evenColl, "evenColl: ");
     PRINT_ELEMENTS(oddColl, "oddColl:  ");
 }
+#endif
+
+
+//在 main 函数中直接使用 STL 的 std::partition 函数来实现
+//快速排序算法的partition()的相同功能
+#if 0
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdlib>
+#include <ctime>
+
+void Swap(int* a, int* b)
+{
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int main()
+{
+    int arr[] = { 3, 6, 8, 2, 5, 1, 7, 4 };
+    int length = sizeof(arr) / sizeof(arr[0]);
+    int begin = 0;
+    int end = length - 1;
+
+    //1. 取一个随机的索引值
+    srand(time(0));
+    int rd_index = begin + rand() % (end - begin + 1);
+
+    //补充：
+    //可以用C++的随机数产生引擎，见//使用C++中的随机数
+
+    //2. 将随机索引值对应的值移到数组末尾，做为比较标尺
+    Swap(&arr[rd_index], &arr[end]);
+
+    //3. 使用 STL 的 partition 函数进行分区
+    auto partition_point = std::partition(arr + begin, arr + end + 1,
+        [&](int x) { return x <= arr[end]; });
+
+    // 枢轴值的位置
+    int pivot_index = partition_point - arr;
+
+    //4. 将枢轴值放到正确的位置上
+    Swap(&arr[pivot_index], &arr[end]);
+
+    std::cout << "Pivot index: " << pivot_index << std::endl;
+
+    for (int i = 0; i < length; ++i)
+    {
+        std::cout << arr[i] << " ";
+    }
+
+    std::cout << std::endl;
+
+    return 0;
+}
+//https://chat.openai.com/share/7de1e374-2091-4aca-8e3f-2dc0f1e86ab9
+//实战：
+//面试题76：数组中第k大的数字
 #endif
 
 
