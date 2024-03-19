@@ -7,7 +7,7 @@ C：
 lambda函数、智能指针、nullptr
 新关键字auto、后置返回类型decltype
 基于范围的for循环、
-一致性初始化、noexcept、constexpr
+一致性初始化{}、noexcept、constexpr
 
 类和对象：
 类内初始化、初始化列表、
@@ -43,7 +43,7 @@ int main()
 
 
 //shared_ptr的use_count()
-//返回管理当前对象的不同 shared ptr 实例(包含 this )数量。若无管理对象，则返回 0
+//返回管理当前对象的不同 shared_ptr 实例(包含 this )数量。若无管理对象，则返回 0
 #if 0
 #include <iostream>
 
@@ -878,12 +878,12 @@ int main()
 
 //***注***
 //对于vector容器
-// 安插动作【可能】使 reference、pointer 和 iterator失效
+// 安插操作：【可能】使 reference、pointer 和 iterator失效
 // (译注：因为安插可能导致 vector 重新分配)。
 // 你可以使用reserve()保留适当容量，避免重新分配内存。
 // 如此一来，只要保留的容量尚有富余，就不必担心reference失效。
-// vector的容量不会缩减，我们便可确定，即使删除元素，
-// 其reference、pointer 和 iterator 也会继续指向动作发生前的位置。
+// 删除操作：vector的容量不会缩减，便可确定，【删除点之前】的
+// 元素的reference、pointer 和 iterator才保持有效。(P260)
 //补充：
 //【安插】或【移除】元素，都会使“作用点”之后的各元素的
 //  reference、pointer 和 iterator 失效。
@@ -1445,9 +1445,10 @@ int main()
 
     strmap["g"];
     //“operator[]的索引类型不必是整数”并不是它和寻常 array 唯一不同之处。如果你
-    //选择某 key 作为索引，容器内却没有相应元素，那么map会自动安插一个新元素，其value
-    //将被其类型的 default 构造函数初始化。因此，你不可以指定一个“不具 default 构造函数”
-    //的value 类型。注意，基础类型都有一个 default 构造函数，设立初值0(见 3.2.1 节第 37页)。
+    //选择某 key 作为索引，容器内却没有相应元素，那么map会自动安插一个新元素，
+    // 其value将被其类型的 default 构造函数初始化。
+    // 因此，你不可以指定一个“不具 default 构造函数”的value 类型。
+    // 注意，基础类型都有一个 default 构造函数，设立初值0(见 3.2.1 节第 37页)。
 
     for_each(strmap.begin(), strmap.end(),
         [](const decltype(strmap)::value_type& pa)
@@ -1463,9 +1464,11 @@ int main()
 //移除元素，并避免使用一个【暂时】无效的迭代器
 //(因为该迭代器指向了一个被删除的元素的位置)
 //***注***
-//如果某元素被删除，所有容器(除了deque，因为可能导致内存重新分配)
+//如果某元素被删除，所有容器(除了vector和deque)
 //都保证迭代器以及用以指向【未被删除的元素】的reference继续保持有效。
 //而指向被删除的元素的迭代器都要进行该段代码展示的操作。
+//补充：
+//对于 vector,只有删除点之前的元素才保持有效。
 #if 0
 #include <iostream>
 #include <map>
@@ -1553,7 +1556,6 @@ int main()
             ++pos;
         }
     }
-
 
     strmap.erase("abc");
 
@@ -1766,7 +1768,8 @@ int main()
     //最大负载因子（因子↑，哈希表空间利用率↑，性能可能↓）
     unset.max_load_factor(0.7);
 
-    //准备100/最大负载因子个元素的大小的bucket，以避免在没超过100个元素就rehash()
+    //准备100/最大负载因子个元素的大小的bucket，
+    // 以避免在没超过100个元素就rehash()
     unset.rehash(100 / 0.7);
     //准备100个元素大小的bucket
     unset.reserve(100);
@@ -1987,6 +1990,8 @@ int main()
     //而由于它们被设计为第二和第三实参，因此这种情况下你必须指明最初的 bucket 大小，
     //本例为10。
 
+    //补充：//对于关联式容器，使用lambda时有特定的写法。(所以这种情况用lambda不推荐)
+    
     custset.insert(Customer("nico", "josuttis", 42));
     PRINT_ELEMENTS(custset);
 
@@ -2001,7 +2006,7 @@ int main()
 // 相同哈希值的元素【也可能是不同的键】，它们只是发生了哈希冲突，
 // 而哈希表的内部机制确保它们在同一个桶中得到存储。在查找元素时，
 // 哈希表会根据键的相等性来确定具体是哪个元素。
-// 
+
 // 在 std::unordered_multimap 中，
 // 相同哈希值的元素被存储在同一个桶中，而同一个桶中的元素可能具有不同的键。
 // 因此，同一个桶中存储的元素的键不一定相同，但它们具有相同的哈希值。
@@ -2094,7 +2099,48 @@ int main()
 #endif
 
 
-//非入侵式或包裹法使C-Style Array作为一种STL容器
+//使容器STL化的三大方法：侵入式，非侵入式，包裹法
+//侵入式
+//自定义数据结构内直接嵌入STL所需的函数或接口。
+// 这种方法改变了原始数据结构，使其适应STL的规范。
+#if 0
+#include <iostream>
+#include <vector>
+
+// 自定义侵入式数据结构
+class MyData {
+public:
+    int value;
+
+    // 添加适应STL规范的成员函数
+    void push_back(int val) {
+        value = val;
+    }
+};
+
+int main()
+{
+    std::vector<MyData> myVector;
+
+    MyData data1, data2, data3;
+    data1.push_back(10);
+    data2.push_back(20);
+    data3.push_back(30);
+
+    myVector.push_back(data1);
+    myVector.push_back(data2);
+    myVector.push_back(data3);
+
+    for (const auto& item : myVector) {
+        std::cout << item.value << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+#endif
+//非侵入式法
+// 不修改原始数据结构，而是使用STL的适配器或特化函数来处理自定义数据结构。
 #if 0
 #include <iterator>
 #include <vector>
@@ -2114,6 +2160,64 @@ int main()
     std::copy(std::begin(v), std::end(v),
         std::ostream_iterator<int>(std::cout, " "));
     std::cout << std::endl;
+}
+#endif
+//包裹法
+//通过创建一个包裹类，将自定义数据结构包裹在内部，
+// 然后在包裹类中实现STL所需的函数或接口
+#if 0
+#include <iostream>
+#include <vector>
+
+// 自定义数据结构
+struct MyData
+{
+    int value;
+};
+
+// 包裹类
+class MyDataWrapper 
+{
+public:
+    MyDataWrapper(int val=0) : data{ val } 
+    {}
+
+    // 添加适应STL规范的成员函数
+    void push_back(int val) 
+    {
+        data.value = val;
+    }
+
+    MyData getData() const
+    {
+        return data;
+    }
+
+private:
+    MyData data;
+};
+
+int main() 
+{
+    std::vector<MyDataWrapper> myVector;
+
+    MyDataWrapper data1, data2(0), data3(1);
+
+    data1.push_back(20);
+    data2.push_back(20);
+    data3.push_back(30);
+
+    myVector.push_back(data1);
+    myVector.push_back(data2);
+    myVector.push_back(data3);
+
+    for (const auto& item : myVector)
+    {
+        std::cout << item.getData().value << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
 }
 #endif
 
