@@ -61,6 +61,13 @@ int main()
     return 0;
 }
 #endif
+//补充：
+//shared_ptr<X>(new x(…))
+//执行了二次分配：一次针对X,一次针对shared pointer的控制区块(用来管理使用次数)。
+//如果替换为
+//make_shared<X>(…)
+//会快速很多，只执行一次分配而且比较安全，
+// 因为“X分配成功而其控制区块却分配失败”是不可能发生的。
 
 
 //shared_ptr和unique_ptr用法区别
@@ -2102,18 +2109,20 @@ int main()
 //使容器STL化的三大方法：侵入式，非侵入式，包裹法
 //侵入式
 //自定义数据结构内直接嵌入STL所需的函数或接口。
-// 这种方法改变了原始数据结构，使其适应STL的规范。
+//这种方法改变了原始数据结构，使其适应STL的规范。
 #if 0
 #include <iostream>
 #include <vector>
 
 // 自定义侵入式数据结构
-class MyData {
+class MyData 
+{
 public:
     int value;
 
     // 添加适应STL规范的成员函数
-    void push_back(int val) {
+    void push_back(int val)
+    {
         value = val;
     }
 };
@@ -2474,7 +2483,7 @@ int main()
 //小结：
 //各种容器的使用时机
 
-//默认情况下应该使用 vector。Vector的内部结构最简单，并允许随机访问，
+//默认情况下应该使用 vector。vector的内部结构最简单，并允许随机访问，
 //所以数据的访问十分方便灵活，数据的处理也够快。
 
 //如果经常要在序列头部和尾部安插和移除元素，应该采用deque。如果你希望元素
