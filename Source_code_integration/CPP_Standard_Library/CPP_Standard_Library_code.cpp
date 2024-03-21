@@ -2614,7 +2614,8 @@ int main()
     list<int> coll;
 
     // insert elements from 1 to 9
-    for (int i = 1; i <= 9; ++i) {
+    for (int i = 1; i <= 9; ++i) 
+    {
         coll.push_back(i);
     }
 
@@ -2666,6 +2667,8 @@ int main()
         ++pos;
     }
     cout << endl;
+    //***注意***
+    //next(pos)返回的是个临时值，不会改变pos的值
 
     //forward 和 bidirectional 迭代器不提供 operator +和 -
     //如果不用next()，你就需要创建一个临时对象的协助来判断
@@ -2682,6 +2685,10 @@ int main()
 
 }
 #endif
+//补充：advance()和next()的区别
+//advance() 返回void，会真正地修改传递给它的迭代器，将其移动到指定位置。
+//next() 返回一个新的迭代器，指向原始迭代器移动指定步数后的位置。
+//这个函数不会修改原始的迭代器，而是返回一个指向移动后位置的新迭代器。
 
 
 //根据迭代器种类，选择最佳的计算距离的方案：distance()
