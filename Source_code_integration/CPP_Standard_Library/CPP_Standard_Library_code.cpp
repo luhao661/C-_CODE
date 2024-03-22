@@ -2790,7 +2790,7 @@ int main()
 
 //反向迭代器的应用
 //使用一对迭代器，正向和逆向打印找出的元素
-#if 0
+#if 1
 #include <iterator>
 #include <iostream>
 #include <deque>
