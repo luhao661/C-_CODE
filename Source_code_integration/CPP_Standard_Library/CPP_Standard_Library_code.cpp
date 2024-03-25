@@ -2790,7 +2790,7 @@ int main()
 
 //反向迭代器的应用
 //使用一对迭代器，正向和逆向打印找出的元素
-#if 1
+#if 0
 #include <iterator>
 #include <iostream>
 #include <deque>
@@ -2846,9 +2846,11 @@ int main()
 //back_insert_iterator、back_inserter()的应用
 //只能用在vector、deque、list、string上
 #if 0
+#include <iostream>
 #include <vector>
 #include <algorithm>
 #include <iterator>
+#include <string>
 using namespace std;
 
 template <typename T>
@@ -2912,7 +2914,9 @@ int main()
 
 //front_insert_iterator、front_inserter()的应用
 //只能用在deque、list、forward list
-#if 0
+#if 1
+#include <iostream>
+#include <string>
 #include <list>
 #include <algorithm>
 #include <iterator>
@@ -2962,6 +2966,21 @@ int main()
     PRINT_ELEMENTS(coll);
 }
 #endif
+//***注***
+//补充：
+/*
+向前插入操作使用的是 front_inserter(coll) 迭代器，
+它的特点是在每次插入时都将元素插入到容器的开头位置，而不是结尾位置。
+因此，即使容器发生了重新分配，迭代器失效的问题也不会出现。
+front_inserter(coll) 在每次插入时都会重新获取容器的 begin() 迭代器，
+因此即使在插入过程中发生了重新分配，begin() 迭代器仍然会指向新的开头位置。
+这样就避免了源端迭代器失效的问题。
+
+相比之下，back_inserter(coll) 则是在每次插入时都会获取容器的 end() 迭代器，
+如果容器重新分配了内存，已经指向容器元素的end() 迭代器就会失效，从而导致未定义行为。
+
+因此，向前插入操作不需要预留足够的空间来避免源端迭代器失效，而向后插入操作则需要。
+*/
 
 
 //insert_iterator、inserter()应用
