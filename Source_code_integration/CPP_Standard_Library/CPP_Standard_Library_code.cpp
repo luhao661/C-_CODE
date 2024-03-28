@@ -3685,7 +3685,8 @@ int main()
 #include <iostream>
 #include <string>
 
-int main() {
+int main()
+{
     std::string str = "Hello world";
     std::string sub_str = "world";
 
@@ -3712,10 +3713,12 @@ int main() {
     // 使用 find()方法相当于使用search() 
     //  在字符串中查找完全匹配指定子串的第一个位置
     pos = str.find(sub_str);
-    if (pos != std::string::npos) {
+    if (pos != std::string::npos) 
+    {
         std::cout << "Substring found at position: " << pos << std::endl;
     }
-    else {
+    else
+    {
         std::cout << "Substring not found" << std::endl;
     }
 
@@ -3813,7 +3816,7 @@ int main()
 #endif
 
 
-//function<>
+//function<> 模板类
 #if 0
 #include <iostream>
 #include <algorithm>
@@ -3845,6 +3848,67 @@ bool check(int elem)
         return true;
     else
         return false;
+}
+#endif
+//function<> 模板类 补充示例
+//function<> 模板类它提供了一个通用的多态函数包装器。
+// 它可以存储、复制和调用任何可调用的目标函数、lambda表达式、
+// bind表达式或其他函数对象，以及指向成员函数的指针和指向数据成员的指针。
+#if 0
+#include <iostream>
+#include <functional>
+#include <vector>
+
+// A simple function
+void print_hello() 
+{
+    std::cout << "Hello, World!" << std::endl;
+}
+
+// A function with a parameter
+void print_number(int i) 
+{
+    std::cout << "Number: " << i << std::endl;
+}
+
+// A function that returns a value
+int add(int x, int y) 
+{
+    return x + y;
+}
+
+// A functor (function object)
+struct Multiply
+{
+    int operator()(int x, int y) 
+    {
+        return x * y;
+    }
+};
+
+int main() 
+{
+    // Assign a simple function to std::function
+    std::function<void()> f1 = print_hello;
+    f1(); // Outputs: Hello, World!
+
+    // Assign a function with a parameter to std::function
+    std::function<void(int)> f2 = print_number;
+    f2(42); // Outputs: Number: 42
+
+    // Assign a function that returns a value
+    std::function<int(int, int)> f3 = add;
+    std::cout << "Add result: " << f3(3, 4) << std::endl; // Outputs: Add result: 7
+
+    // Assign a lambda expression to std::function
+    std::function<int(int, int)> f4 = [](int x, int y) { return x - y; };
+    std::cout << "Lambda result: " << f4(10, 5) << std::endl; // Outputs: Lambda result: 5
+
+    // Assign a functor to std::function
+    std::function<int(int, int)> f5 = Multiply();
+    std::cout << "Multiply result: " << f5(6, 7) << std::endl; // Outputs: Multiply result: 42
+
+    return 0;
 }
 #endif
 
