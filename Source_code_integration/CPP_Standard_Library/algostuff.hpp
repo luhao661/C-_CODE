@@ -31,7 +31,7 @@
  // - fill values from first to last into the collection
  // - NOTE: NO half-open range
 template <typename T>
-inline void INSERT_ELEMENTS(T& coll, int first, int last)
+inline void INSERT_ELEMENTS(T& coll, int first, int last) 
 {
     for (int i = first; i <= last; ++i) {
         coll.insert(coll.end(), i);
