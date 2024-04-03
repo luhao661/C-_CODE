@@ -4413,7 +4413,7 @@ int main()
     //将coll1的元素和coll2的对应元素交换。 
     // 元素个数为distance(coll1.begin(), coll1.end())
     // coll2 之内的其余元素不变动。 
-    // swap_ranges()算法返回第一个未被改动的元素。
+    // swap_ranges()算法返回coll2中第一个未被改动的元素。
 
     PRINT_ELEMENTS(coll1, "\ncoll1: ");
     PRINT_ELEMENTS(coll2, "coll2: ");
@@ -4619,6 +4619,7 @@ int main()
     cout << "first odd element: " << *pos2 << endl;
 }
 #endif
+//更多用法，见//面试题76：数组中第k大的数字         //实现快速排序算法
 
 
 //根据谓词函数，划分两个子区间 partition_copy()
