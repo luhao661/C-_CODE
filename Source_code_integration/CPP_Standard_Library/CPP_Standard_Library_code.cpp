@@ -8,7 +8,7 @@ lambda函数、智能指针、nullptr
 新关键字auto、后置返回类型decltype
 基于范围的for循环、
 一致性初始化{}、noexcept、constexpr
- 
+
 类和对象：
 类内初始化、初始化列表、
 新关键字default、delete、override、final
@@ -18,8 +18,8 @@ Template C++：
 可变参数模板、模板元编程、模板别名
 
 STL：
-unordered_map、 
-cbegin()、cend() 
+unordered_map、
+cbegin()、cend()
 
 */
 
