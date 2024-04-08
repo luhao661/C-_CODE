@@ -4996,6 +4996,7 @@ int main()
 
     // convert collection into a heap
     make_heap(coll.begin(), coll.end());
+    //在范围 [first, last) 中构造最大堆
 
     PRINT_ELEMENTS(coll, "after make_heap():  ");
 
@@ -5017,6 +5018,20 @@ int main()
 
     PRINT_ELEMENTS(coll, "after sort_heap():  ");
 }
+//已经有了priority_queue为什么还要有make_heap等heap方法
+/*
+priority_queue 是 STL 中的一个容器适配器，它提供了一系列封装好的堆操作，
+例如 push、pop、top 等，使得用户可以直接使用一个
+最大堆或最小堆而不需要关心底层的实现细节。
+而 make_heap、push_heap、pop_heap 等函数则是算法，
+用于在普通容器（如 vector）上实现堆操作。使用这些函数，
+用户可以将任何随机访问容器（如数组或向量）转换为一个堆，并在上面执行堆操作
+
+可以将已有的容器转换为一个堆，不需要将数据复制到 priority_queue 中。
+这可以在不改变容器类型的情况下，对现有数据应用堆操作
+使用 make_heap 等函数在容器上操作，可以直接访问和修改容器中的数据，
+而 priority_queue 则不允许直接访问底层容器。
+*/
 #endif
 
 
