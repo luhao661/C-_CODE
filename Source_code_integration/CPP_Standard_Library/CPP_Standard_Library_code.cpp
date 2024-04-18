@@ -17,7 +17,7 @@ lambda函数、智能指针、nullptr
 Template C++：
 可变参数模板、模板元编程、模板别名
 
-STL： 
+STL：
 unordered_map、
 cbegin()、cend()
 
@@ -1386,6 +1386,51 @@ int main()
     {
         cout << "coll1 and coll2 have a different sorting criterion"
             << endl;
+    }
+}
+#endif
+
+
+//补充：对于sort()，用函数对象作为排序准则
+#if 0
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+class sortregulation 
+{
+public:
+    bool operator()(const string& s1, const string& s2) const
+    {
+        // 实现比较逻辑，例如按照字符串长度排序
+        return s1.length() < s2.length();
+    }
+};
+
+int main() 
+{
+    vector<string> DataInput;
+
+    int NumSize;
+    cin >> NumSize;
+
+    string str = "";
+    for (int i = 1; i <= NumSize; ++i) 
+    {
+        cin >> str;
+        DataInput.push_back(str);
+    }
+
+    // 使用sortregulation的实例作为比较函数
+    sort(DataInput.begin(), DataInput.end(), sortregulation());//使用默认的默认构造函数创建函数对象
+
+    // 输出排序后的结果，用于验证排序是否正确
+    for (const auto& s : DataInput)
+    {
+        cout << s << endl;
     }
 }
 #endif
