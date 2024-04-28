@@ -1352,7 +1352,7 @@ int main()
 
     // create sorting criterion with reverse element order
     RuntimeCmp reverse_order(RuntimeCmp::reverse);
-
+ 
     // create, fill, and print set with reverse element order
 #if 0 
     IntSet coll2(reverse_order);
