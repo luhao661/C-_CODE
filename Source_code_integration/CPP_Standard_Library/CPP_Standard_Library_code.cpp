@@ -4379,7 +4379,7 @@ int main()
     //coll2的元素在它们初次被输出后，状态就变得【不确定】，
     // 因为这里用的是move()。
     //然而并不意味着coll2容器不能再出现在以后的代码中，
-    //coll2的大小仍然是5, 所以我们可以再次调用move()覆盖(overwrite)这些元素。
+    //coll2的大小仍然是5, 所以我们可以再次调用move()覆盖(overwrite)这些元素。 
 
     //验证输出：
     copy(coll2.cbegin(), coll2.cend(),
