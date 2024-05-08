@@ -251,7 +251,7 @@ int main()
 {
     array<int, 5>myarray{ 1,2 };
 
-    Print(myarray);
+    Print(myarray); 
 
     return 0;
 }
