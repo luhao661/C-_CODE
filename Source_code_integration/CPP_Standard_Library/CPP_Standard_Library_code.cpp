@@ -546,7 +546,7 @@ int main()
 
 
 //以函数作为算法的实参
-//使用普通函数作为双参判断式(Binary Predicate)(二元谓词函数)
+//使用普通函数作为双参判断式(Binary Predicate)(二元谓词函数) 
 #if 0
 #include <algorithm>
 #include <deque>
