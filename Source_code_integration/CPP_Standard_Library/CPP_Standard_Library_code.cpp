@@ -503,7 +503,7 @@ bool isPrime(int number)
     number = abs(number);
 
     // 0 and 1 are no prime numbers
-    if (number == 0 || number == 1) {
+    if (number == 0 || number == 1) { 
         return false;
     }
 
