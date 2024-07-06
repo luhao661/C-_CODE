@@ -190,7 +190,7 @@ int main()
 {
     //正确写法
     //shared_ptr<int>sp1(new int);
-    //shared_ptr<int>sp2(sp1);
+    //shared_ptr<int>sp2(sp1); 
 
     //错误写法：
     //一个动态分配的内存空间由【两组】shared_ptr管理
