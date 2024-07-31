@@ -362,3 +362,71 @@ int main()
 	return 0;
 }
 #endif
+
+
+//
+#if 0
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+	int a = 10;
+	const int& b = a;//常量引用
+
+	cout << a << endl << b << endl;
+
+	a = 15;
+	//b = 10;
+	cout << a << endl << b << endl;
+
+	int & const c = a;//引用常量
+
+	a = 20;
+	c = 1;//为什么？？
+	cout << a << endl << c << endl;
+
+	return 0;
+}
+/*
+理解：
+常量引用的含义是，通过这个引用（b）无法修改它所引用的对象
+（即a）。b只能读取a的值，而不能改变a的值。
+
+引用常量的意思是引用本身是常量，不能重新绑定到另一个变量。
+然而在C++中，引用一旦初始化后就不能改变所引用的对象，
+所以这种声明实际上是没有意义的，并且会导致编译错误。(Visual Studio中没报错)
+
+因此int & const c = a;  可以理解为int &  c = a;  
+那么c可以修改，进而影响a的值
+*/
+#endif
+
+
+//使用boost库
+#if 1
+#include <iostream>
+#include <string>
+#include "boost/lexical_cast.hpp"
+int main()
+{
+	using namespace std;
+	
+	cout << "Enter your weight: "; 
+
+	float weight; 
+	cin >> weight;
+
+	string gain = "A 10% increase raises ";
+	string wt = boost::lexical_cast<string>(weight);
+	gain = gain + wt + " to ";// string operator()
+
+	weight = 1.1 * weight;
+	gain = gain + boost::lexical_cast<string>(weight) + ".";
+	cout << gain << endl;
+	system("pause");
+
+	return 0;
+}
+#endif
