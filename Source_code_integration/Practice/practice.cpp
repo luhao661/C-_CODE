@@ -203,7 +203,7 @@ public:
 	}
 
 	void setVal(int val)
-	{
+	{ 
 		a = val;
 	}
 
