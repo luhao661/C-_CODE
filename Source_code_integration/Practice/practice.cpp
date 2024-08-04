@@ -350,7 +350,7 @@ int main()
 	int res= accumulate(MyArray.begin(), MyArray.end(), 0);
 	cout << res << endl;
 
-	string init("0");
+	string init("0"); 
 	string res1 = accumulate(MyArray.begin(), MyArray.end(), init,
 		[](string init,int val) 
 		{
