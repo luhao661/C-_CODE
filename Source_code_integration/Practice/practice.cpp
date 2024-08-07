@@ -319,7 +319,7 @@ private:
 
 public:
 	Gen(int startVal=0)
-	{
+	{ 
 		i = startVal;
 	}
 
